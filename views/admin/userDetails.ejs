@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:35 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>AppleStore</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assetsb/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="assetsb/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/public/logo/logo.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active">
+                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Admin Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Users</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/userDetails">Details</a>
+                    </div>
+                </li>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Category</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/new-category">Add Category</a>
+                        <a href="/admin/viewCategory">View Category</a>
+                       
+                    </div>
+                <div class="submenu">
+                                               
+                    </div>
+                </li>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sellers</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-sellers-cards.html">Sellers cards</a>
+                        <a href="page-sellers-list.html">Sellers list</a>
+                        <a href="page-seller-detail.html">Seller profile</a>
+                    </div>
+                </li> -->
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/new-product">Add product </a>
+                        <a href="/admin/viewProduct">view product </a>
+                        
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Transactions</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-transactions-1.html">Transaction 1</a>
+                        <a href="page-transactions-2.html">Transaction 2</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href=" ">Details</a>
+                        <a href="page-error-404.html">Error 404</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
+                        <span class="text">Reviews</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Brands</span> </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Statistics</span>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <%- include("../partials/header2")%>
+        
+<table class="table align-middle table-nowrap mb-0 ms-4">
+  
+  <thead class="table-light"> 
+  <tr>
+                              
+    <th class="align-middle" scope="col">Photo</th>                                
+                                
+    <th class="align-middle" scope="col">NAME</th>
+    <th class="align-middle" scope="col">Email</th>
+    <th class="align-middle" scope="col">Mobile</th>
+    <th class="align-middle" scope="col">blocked status</th>
+    
+</tr>
+</thead>
+  <%  
+  if(user.length > 0){
+      for(let i=0;i<user.length;i++){
+         %>
+         <tr>
+            <td> <img src="/userImages/<%= user[i].image %>" alt="<%= user[i].image %>" width="50px" height="50px"></td>
+          <td><%= user[i].name %></td>
+          <td><%= user[i].email%></td>
+          <td><%= user[i].mobile%></td>
+          
+            
+          <td>
+            <% if (user[i].is_blocked) { %>
+                <a href="/admin/unblockUser?id=<%= user[i]._id.toString() %>">
+                 
+                   <p class="text-danger ms-4">Block</p>
+                 
+                </a>
+              <% } else { %>
+                <a href="/admin/unblockUser?id=<%= user[i]._id.toString() %>">                  
+                    <p class="text-primary ms-4">Unblock</p>
+                 
+                </a>
+              <% } %>
+        </td>
+
+
+
+         </tr>
+         <%
+      } %>
+
+  <%}
+  else{
+      %>
+      <tr>
+          <td colspan="5"> users not found</td>
+
+      </tr>
+      <%
+      
+  }
+  %>
+</table>
+</div> 
+</div> <!-- table-responsive end// -->
+</div>
+</div>
+
+                                       
+
+           
+        </section> <!-- content-main end// -->
+       
+</html>
+
+
