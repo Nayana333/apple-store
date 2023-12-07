@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>AppleStore</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,22 +14,21 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
     
 </head>
 
 <body>
     <header class="header-area header-style-5">
-        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+        <div class="" style="margin-top: 20px; " >
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info">
                             <ul>
-                                <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li>
+                               
                             </ul>
                         </div>
                     </div>
@@ -43,19 +42,46 @@
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-4">
-                        <div class="header-info header-info-right">
+                        <div class="header-info mt-5 header-info-right">
                             <ul>
-                                <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
-                                    <ul class="language-dropdown">
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
-                                    </ul>
+                                
+                                <% if (user) { %>
+                               
+                                <li class="dropdown nav-item">
+                                   
+
+                                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/public/logo/user.png" style="height: 20px; width: 20px;" alt="User" style="width: 40px; height: 40px;"></a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                
+                                        <a class="dropdown-item" href="/viewprofile" ><i class="material-icons md-settings"></i>Account</a>                                        
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                                    </div>
                                 </li>
-                                <li><i class="fi-rs-user"></i><a href="/login">Log In </a></li>
+                                
+                                <li class="dropdown nav-item">
+                                    <div class="header-action-right">
+                                        <div class="header-action-2">
+                                            <div class="header-action-icon-2">
+                                    <a  href="/cart" id="dropdownAccount" aria-expanded="false"> <img  src="/assets/imgs/theme/icons/icon-cart.svg" style="height: 18px;" alt="User" style="width: 40px; height: 40px;">
+                                        <span class="pro-count blue"><%= typeof cartData !== 'undefined' ? cartData : '0' %></span>
+                                    </a> </div></div></div>  
+                                </li>
+                                <li class="dropdown nav-item">
+                                 
+                                            <div class="header-action-icon-2">
+                                    <a  href="/wishlist" id="dropdownAccount" aria-expanded="false"> <img src="/assets/imgs/theme/icons/icon-heart.svg" style="height: 18px;" alt="User" style="width: 40px; height: 40px;">
+                                       
+                                   
+                                    <% } else { %>
+                                        <li><i class="fi-rs-user"></i><a href="/login">Log In </a></li>
                                 <li><i class="fi-rs-user"></i><a href="/registration">sign-up</a></li>
+                                       
+                                <% } %>
+
+                                </li>
                             </ul>
+                            
                         </div>
                     </div>
                 </div>
@@ -63,29 +89,24 @@
         </div>
 <header class="header-area header-style-4 header-height-2">
 
+    
+
     <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html"><img src="/public/logo/logo.png" alt="logo"></a>
+                    <a href="index.html"><img src="/public/logo/logo.png "  alt="logo"></a>
                 </div>
                  <!-- <div class="header-right"> -->
                     <!-- <div class="search-style-2"> -->
-                        <!-- <form action="#">
-                            <select class="select-active">
-                                <option>All Categories</option>
-                                <option>Women's</option>
-                                <option>Men's</option>
-                                <option>Cellphones</option>
-                                <option>Computer</option>
-                                <option>Electronics</option>
-                                <option> Accessories</option>
-                                <option>Home & Garden</option>
-                                <option>Luggage</option>
-                                <option>Shoes</option>
-                                <option>Mother & Kids</option>
-                            </select> -->
+                        <form action="/product">
                             
+                            <input type="text" placeholder="Search for items..."  name="search" style="width: 500px; margin-left:100px" >
+                            <button type="submit" style="position: absolute;
+                            right: 369px;
+                            top: 43px;
+                            /* width: 38px; */
+                            height: 46px;">Search</button>
                         </form>
                     </div>
                     
@@ -97,7 +118,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                    <a href="index.html"><img src="/assets/imgs/theme/logo.svg" alt="logo"></a>
                 </div>
                 <div class="header-nav d-none d-lg-flex">
                     <div class="main-categori-wrap d-none d-lg-block">
@@ -142,7 +163,7 @@
                                             </li>
                                             <li class="mega-menu-col col-lg-5">
                                                 <div class="header-banner2">
-                                                    <img src="assets/imgs/banner/menu-banner-2.jpg" alt="menu_banner1">
+                                                    <img src="/assets/imgs/banner/menu-banner-2.jpg" alt="menu_banner1">
                                                     <div class="banne_info">
                                                         <h6>10% Off</h6>
                                                         <h4>New Arrival</h4>
@@ -150,7 +171,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="header-banner2">
-                                                    <img src="assets/imgs/banner/menu-banner-3.jpg" alt="menu_banner2">
+                                                    <img src="/assets/imgs/banner/menu-banner-3.jpg" alt="menu_banner2">
                                                     <div class="banne_info">
                                                         <h6>15% Off</h6>
                                                         <h4>Hot Deals</h4>
@@ -183,7 +204,7 @@
                                                     
                                             <li class="mega-menu-col col-lg-5">
                                                 <div class="header-banner2">
-                                                    <img src="assets/imgs/banner/menu-banner-5.jpg" alt="menu_banner1">
+                                                    <img src="/assets/imgs/banner/menu-banner-5.jpg" alt="menu_banner1">
                                                     <div class="banne_info">
                                                         <h6>10% Off</h6>
                                                         <h4>New Arrival</h4>
@@ -191,7 +212,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="header-banner2">
-                                                    <img src="assets/imgs/banner/menu-banner-6.jpg" alt="menu_banner2">
+                                                    <img src="/assets/imgs/banner/menu-banner-6.jpg" alt="menu_banner2">
                                                     <div class="banne_info">
                                                         <h6>15% Off</h6>
                                                         <h4>Hot Deals</h4>
@@ -216,7 +237,7 @@
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                         <nav>
                             <ul>
-                                <li><a class="active" href="/home">Home </a>
+                                <li><a class="active" href="/userhome">Home </a>
                                     
                                 </li>
                                 <li>
@@ -238,7 +259,7 @@
                                 <ul>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-3.jpg"></a>
+                                            <a href="shop-product-right.html"><img alt="Evara" src="/assets/imgs/shop/thumbnail-3.jpg"></a>
                                         </div>
                                         <div class="shopping-cart-title">
                                             <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
@@ -250,7 +271,7 @@
                                     </li>
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-4.jpg"></a>
+                                            <a href="shop-product-right.html"><img alt="Evara" src="/assets/imgs/shop/thumbnail-4.jpg"></a>
                                         </div>
                                         <div class="shopping-cart-title">
                                             <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>

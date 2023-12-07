@@ -42,31 +42,98 @@ const addCategory= async (req, res) => {
           console.log(error.message)
       }
   }
-  const loadCategory=async(req,res)=>{
-      try{
-          
-          var search='';
-          if(req.query.search){
-              search=req.query.search;
+//   const loadCategory=async(req,res)=>{
+//       try{
+//         const page = parseInt(req.query.page) || 1;
+//           var search='';
+//           const perPage = 5;
+//           if(req.query.search){
+//               search=req.query.search;
              
-          }
+//           }
+//           const totalCount = await categ.countDocuments({
+//             $or: [
+//                 { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+//                 { description: { $regex: '.*' + search + '.*', $options: 'i' } },
+//             ],
+//         });
+
   
-         const adminData =await categ.find({
-          $or:[
-              { category:{$regex:'.*'+search+'.*',$options:'i'}},
-              { description:{$regex:'.*'+search+'.*',$options:'i'}},
+//          const adminData =await categ.find({
+//           $or:[
+//               { category:{$regex:'.*'+search+'.*',$options:'i'}},
+//               { description:{$regex:'.*'+search+'.*',$options:'i'}},
               
-          ]
+//           ]
          
-      });
+//       }).skip((page - 1) * perPage).limit(perPage);;
     
-          res.render('viewCategory',{categ:adminData})
+//       res.render('viewCategory', {
+//         categ: adminData,
+//         currentPage: page,
+//         totalPages: Math.ceil(totalCount / perPage),
+//     });
   
   
-      }catch(error){
-          console.log(error.message)
-      }
-  }
+//       }catch(error){
+//           console.log(error.message)
+//       }
+//   }
+
+const loadCategory = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        var search = '';
+        const perPage = 5;
+        let sortBy = ''; // Capture the sortBy value from request
+        if (req.query.sortBy) {
+            sortBy = req.query.sortBy;
+        }
+
+        if (req.query.search) {
+            search = req.query.search;
+        }
+
+        let sortCondition = {}; // Define an empty object for sort condition
+
+        // Determine the sort condition based on sortBy value
+        if (sortBy === 'listed') {
+            sortCondition = { is_listed: 1 }; // Sort by is_listed field ascending (true first)
+        } else if (sortBy === 'unlist') {
+            sortCondition = { is_listed: -1 }; // Sort by is_listed field descending (false first)
+        }
+
+        const totalCount = await categ.countDocuments({
+            $or: [
+                { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+                { description: { $regex: '.*' + search + '.*', $options: 'i' } },
+            ],
+        });
+
+        const adminData = await categ
+            .find({
+                $or: [
+                    { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+                    { description: { $regex: '.*' + search + '.*', $options: 'i' } },
+                ],
+            })
+            .sort(sortCondition) // Apply the sort condition
+            .skip((page - 1) * perPage)
+            .limit(perPage);
+
+        res.render('viewCategory', {
+            categ: adminData,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / perPage),sortBy: req.query.sortBy || '',
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
+
+  
   
    
     const editCategory=async(req,res)=>{
@@ -143,6 +210,7 @@ const addCategory= async (req, res) => {
   
     }
   }
+  
 
 module.exports={
     addCategory,
@@ -151,5 +219,6 @@ module.exports={
     unlistCategory,
     updateCategory,
     editCategory,
+  
 }
   

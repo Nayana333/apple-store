@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title>AppleStore</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
     
    
     <main >
-        <%- include("../upartials/header")%>
+        <%- include("../partials/header")%>
         <section class="content-main m-5" >
             <div  >
                
@@ -41,14 +41,17 @@
                     
 
                     <div class="d-flex ">
-                        <a class="btn btn-fill-out submit">Continue Shopping</a>
-                        <a class="btn btn-fill-out submit ms-2" >OrderDetails</a>
+                        <a class="btn btn-fill-out submit" href="/product">Continue Shopping</a>
+                    
+                        <a class="btn btn-fill-out submit ms-2" href="/orderDetails?orderId=<%=order._id%>" >OrderDetails</a>
+                        
+                    
                     </div>
                    
                    
                     </div>
                     
-                    <p>Details for Order ID: <%=order._id %></p>
+                    <p>Details for Order ID: <%=order.o_id %></p>
                
             </div>
         </div>
@@ -59,7 +62,7 @@
                             <span>
                                 <i class="material-icons md-calendar_today"></i> <b><%=order.orderDate.toDateString()%></b>
                             </span> <br>
-                            <small class="text-muted"> <%=order._id %></small>
+                            <small class="text-muted"> <%=order.o_id %></small>
                         </div>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                             
@@ -91,7 +94,7 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                        Shipping: <%=order.orderDate%><br> Payment method: <%=order.paymentMethod %><br> Status: <%=order.status %>
+                                        Shipping: <%=order.orderDate.toDateString()%><br> Payment method: <%=order.paymentMethod %><br> Status: <%=order.status %>
                                     </p>
                                     
                                 </div>

@@ -9,6 +9,9 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Address',
   },
+  o_id:{
+    type:String 
+},
   orderDate: {
     type: Date,
     default: Date.now,

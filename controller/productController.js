@@ -1,11 +1,15 @@
 const User=require("../models/userModel");
 const Product=require("../models/productModel");
+const Category=require('../models/categoryModel');
+const { v4: uuidv4 } = require('uuid');
+
 
 
 const newProductLoad= async(req,res)=>{
     try{
+      const categories=await Category.find({})
 
-        res.render('new-product');
+        res.render('new-product',{categories});
 
     }catch(error){
         console.log(error.message)
@@ -14,6 +18,7 @@ const newProductLoad= async(req,res)=>{
 const insertProduct = async(req,res)=>{
     try {
         try {
+          const categories= await Category.find({})
          
             const existingProduct = await Product.findOne({ name: req.body.name });
           
@@ -23,6 +28,8 @@ const insertProduct = async(req,res)=>{
           
      
             const newProduct = {};
+
+            newProduct.p_id= uuidv4().split('-')[0].substring(0, 6);
           
             if (req.body.name) {
               newProduct.name = req.body.name;
@@ -70,7 +77,7 @@ const insertProduct = async(req,res)=>{
             }
           
             const savedProduct = await new Product(newProduct).save();
-            return res.render('new-product', { message: " Product added successfully" });
+            return res.render('new-product',{categories, message: " Product added successfully" });
           } catch (error) {
            
             res.render('new-product', { error: error.message });
@@ -86,31 +93,92 @@ const insertProduct = async(req,res)=>{
 
 
 
-const loadProduct = async (req, res) => {
-    try {
-        var page = 1;
-        var search = '';
-        if (req.query.search) {
-            search = req.query.search;
-            console.log(search);
-        }
-        
-
-        const adminData = await Product.find({
-            $or:[
-                { name:{$regex:'.*'+search+'.*',$options:'i'}},
-                { category:{$regex:'.*'+search+'.*',$options:'i'}},
-                { discountPrize:{$regex:'.*'+search+'.*',$options:'i'}},
-                
-            ]
+// const loadProduct = async (req, res) => {
+//   try{
           
-        });
-        res.render('viewProduct', {product: adminData });
+//     var search='';
+//     if(req.query.search){
+//         search=req.query.search;
+       
+//     }
 
-    } catch (error) {
-        console.log(error.message);
+//    const adminData =await Product.find({
+//     $or:[
+//       { name:{$regex:'.*'+search+'.*',$options:'i'}},
+//         { category:{$regex:'.*'+search+'.*',$options:'i'}},
+//         { price:{$regex:'.*'+search+'.*',$options:'i'}},
+        
+//     ]
+   
+// });
+//       res.render('viewProduct', {product: adminData });
+
+//   } catch (error) {
+//       console.log(error.message);
+//   }
+// }
+
+const loadProduct = async (req, res) => {
+  try {
+    var search = '';
+    if (req.query.search) {
+      search = req.query.search;
     }
-}
+
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 5; 
+
+    const skip = (page - 1) * limit; 
+
+    const query = {
+      $or: [
+        { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+        { price: { $regex: '.*' + search + '.*', $options: 'i' } },
+      ],
+    };
+
+    const adminData = await Product.find(query)
+      .skip(skip) 
+      .limit(limit);
+
+    const totalProducts = await Product.countDocuments(query);
+
+    const totalPages = Math.ceil(totalProducts / limit); 
+
+    res.render('viewProduct', {
+      product: adminData,
+      totalPages: totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Error fetching products');
+  }
+};
+
+
+// const loadProduct = async (req, res) => {
+//   try {
+//     var search = '';
+//     if (req.query.search) {
+//       search = req.query.search;
+//     }
+
+//     const adminData = await Product.find({
+//       $or: [
+//         { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+//         { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+      
+//       ],
+//     });
+//     res.render('viewProduct', { product: adminData });
+
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
 const editProduct=async(req,res)=>{
     try{
         const id=req.query.id;
@@ -130,6 +198,7 @@ const editProduct=async(req,res)=>{
 const updateProduct= async (req, res) => {
   try {
      
+    const category=await Category.find
       const productId = req.query._id 
     
       const product= await Product.findById(productId);
@@ -202,12 +271,13 @@ const productDetails=async(req,res)=>{
 
 const productpageLOad=async(req,res)=>{
     try{
-        
+       const userId=req.session.user_id
+       const user=await User.findById(userId)
         const id=req.query.id;
         const userData=await Product.findById({_id:id})
         
         if(userData){
-            res.render('aboutProduct',{product:userData});
+            res.render('aboutProduct',{product:userData,user});
         }
         else{
         res.redirect('/admin/aboutProduct');

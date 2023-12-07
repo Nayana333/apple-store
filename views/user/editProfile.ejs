@@ -193,10 +193,11 @@
                 </div>
             </div>
         </div>
-        <div class="row" >
-        <form method="post" name="enq" style="padding: 15px;" enctype="multipart/form-data">
-            <div class="row" style="padding-left:25%; padding-right: 25%;">
-                <img  src="/public/userImages/<%= user.image %> " style="width:30%; height:30%" alt="Maxwell Admin"><br>
+        <div class="row"  >
+        <form method="post" name="enq" style="padding: 15px; " enctype="multipart/form-data">
+            
+            <div class="row" style="padding-left:25%; padding-right: 25%; ">
+                <img  src="/public/userImages/<%= user.image %> " style="width: 80px;" alt="Maxwell Admin"><br>
                 <div class="form-group col-md-12">
                     <label for="eMail">Name</label>
                         <input type="text" class="form-control" name="name" value="<%= user.name%>">

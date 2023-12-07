@@ -1,11 +1,13 @@
 const User=require("../models/userModel");
 const Product=require("../models/productModel");
 const categ=require("../models/categoryModel");
-
+const Order=require("../models/orderModel")
 const bcrypt=require('bcrypt');
 const randomstring=require('randomstring')
 const nodemailer=require('nodemailer');
 const validator = require('validator');
+const  dateUtils = require('../helpers/dateUtils')
+const charData=require('../helpers/charData')
 const { product } = require("./userController");
 
 
@@ -81,15 +83,47 @@ const logOut=async(req,res)=>{
 
 }
 
+
+
+
 const adminDashboard=async(req,res)=>{
     try{
-       
+       const [totalRevenue,totalUsers,totalOrders,totalProducts,totalCategories,orders,monthlyEarnings,newUsers]=await Promise.all([Order.aggregate([
+        {$match:{status:"Payment Successfull"}},
+        {$group:{_id:null,totalAmount:{$sum:"totalAmount"}}},
+
+       ]),
+       User.countDocuments({isBlocked:false,is_verified:true}),
+       Order.countDocuments(),
+       Product.countDocuments(),
+       categ.countDocuments(),
+       Order.find().limit(10).sort({orderDate:-1}).populate('user'),
+       Order.aggregate([
+        {
+        $match: {
+            status:"Payment Successfull",
+            orderDate:{$gte:new Date(new Date().getFullYear(),new Date().getMonth(),1)},
+
+        },
+    },
+    {$group: {_id: null, totalAmount: { $sum: "$totalAmount" }}},
+        
+       ]),
+       User.find({isBlocked:false,is_verified:true}).sort({date:-1}).limit(5)
+    ])
+    const adminData=req.session.adminData
+    const totalRevenueValue=totalRevenue.length > 0 ?totalRevenue[0].totalAmount : 0;
+    const monthlyEarningsValue=monthlyEarnings.length > 0 ?monthlyEarnings[0].monthlyAmount : 0;
+    const monthlyDataArray=await charData.getMonthlyDataArray();
+    const dailyDataArray=await charData.getDailyDataArray();
+    const yearlyDataArray=await charData.getYearlyDataArray();
+
         var search='';
         if(req.query.search){
             search=req.query.search;
         }
 
-       const adminData =await User.find({is_admin:0,
+       const data =await User.find({is_admin:0,
         $or:[
             { name:{$regex:'.*'+search+'.*',$options:'i'}},
             { email:{$regex:'.*'+search+'.*',$options:'i'}},
@@ -97,13 +131,29 @@ const adminDashboard=async(req,res)=>{
         ]
                
     });
-        res.render('dashboard',{user:adminData})
+        res.render('dashboard',{admin: adminData,
+        orders,
+        newUsers,
+        totalRevenue: totalRevenueValue,
+        totalOrders,
+        totalProducts,
+        totalCategories,
+        totalUsers,
+        monthlyEarnings: monthlyEarningsValue,
+        monthlyMonths: monthlyDataArray.map(item => item.month),
+        monthlyOrderCounts: monthlyDataArray.map(item => item.count),
+        dailyDays: dailyDataArray.map(item => item.day),
+        dailyOrderCounts: dailyDataArray.map(item => item.count),
+        yearlyYears: yearlyDataArray.map(item => item.year),
+        yearlyOrderCounts: yearlyDataArray.map(item => item.count),
+        })
 
 
     }catch(error){
-        console.log(error.message)
-    }
+        console.log(error)
 }
+}
+
 const loadDashboard = async(req,res)=>{
 
     try{
@@ -119,12 +169,25 @@ const loadDashboard = async(req,res)=>{
   
   const loadUser=async(req,res)=>{
     try{
-        var page=1
+        const page = req.query.page || 1;
+        const perPage = 5; 
+        const skip = (page - 1) * perPage; 
+        
         var search='';
         if(req.query.search){
             search=req.query.search;
             console.log(search)
         }
+        const totalUsers = await User.countDocuments({
+            is_admin: 0,
+            $or: [
+                { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+                { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+                { mobile: { $regex: '.*' + search + '.*', $options: 'i' } },
+            ],
+        });
+
+        const totalPages = Math.ceil(totalUsers / perPage);
 
        const adminData =await User.find({is_admin:0,
         $or:[
@@ -133,8 +196,9 @@ const loadDashboard = async(req,res)=>{
             { mobile:{$regex:'.*'+search+'.*',$options:'i'}},
         ]
                
-    });
-        res.render('userDetails',{user:adminData})
+    }).sort({ name: 1 }) .skip(skip)
+    .limit(perPage);;
+        res.render('userDetails',{user:adminData,totalPages, currentPage: page })
 
 
     }catch(error){
@@ -165,13 +229,6 @@ const unblockUser= async (req, res) => {
         console.log(error.message);
     }
 };
-
-
-
-
-
-
-
 
 const loadeditProfile= async (req, res) => {
     try {
@@ -222,7 +279,103 @@ const editProfile= async (req, res) => {
   
   }
   }
+  const getSalesReport=async(req,res)=>{
+    try{
+        const admin=req.session.adminData
 
+        const page=parseInt(req.query.page) || 1;
+        const perPage=10;
+
+
+        let query={status:"payment successfull"};
+        
+        if (req.query.paymentMethod) {
+            if (req.query.paymentMethod === "Online Payment") {
+              query.paymentMethod = "Online Payment";
+            } else if (req.query.paymentMethod === "Wallet") {
+              query.paymentMethod = "Wallet Payment";
+            } else if (req.query.paymentMethod === "Cash On Delivery") {
+              query.paymentMethod = "Cash on delivery";
+            }
+      
+          }
+
+        if (req.query.status) {
+            if (req.query.status === "Daily") {
+              query.orderDate = dateUtils.getDailyDateRange();
+            } else if (req.query.status === "Weekly") {
+              query.orderDate = dateUtils.getWeeklyDateRange();
+            } else if (req.query.status === "Yearly") {
+              query.orderDate = dateUtils.getYearlyDateRange();
+            }
+          }
+        if(req.query.status){
+            if(req.query.status=== "Daily"){
+                query.orderDate=dateUtils.getDailyDateRange();
+
+            }
+            
+                else if(req.query.status==="Weekly"){
+                    query.orderDate=dateUtils.getWeeklyDateRange();
+
+                }
+            
+            else if(req.query.status === "Yearly")
+            {
+                query.orderDate= dateUtils.getYearlyDateRange();
+            }
+        }
+        if(req.query.startDate && req.query.endDate){
+            query.orderDate={
+                $gte:new Date(req.query.startDate),
+                $lte:new Date(req.query.endDate),
+            };
+        }
+      
+        const totalOrdersCount = await Order.countDocuments(query);
+        const totalPages=Math.ceil(totalOrdersCount/perPage);
+        const skip=(page-1) * perPage;
+
+        const orders = await Order.find(query)
+      .populate("user")
+      .populate({
+        path: "address",
+        model: "Address",
+      })
+      .populate({
+        path: "items.product",
+        model: "Product",
+      })
+      .sort({ orderDate: -1 })
+      .skip(skip)
+      .limit(perPage);
+
+
+  
+
+
+        const totalRevenue=orders.reduce((acc,order)=>acc + order.totalAmount,0);
+
+        const returnedOrders = orders.filter(order => order.status === "Return confirmed");
+
+
+console.log("Count of orders with 'Return Confirmed' status:", );
+
+
+        const totalSales=orders.length;
+
+
+        const totalProductSold=orders.reduce((acc,order)=>acc + order.items.length,0);
+
+        res.render("salesReport",{
+            orders,admin,totalRevenue,returnedOrders,totalSales,totalProductSold,req,totalPages,currentPage:page});
+      
+
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
 
 
@@ -236,5 +389,6 @@ module.exports={
     logOut,
     loadeditProfile,
     editProfile,
-    unblockUser
+    unblockUser,
+    getSalesReport
 }

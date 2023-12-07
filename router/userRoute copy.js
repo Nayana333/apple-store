@@ -44,7 +44,7 @@ user_route.post('/registration', upload.single('image'),userController.insertUse
 user_route.get('/',userController.loadHome);
 user_route.get('/login',auth.isLogout,userController.loginLoad);
 user_route.post('/login',auth.isLogout,userController.varifyLogin);
-user_route.get('/userhome',auth.isLogin,userController.loaduserHome);
+user_route.get('/userhome',auth.isLogin,userController.loadHome);
 user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
 user_route.post('/forgot',auth.isLogout,userController.forgotVarify);
 user_route.get('/otp-page',userController.loadOTPpage);

@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>AppleStore</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assetsb/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="assetsb/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    
+    
+    <main >
+        <%- include("../partials/header2")%>
+        <section class="content-main m-5" >
+            <div  >
+               
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <p style="color: <%= isError ? 'red' : 'rgb(0, 125, 209)' %>" id="message"><h3><%= message %></h3>
+                <% } %>
+               
+<div>
+                
+                    
+                    <div class="content-header d-flex justify-content-between">
+                        <div>
+                            <h3 class="content-title card-title">Order details</h3>
+                        </div>
+                    
+
+                    
+                   
+                   
+                    </div>
+                    
+                    <p>Details for Order ID: <%=order.o_id %></p>
+               
+            </div>
+        </div>
+            <div class="card">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today"></i> <b><%=order.orderDate.toDateString()%></b>
+                            </span> <br>
+                            <small class="text-muted"> <%=order.o_id %></small>
+                        </div>
+                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            
+                            
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <div class="row mb-50 mt-20 order-info-wrap">
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-person"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Customer</h6>
+                                    <p class="mb-1">
+                                       <%=order.address.name %> <br> <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template>      <%=order.address.phone%>
+                                    </p>
+                                    
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-local_shipping"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                        Shipping: <%=order.orderDate%><br> Payment method: <%=order.paymentMethod %><br> Status: <%=order.status %><br>
+                                      
+
+
+
+                                    </p>
+                                    
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-place"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Deliver to</h6>
+                                            <p><%= order.address.name%></p>
+                                            <p><%= order.address.houseName%></p>
+                                            <p><%= order.address.phone%></p>
+                                            <p><%= order.address.city%></p>
+                                            <p><%= order.address.street%></p>
+                                            <p><%= order.address.pinCode%></p>
+                                 
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                    </div> <!-- row // -->
+                    <div<div >
+                        <div class="col-lg">
+                            <div class="table-responsive" >
+                                <table class="table"  >
+                                    <thead>
+                                        <tr>
+                                            <th width="40%">Product</th>
+                                            <th width="40%">Color</th>
+                                            <th width="20%">Unit Price</th>
+                                            <th width="20%">Quantity</th>
+                                            <th width="20%">Shipping </th>
+                                            
+                                            
+                                        </tr>
+                                    </thead>
+                                    <h4 class="mb-1" style="color: #222222c7;">Product info</h4>
+
+                                    <tbody>
+                                        <% order.items.forEach(item => { %>
+
+                                        
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/public/productImages/<%= item.product.productImages[3] %> " width="40" height="40" class="img-xs" alt="Item">
+                                                    </div>
+                                                    <div class="info"> <%= item.product.name %> </div>
+                                                </a>
+                                            </td>
+                                            <td> <%= item.product.productColor%> </td>
+                                            <td> <%= item.price %> </td>
+                                            <td> <%= item.quantity %></td>
+                                            <td> 100</td>
+                                        </tr>
+                                        <% }); %><br>
+
+                                        <tr>
+                                            <td colspan="5">
+                                                <article class="float-end">
+                                                    
+                                                    <dl class="dlist">
+                                                        <dt></dt>
+                                                        <dd></dd>
+                                                    </dl>
+                                                    <dl class="dlist">
+                                                        <dt>Grand total:</dt>
+                                                        <dd> <b class="h5"> <%=order.totalAmount %></b> </dd>
+                                                    </dl>
+                                                    <dl class="dlist">
+                                                        <dt class="text-muted">Status:</dt>
+                                                        <dd>
+                                                            <span class="badge rounded-pill alert-success text-success"><%=order.status %></span>
+                                                        </dd>
+                                                    </dl>
+                                                </article>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> <!-- table-responsive// -->
+                        
+                      
+                            
+                           
+                        </div> <!-- col// -->
+                    </div>
+                             <!-- table-responsive// -->
+                        </div> <!-- col// -->
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-4">
+                           
+                            <div class="h-25 pt-4">
+                             
+                        </div> <!-- col// -->
+                    </div>
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="assetsb/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="assetsb/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="assetsb/js/vendors/select2.min.js"></script>
+    <script src="assetsb/js/vendors/perfect-scrollbar.js"></script>
+    <script src="assetsb/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="assetsb/js/main.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+</html>

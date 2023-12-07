@@ -5,9 +5,12 @@ const session=require("express-session");
 
 admin_route.use(session({
   secret: config.sessionSecret,
-  resave: false, // Set resave to false
-  saveUninitialized: true, // Set saveUninitialized to true or false based on your needs
+  resave: false, 
+  saveUninitialized: true, 
 }));
+
+//category////////////////////////////////////////////////////////////////////////////////
+
 
 const bodyParser=require("body-parser");
 const path = require("path");
@@ -21,6 +24,8 @@ const categoryImageStorage = multer.diskStorage({destination: function (req, fil
   }
 });
 
+
+//product multer/////////////////////////////////////////////////////////////////////////
 
 
 const storage = multer.diskStorage({
@@ -39,8 +44,29 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }
- 
+
 });
+
+//banner multer//////////////////////////////////////////////////////////////////////
+
+
+const bannerStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/bannerImages'));
+  },
+  filename: function (req, file, cb) {
+    const name = Date.now() + '_' + file.originalname;
+    cb(null, name);
+  }
+});
+
+const bannerUpload = multer({ storage: bannerStorage });
+
+module.exports = bannerUpload;
+
+
+
+
 
 const uploads= multer({ storage: categoryImageStorage });
 admin_route.use(bodyParser.json());
@@ -56,6 +82,10 @@ const adminController=require("../controller/adminController");
 const categoryController=require("../controller/categoryController");
 const productController=require("../controller/productController");
 const orderController=require("../controller/orderController");
+const checkoutController=require('../controller/checkoutController')
+const couponController=require('../controller/couponController')
+const excelController=require('../controller/excelController')
+const  bannerController=require('../controller/bannerController')
 
 // admin////////////////////////////////////////////////////
 
@@ -94,8 +124,41 @@ admin_route.get('/productDetails',auth.isLogin,productController.productDetails)
 
 //Order/////////////////////////////////////////////////////////////
 
-admin_route.get('/orderlist',auth.isLogin,orderController.loadOrderlist);
-admin_route.get('/orderDetails',auth.isLogin,orderController.loadOrderdetails);
+admin_route.get('/orderlist',auth.isLogin,orderController.orderList);
+admin_route.get('/orderDetailsAdmin',auth.isLogin,orderController.orderDetailsAdmin)
+admin_route.get('/cancelOrderAdmin/:orderId',auth.isLogin,orderController.cancelOrderAdmin)
+admin_route.get('/setStatus',auth.isLogin,checkoutController.setStatus)
+
+
+
+
+//coupon////////////////////////////////////////////////////////////////////
+
+admin_route.get('/new-coupon',auth.isLogin,couponController.loadNewCoupon)
+admin_route.post('/addCoupon',auth.isLogin,couponController.addCoupon)
+admin_route.get('/viewCoupon',auth.isLogin,couponController.loadCoupon)
+admin_route.get('/editCoupon',auth.isLogin,couponController.editCoupon)
+admin_route.post('/editCoupon',auth.isLogin,couponController.updateCoupon)
+admin_route.get('/unlistCoupon', auth.isLogin,couponController.unlistCoupon);
+
+
+// Sales//////////////////////////////////////////////////////////////////////
+
+admin_route.get('/getSalesReport',auth.isLogin,adminController.getSalesReport)
+admin_route.get('/excelsalesreport',auth.isLogin,excelController.getExcelSalesReport)
+
+
+
+//Banner///////////////////////////////////////////////////////////////////////////
+
+
+admin_route.get('/loadAddBanner',auth.isLogin,bannerController.loadAddBanner)
+admin_route.post('/loadAddBanner',auth.isLogin,bannerController.addBanner)
+
+
+
+
+
 
 
 module.exports = admin_route;

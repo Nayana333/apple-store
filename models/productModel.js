@@ -9,6 +9,7 @@ const ratingSchema = new mongoose.Schema({
 });
 
 const productSchema = new mongoose.Schema({
+    p_id:String,
     name: String,
     category: String,
     price: Number,
@@ -34,4 +35,4 @@ const productSchema = new mongoose.Schema({
       },
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product',productSchema);

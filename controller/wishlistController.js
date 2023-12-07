@@ -15,6 +15,7 @@ const Wishlist=require("../models/wishlistModel")
         
     
             try {
+              const user=await User.findById(userId)
               let userWishlist = await Wishlist.findOne({ user: userId });
           
               if (!userWishlist) {
@@ -29,7 +30,7 @@ const Wishlist=require("../models/wishlistModel")
           
                 if (existingWishlistItem) {
              
-                  res.render('productpage', {product: productData ,message: 'product is already on your wishlist'})
+                  res.render('productpage', {product: productData ,user,message: 'product is already on your wishlist'})
 
                 } else {
                   userWishlist.items.push({ product: productId });
@@ -37,24 +38,31 @@ const Wishlist=require("../models/wishlistModel")
               }
           
               await userWishlist.save();
-              res.render('productpage', {product: productData })
+              // res.render('productpage', {product: productData,user })
+              res.redirect('/product')
             } catch (error) {
               console.log(error.message);
             }
           };
           const loadWishlist = async (req, res) => {
+            const cartData=req.session.cartData
             const userId = req.session.user_id;
+            const data=await User.findById(userId)
         
             try {
                 const userWishlist = await Wishlist.findOne({ user: userId }).populate('items.product');
         
                 const wishlist = userWishlist ? userWishlist.items : [];
+                if(wishlist.length === 0){
+                  res.redirect('/emptyWishlist');
+                } else {
               
-                res.render('wishlist', { user: req.session.user, wishlist });
+                res.render('wishlist', { user:data, wishlist,cartData });
+                }
             } catch (err) {
                 console.error('Error fetching user wishlist:', err);
         
-            }
+        }
         };
         
 
@@ -80,13 +88,21 @@ const Wishlist=require("../models/wishlistModel")
         };
 
       
-
+const emptywishlist=async(req,res)=>{
+  try{
+    const user=req.session.user_id;
+    res.render('emptyWishlist',{user})
+  }catch(error){
+    console.log(error.message);
+  }
+}
 
 
 module.exports={
     loadWishlist,
     addtoWishlist,
-    removeWishlist
+    removeWishlist,
+    emptywishlist
 
    
    

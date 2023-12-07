@@ -39,7 +39,17 @@
                         <span class="text">Admin Dashboard</span>
                     </a>
                 </li>
-               
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="  ">Product List</a>
+                        <a href="page-products-grid.html">Product grid</a>
+                        <a href="page-products-grid-2.html">Product grid 2</a>
+                        <a href="page-categories.html">Categories</a>
+                    </div>
+                </li> -->
                 <li class="menu-item has-submenu ">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
                         <span class="text">Users</span>
@@ -50,7 +60,7 @@
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href=> <i class="icon material-icons md-add_box"></i>
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Category</span>
                     </a>
                     <div class="submenu">
@@ -74,8 +84,8 @@
                     </div>
                 </li> -->
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href=""> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add product</span>
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">product</span>
                     </a>
                     <div class="submenu">
                         <a href="/admin/new-product">Add product </a>
@@ -83,8 +93,34 @@
                         
                     </div>
                 </li>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                     <div class="submenu">
+                        <a href="/viewProfile">Details</a>
+                     
+                    </div> 
+                </li>-->
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href=""> <i class="icon material-icons md-monetization_on"></i>
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/orderlist">Order list </a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/new-coupon">Add Coupon</a>
+                        <a href="/admin/viewCoupon">View Coupon</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Transactions</span>
                     </a>
                     <div class="submenu">
@@ -92,15 +128,7 @@
                         <a href="page-transactions-2.html">Transaction 2</a>
                     </div>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
-                    </a>
-                    <div class="submenu">
-                        <a href=" ">Details</a>
-                        <a href="page-error-404.html">Error 404</a>
-                    </div>
-                </li>
+                
                 <li class="menu-item">
                     <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
                         <span class="text">Reviews</span>
@@ -209,12 +237,100 @@
   }
   %>
 </table>
+<!-- Pagination -->
+<table class="table align-middle table-nowrap mb-0 ms-4">
+  
+  <thead class="table-light"> 
+  <tr>
+                              
+                                       
+                                
+    <th class="align-middle" scope="col">PRODUCT</th>
+    <th class="align-middle" scope="col">PRODUCT IMAGES</th>
+    <th class="align-middle" scope="col">CATEGORY</th>
+    <th class="align-middle" scope="col">PRICE</th>
+    <th class="align-middle" scope="col">QUANDITY</th>
+  
+    <th class="align-middle" scope="col">UNLIST/LIST</th>
+    <th class="align-middle" scope="col">EDIT</th>
+    <th class="align-middle" scope="col">VIEW</th>
+
+   
+   
+</tr>
+</thead>
+<% if (product.length > 0) {
+    for (let i = 0; i < product.length; i++) { %>
+        <tr>
+            <td> <img src="/public/productImages/<%= product[i].productImages[0]%>" style="width:33%" alt="hello"> </td>
+            <td ><%= product[i].name %></td>
+   
+            <td><%= product[i].category %></td>
+            <td><%= product[i].price %></td>
+            <td><%= product[i].quantity %></td>
+            
+              <!-- <td><a href="/admin/unlistProduct?id=<%= product [i]._id %>" class="btn btn-xs" >Unlist </a></td> -->
+              <td>
+                <% if (product[i].list) { %>
+                    <a href="/admin/unlistProduct?id=<%= product[i]._id.toString() %>">
+                     
+                       <p class="text-danger ms-4">Unlist</p>
+                     
+                    </a>
+                  <% } else { %>
+                    <a href="/admin/unlistProduct?id=<%= product[i]._id.toString() %>">
+                      
+                        <p class="text-primary ms-4">List</p>
+                     
+                    </a>
+                  <% } %>
+               </td>
+            <td><a href="/admin/editProduct?id=<%= product[i]._id.toString()%>" class="btn btn-xs">Edit</a></td>
+            <td><a href="/admin/productDetails?id=<%= product[i]._id.toString()%>" class="btn btn-xs">VIEW</a></td>            
+        </tr>
+         <%
+      } %>
+
+  <%}
+  else{
+      %>
+      <tr>
+          <td colspan="5"> category not found</td>
+
+      </tr>
+      <%
+      
+  }
+  %>
+</table>
+<% if (totalPages > 1) { %>
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+            <a href="/admin/viewProduct?page=<%= currentPage - 1 %>">Previous</a>
+        <% } %>
+
+        <% for (let page = 1; page <= totalPages; page++) { %>
+            <a href="/admin/viewProduct?page=<%= page %>"><%= page %></a>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+            <a href="/admin/viewProduct?page=<%= currentPage + 1 %>">Next</a>
+        <% } %>
+    </div>
+<% } %>
+  </div>
 </div>
 </div>
 </div> 
 </div> <!-- table-responsive end// -->
 </div>
 </div>
+<!-- Pagination links -->
+
+</div>
+
+
+
 
                                        
 

@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <%- include("../upartials/header")%>
+    <%- include("../partials/header")%>
 
     <div class="mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
@@ -219,8 +219,7 @@
                                         </td>
                                         <td class="price" data-title="Price"><span><%= cart[i].product.discountPrice%></span></td>
                                         <td class="text-center" data-title="Stock">
-                                        <input type="number" class="form-control" value="<%= cart[i].quantity %>"  min="1" max="4" step="1" data-decimals="0" required onchange="updateCart('<%= cart[i].product._id %>', this.value)">                                            </div>
-                                        </td>
+                                            <input type="number" class="form-control" value="<%= cart[i].quantity %>"  min="1" max="4" step="1" data-decimals="0" required onchange="updateCart('<%= cart[i].product._id %>', this.value)">                                        </td>
                                         <td class="text-right" data-title="Cart">
                                             <span><%= producttotal[i]%></span>
                                         </td>
@@ -420,36 +419,35 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/shop.js"></script>
     <script>
-    function updateCart(productId, newQuantity) {
-        fetch(`/updateCart?productId=${productId}&quantity=${newQuantity}`, {
-    method: 'PUT',
-
-
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                productId: productId,
-                quantity: newQuantity,
-            }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                console.error('Failed to update cart:', data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error updating cart:', error);
-        });
-    }
+        function updateCart(productId, newQuantity) {
+            fetch(`/updateCart?productId=${productId}&quantity=${newQuantity}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    quantity: newQuantity,
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Reload the page upon successful cart update
+                    window.location.reload();
+                } else {
+                    console.error('Failed to update cart:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating cart:', error);
+            });
+        }
     </script>
     
     

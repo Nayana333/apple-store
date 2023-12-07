@@ -1,67 +1,85 @@
 const Cart=require("../models/cartModel");
 const Wishlist=require("../models/wishlistModel");
 const Product=require("../models/productModel");
+const User=require("../models/userModel")
+
 
 
 
 
 
 const addtoCart=async(req,res)=>{
-    userId=req.session.user_id;
-   const productId=req.params.productId;
-    console.log(productId)
-    const {qty}=req.body
-    console.log(qty);
-    const productData= await Product.find({});
-    try{
-        const existingCart=await Cart.findOne({user:userId});
-        let newCart={};
-        if(existingCart){
-            const existingCartItem = existingCart.items.find(item => item.product.toString() === productId);
-            if(existingCartItem){
-                existingCartItem.quantity += parseInt(qty);
+  const userId=req.session.user_id;
+ 
+ const productId=req.params.productId;
+ 
+  const {qty}=req.body
+  console.log(qty);
+  const productData= await Product.find({});
+  try{
+   
+    const user=await User.findById(userId)
+      const existingCart=await Cart.findOne({user:userId});
+      let newCart={};
+      if(existingCart){
+          const existingCartItem = existingCart.items.find(item => item.product.toString() === productId);
+          if(existingCartItem){
+              existingCartItem.quantity += parseInt(qty);
 
-            }
-            else{
-                existingCart.items.push({ product: productId, quantity: parseInt(qty) });
+          }
+          else{
+              existingCart.items.push({ product: productId, quantity: parseInt(qty) });
 
-            }
-            existingCart.total = existingCart.items.reduce((total, item) => total + (item.quantity || 0), 0);
+          }
+          existingCart.total = existingCart.items.reduce((total, item) => total + (item.quantity || 0), 0);
 
-            await existingCart.save()
+          await existingCart.save()
 
-        }
-        else{
-            newCart=new Cart({
-                user:userId,
-                items:[{product:productId,quantity:parseInt(qty)}],
-                total:parseInt(qty,10)
-            });
-            await newCart.save();
-
-        }
-        const userWishlist=await Wishlist.findOne({user:userId});
-        if(userWishlist){
-            const wishlistItemIndex = userWishlist.items.findIndex(item => item.product.toString() === productId);
-            if (wishlistItemIndex !== -1){
-
-                userWishlist.items.splice(wishlistItemIndex,1)
-                await userWishlist.save();
-            }
-
-        }
+      }
+      else{
+          newCart=new Cart({
+              user:userId,
+              items:[{product:productId,quantity:parseInt(qty)}],
+              total:parseInt(qty,10)
+          });
+          await newCart.save();
         
-        res.render('productpage', {product: productData })
+      }
+      const userWishlist=await Wishlist.findOne({user:userId});
+      if(userWishlist){
+          const wishlistItemIndex = userWishlist.items.findIndex(item => item.product.toString() === productId);
+          if (wishlistItemIndex !== -1){
+
+              userWishlist.items.splice(wishlistItemIndex,1)
+              await userWishlist.save();
+          }
+
+      }
+      const cart=await Cart.findOne({user:req.session.user_id})
+      if(cart){
+        req.session.cartLength = cart.total;
+      console.log(req.session.cartLength +"hello");
+      }
+      else{
+       cart.total=0;
+      }
+      
+      // res.render('productpage', {product: productData ,user})
+      res.redirect('/product')
 
 
-    }catch(error){
-        console.log(error.message);
-    }
+  }catch(error){
+      console.log(error.message);
+  }
 }
+
 const loadCart=async(req,res)=>{
-    userId=req.session.user_id;
+   const userId=req.session.user_id;
+   const cartData=req.session.cartLength
+    console.log(userId);
     try{
         const userCart=await Cart.findOne({user:userId}).populate('items.product')
+     
      
         const cart=userCart ? userCart.items:[];
        
@@ -90,9 +108,14 @@ const loadCart=async(req,res)=>{
             }
         }
        }
+       if(cart.length === 0){
+        res.redirect('/emptyCart');
+      } else {
+        
+        res.render('cart', { user: userId, cart, subTotal, outOfStockError, maxQuantityErr, producttotal, subTotalWithShipping,cartData });
+      }
       
-
-        res.render('cart',{user: req.session.user,cart,subTotal,outOfStockError,maxQuantityErr,producttotal,subTotalWithShipping})
+       
     }catch(error){
         console.log(error.message);
     }
@@ -112,7 +135,16 @@ const removeCart = async (req, res) => {
       const cartItemIndex = userCart.items.findIndex((item) => item.product.toString() === productId);
       
       userCart.items.splice(cartItemIndex , 1);
+      userCart.total =userCart.items.reduce((total, item) => total + (item.quantity || 0), 0);
+      if(userCart){
+        req.session.cartLength = userCart.total;
+      }
+      
+      
       await userCart.save();
+
+   
+ 
       res.redirect('/cart');
      
     }catch(error){
@@ -159,8 +191,12 @@ const removeCart = async (req, res) => {
             cartItem.quantity=newQuantity;
             ;
             console.log(cartItem.quantity)
+            userCart.total =userCart.items.reduce((total, item) => total + (item.quantity || 0), 0);
+
             await userCart.save();
-            res.sendStatus(200);
+            if(userCart){req.session.cartLength = userCart.total;
+              res.sendStatus(200);}
+            
 
         }
         else{
@@ -204,6 +240,16 @@ const removeCart = async (req, res) => {
       res.json({ success: false, error: "Internal server error" });
 }};
 
+const emptyCart=async(req,res)=>{
+  try{
+    const user=req.session.user_id
+    const cartData=req.session.cartLength
+   console.log('session user'+user)
+    res.render('emptyCart',{user,cartData})
+  }catch(error){
+    console.log(error.message);
+  }
+}
 
 
 module.exports={
@@ -211,6 +257,7 @@ module.exports={
     addtoCart,
     removeCart,
     updateCart,
-    updateCartCount
+    updateCartCount,
+    emptyCart
 }
 

@@ -7,6 +7,7 @@ const checkoutController=require("../controller/checkoutController");
 const wishlistController=require("../controller/wishlistController");
 const orderController=require("../controller/orderController");
 const addressController=require("../controller/addressController");
+const pdfController=require("../controller/pdfController");
 
 
 const session=require("express-session")
@@ -49,7 +50,6 @@ user_route.post('/registration', upload.single('image'),userController.insertUse
 user_route.get('/',userController.loadHome);
 user_route.get('/login',userController.loginLoad);
 user_route.post('/login',userController.varifyLogin);
-user_route.get('/userhome',userController.loaduserHome);
 user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
 user_route.post('/forgoit',auth.isLogout,userController.forgotVarify);
 user_route.get('/otp-page',userController.loadOTPpage);
@@ -58,7 +58,7 @@ user_route.get('/logout',auth.isLogin,userController.userLogout);
 user_route.get('/product',userController.product);
 user_route.get('/aboutProduct',productController.productpageLOad)
 user_route.get('/contact',userController.loadContact)
-user_route.get('/home',userController.loadHome)
+user_route.get('/userhome',userController.loadHome)
 user_route.get('/logout',auth.isLogin,userController.logOut)
 user_route.get('/viewprofile',auth.isLogin,userController.loadProfile)
 user_route.get('/editprofile',auth.isLogin,userController.loadeditProfile)
@@ -73,11 +73,27 @@ user_route.get('/removeWishlist/:productId',auth.isLogin,wishlistController.remo
 user_route.post('/addtoCart/:productId',auth.isLogin,cartController.addtoCart)
 user_route.get('/removeCart/:productId',auth.isLogin,cartController.removeCart)
 user_route.put('/updateCart/', cartController.updateCart);
+user_route.put('/updateCart',cartController.updateCartCount)
 user_route.get('/addAddress',auth.isLogin,addressController.loaduserProfile)
 user_route.post('/postAddress',auth.isLogin,addressController.postAddress)
-user_route.post('/postCheckout',auth.isLogin,checkoutController.postCheckout)
+user_route.post('/cashondelivery',auth.isLogin,checkoutController.cashOnDelivery)
+user_route.post('/walletPayment',auth.isLogin,checkoutController.walletPayment)
 user_route.get('/orderPlaced',auth.isLogin,orderController.orderPlaced)
 user_route.get('/orderDetails',auth.isLogin,orderController.orderDetails)
+user_route.get('/cancelOrder/:orderId',auth.isLogin,orderController.cancelOrder)
+user_route.post('/applyCoupon',auth.isLogin,checkoutController.applyCoupon)
+user_route.post('/updatePaymentStatus',checkoutController.updatePaymentStatus)
+user_route.post('/razorpayOrder',checkoutController.razorpayOrder)
+user_route.get('/resend-otp',userController.resendOTP)
+user_route.get('/emptyCart',auth.isLogin,cartController.emptyCart)
+user_route.get('/emptyWishlist',auth.isLogin,wishlistController.emptywishlist)
+user_route.get('/forgotPassword',userController.forgotPassword)
+user_route.post('/forgotPassword', userController.forgotPasswordOTP)
+user_route.post('/passwordotpVerification', userController.passwordOTPVerification)
+user_route.get('/generate-invoice/:orderId',auth.isLogin,pdfController.generateInvoice)
+user_route.post('/returnOrder',auth.isLogin,checkoutController.returnOrder)
+
+
 
 
 
