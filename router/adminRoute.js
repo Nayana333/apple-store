@@ -9,6 +9,10 @@ admin_route.use(session({
   saveUninitialized: true, 
 }));
 
+
+
+const fs = require('fs');
+
 //category////////////////////////////////////////////////////////////////////////////////
 
 
@@ -49,10 +53,16 @@ const upload = multer({
 
 //banner multer//////////////////////////////////////////////////////////////////////
 
-
 const bannerStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/bannerImages'));
+    const uploadPath = path.join(__dirname, '../public/bannerImages');
+
+    
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     const name = Date.now() + '_' + file.originalname;
@@ -62,9 +72,9 @@ const bannerStorage = multer.diskStorage({
 
 const bannerUpload = multer({ storage: bannerStorage });
 
-module.exports = bannerUpload;
 
 
+//controller////////////////////////////////////////////////////////////////////////
 
 
 
@@ -153,12 +163,12 @@ admin_route.get('/excelsalesreport',auth.isLogin,excelController.getExcelSalesRe
 
 
 admin_route.get('/loadAddBanner',auth.isLogin,bannerController.loadAddBanner)
-admin_route.post('/loadAddBanner',auth.isLogin,bannerController.addBanner)
+admin_route.post('/loadAddBanner', bannerUpload.single('image'),bannerController.addBanner);
+admin_route.get('/viewBanner',auth.isLogin,bannerController.loadBannerList)
+admin_route.get('/unlistBanner',auth.isLogin,bannerController.unlistBanner)
+admin_route.get('/editBanner',auth.isLogin,bannerController.loadEditBanner)
+admin_route.post('/editBanner', bannerUpload.single('image'),bannerController.editBanner);
 
 
 
-
-
-
-
-module.exports = admin_route;
+module.exports = admin_route

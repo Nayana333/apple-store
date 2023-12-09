@@ -10,6 +10,7 @@ const Address=require('../models/addressModel')
 const Order=require('../models/orderModel')
 const Coupon=require('../models/couponModel')
 const Cart=require('../models/cartModel')
+const Transaction=require('../models/transactionModel')
 
 
 
@@ -112,7 +113,27 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
     try {
 
-       console.log('nayana');
+        const userExist = await User.findOne({ email: req.body.email });
+       req.session.referralCode = req.body.referralCode || null;
+       const referralCode = req.session.referralCode;
+       
+       if (userExist) {
+        res.render('registration', { message: "User already exists" });
+    } else{
+        let referrer;
+
+        if(referralCode){
+            referrer=await User.findOne({referralCode});
+            if(!referrer){
+                res.render('registration',{message:'Invalid Refferral Code'});
+            }
+            if(referrer.referredUsers.includes(req.body.email)){
+                res.render('registratin',{message:'Refferal code has Already been used by this email '})
+
+
+            }
+        }
+    
         
         const spassword = await securePassword(req.body.password);
         const user = new User({
@@ -143,7 +164,7 @@ const insertUser = async (req, res) => {
 
         const userData = await user.save();
         req.session.id2 = userData._id;
-        console.log(req.session.id2);
+      
 
         sentOTPVerificationEmail(req, res, req.body.name, req.body.email, userData._id);
 
@@ -152,6 +173,7 @@ const insertUser = async (req, res) => {
         } else {
             res.render('registration', { message: "Registration Failed", isError: true });
         }
+    }
 
     } catch (error) {
         console.log(error.message);
@@ -242,7 +264,8 @@ const varifyLogin=async(req,res)=>{
 const loadHome=async(req,res)=>{
     try{
         const cartData=req.session.cartLength;
-        const userId=req.session.user_id
+        const userId=req.session.user_id;
+        console.log(userId);
         const user=await User.findOne({_id:userId})
         const userData= await Product.find({is_list:true});
         const categoryData=await Category.find({})
@@ -259,41 +282,41 @@ const loadHome=async(req,res)=>{
         console.log(error.message)
     }
 }
-const forgotLoad=async(req,res)=>{
-    try{
-        res.render('forgot');
+// const forgotLoad=async(req,res)=>{
+//     try{
+//         res.render('forgot');
 
-    }catch(error){
-        console.log(error.message)
-    }
-}
+//     }catch(error){
+//         console.log(error.message)
+//     }
+// }
 //forgot password
-const forgotVarify=async(req,res)=>{
-    try{
-        const email=req.body.email
-        const userData=await User.findOne({email:email})
-        if(userData){
-            if(userData.is_verified=== 0){
-                res.render('forgot',{message:"please varify your mail"})
+// const forgotVarify=async(req,res)=>{
+//     try{
+//         const email=req.body.email
+//         const userData=await User.findOne({email:email})
+//         if(userData){
+//             if(userData.is_verified=== 0){
+//                 res.render('forgot',{message:"please varify your mail"})
 
  
-            }
-            else{
-                const randomString = randomstring.generate();
-                const updatedData=await User.updateOne({email:email},{$set:{token:randomstring}});
-                sendResetPasswordMail(userData.name,userData.email,randomString);
-                res.render('forgot',{message:"please check your mail to reset your password"})
-            }
-        }
-        else
-        {
-            res.render('forgot',{message:"E-mail is incorrect"})
-        }
+//             }
+//             else{
+//                 const randomString = randomstring.generate();
+//                 const updatedData=await User.updateOne({email:email},{$set:{token:randomstring}});
+//                 sendResetPasswordMail(userData.name,userData.email,randomString);
+//                 res.render('forgot',{message:"please check your mail to reset your password"})
+//             }
+//         }
+//         else
+//         {
+//             res.render('forgot',{message:"E-mail is incorrect"})
+//         }
 
-    }catch(error){
-        console.group(error.message)
-    }
-}
+//     }catch(error){
+//         console.group(error.message)
+//     }
+// }
 
 const logOut=async(req,res)=>{
 
@@ -366,6 +389,8 @@ const sentOTPVerificationEmail = async (req, res, name, email, _id) => {
 
 
 //varifyOTP
+
+
 // const OTPVerification = async (req, res) => {
 //     try {
 //         const userId = req.session.id2;
@@ -411,10 +436,96 @@ const sentOTPVerificationEmail = async (req, res, name, email, _id) => {
 // };
 
 
+// const OTPVerification = async (req, res) => {
+//     try {
+//         const userId = req.session.id2;
+//         const otp = req.body.fullOTP;
+
+//         if (!otp) {
+//             const errorMessage = "Empty OTP details are not allowed";
+//             return res.redirect('/otp-page?error=${errorMessage}');
+//         } else {
+//             const userOTPVerificationRecords = await UserOTPVerification.find({ userId });
+
+//             if (userOTPVerificationRecords.length <= 0) {
+//                 const errorMessage = "Account record doesn't exist or has been verified already. Please sign up or...";
+//                 return res.redirect('/otp-page?error=${errorMessage}');
+//             } else {
+               
+//                 const latestRecord = userOTPVerificationRecords[userOTPVerificationRecords.length - 1];
+//                 const { expiresAt, otp: hashedOTP } = latestRecord;
+
+//                 if (expiresAt < Date.now()) {
+//                     await UserOTPVerification.deleteMany({ userId });
+//                     const errorMessage = "Code has expired. Please request again.";
+//                     return res.redirect('/otp-page?error=${errorMessage}');
+//                 } else {
+//                     const validOTP = await bcrypt.compare(otp, hashedOTP);
+
+//                     if (!validOTP) {
+//                         const errorMessage = "Invalid code passed. Check your inbox";
+//                         return res.redirect('/otp-page?error=${errorMessage}');
+//                     } else {
+//                         console.log(userId+'outside');
+//                         if(req.session.refferralCode){
+//                             console.log(userId+'inside');
+//                             await User.updateOne({ _id: userId }, { is_verified: 1, walletBalance: 50 });
+//                             const referrer = await User.findOne({ referralCode: req.session.referralCode });
+//                             const user=await User.findOne({_id:userId})
+//                             referrer.referredUsers.push(user.email);
+//                             referrer.walletBalance +=100;
+//                             await referrer.save();
+
+//                             const referredUserTransaction=new Transaction({
+//                                 user:referrer._id,
+//                                 amount:100,
+//                                 type:'credit',
+//                                 date:Date.now(),
+//                                 paymentMethod:"Wallet Payment",
+//                                 description:'referral Bonus',
+
+//                             });
+//                             const refferedTransCtion=new Transaction({
+//                                 user:userId,
+//                                 amount:50,
+//                                 type:'credit',
+//                                 date:Date.now(),
+//                                 paymentMethod:"wallet Payment",
+//                                 description:'Referral Bonus'
+//                             })
+
+//                             await referredUserTransaction.save();
+//                             await refferedTransCtion.save();
+//                         }
+                      
+//                         latestRecord.used = true;
+//                         await latestRecord.save();
+
+//                         await User.updateOne({ _id: userId }, { is_verified: 1 });
+
+                       
+//                         await UserOTPVerification.deleteMany({ userId, used: false });
+
+//                         res.render('login', { user:null});
+//                     }
+//                 }
+//             }
+//         }
+//     } catch (error) {
+//         const errorMessage = "An error occurred during OTP verification";
+//         return res.redirect('/otp-page?error=${errorMessage}');
+//     }
+// };
+
+
 const OTPVerification = async (req, res) => {
     try {
         const userId = req.session.id2;
-        const otp = req.body.fullOTP;
+        
+        const otp = req.session.otp;
+        console.log(otp,userId+"hello");
+   
+        
 
         if (!otp) {
             const errorMessage = "Empty OTP details are not allowed";
@@ -444,14 +555,50 @@ const OTPVerification = async (req, res) => {
                       
                         latestRecord.used = true;
                         await latestRecord.save();
+                        if (req.session.referralCode) {
+                            await User.updateOne({ _id: userId }, { is_verified: 1, walletBalance: 50 });
+                            const referrer = await User.findOne({ referralCode: req.session.referralCode });
+                            const user = await User.findOne({ _id: userId });
+                            referrer.referredUsers.push(user.email);
+                            referrer.walletBalance += 100;
+                            await referrer.save();
 
-                        await User.updateOne({ _id: userId }, { is_verified: 1 });
+                            const referredUserTransaction = new Transaction({
+                                user: referrer._id,
+                                amount: 100,
+                                type: 'credit',
+                                date: Date.now(),
+                                paymentMethod: "Wallet Payment",
+                                description: 'Referral Bonus',
+                            });
+                            const referrerTransaction = new Transaction({
+                                user: userId,
+                                amount: 50,
+                                type: 'credit',
+                                date: Date.now(),
+                                paymentMethod: "Wallet Payment",
+                                description: 'Referral Bonus',
+                            });
+                            await referredUserTransaction.save();
+                            await referrerTransaction.save();
+                           
 
-                       
-                        await UserOTPVerification.deleteMany({ userId, used: false });
 
-                        res.render('login', { user:null});
+
+
+                        } else {
+                            await User.updateOne({ _id: userId }, { is_verified: 1 });
+                        }
+
+                        delete req.session.referralCode;
+                        delete req.session.otp;
+                        
+
+                        res.redirect('/login');
+
+                        
                     }
+                  
                 }
             }
         }
@@ -460,9 +607,6 @@ const OTPVerification = async (req, res) => {
         return res.redirect('/otp-page?error=${errorMessage}');
     }
 };
-
-
-
 
 
 const resendOTP = async (req, res) => {
@@ -754,135 +898,135 @@ const editProfile= async (req, res) => {
   }
   
 
-  const forgotPassword = async (req, res) => {
+//   const forgotPassword = async (req, res) => {
 
-    try {
+//     try {
         
 
 
-        res.render('forgetpassword',{user:null})
+//         res.render('forgetpassword',{user:null})
 
-    } catch (error) {
+//     } catch (error) {
 
-        console.log(error.message);
+//         console.log(error.message);
 
-    }
-
-
-
-}
-const forgotPasswordOTP = async (req, res) => {
-    try {
-        const user=req.session.user_id;
-        const userExist = await User.findOne({ email: req.body.email });
-
-        if (userExist) {
-            req.session.id3 = userExist._id
-            console.log("forgot" + req.session.id3);
-
-
-            sentPasswordOTPVerificationEmail(req, res, req.body.email, userExist._id);
-            res.render('forgetPassword-otp', { message: "Otp sent to your mail" ,user:null});
-        } else {
+//     }
 
 
 
-            res.render('forgetpassword', { message: "Account details doesnt match" ,user:null});
+// }
+// const forgotPasswordOTP = async (req, res) => {
+//     try {
+//         const user=req.session.user_id;
+//         const userExist = await User.findOne({ email: req.body.email });
 
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-const sentPasswordOTPVerificationEmail = async (req, res, email, _id) => {
-    try {
-        const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-        req.session.otp2 = otp;
-        console.log("forgot password");
-
-        console.log(req.session.otp2);
+//         if (userExist) {
+//             req.session.id3 = userExist._id
+//             console.log("forgot" + req.session.id3);
 
 
-        const mailOptions = {
-            from: "nrnayana1@gmail.com",
-            to: email,
-            subject: "Verify your email",
-            html: `<p>Enter <b>${otp}</b> in the app to reset your password</p>`,
-        };
-
-
-        // Hash password
-        const hashedOTP = await bcrypt.hash(otp, 10);
-
-        const newOTPVerification = new UserOTPVerification({
-            userId: _id,
-            otp: hashedOTP,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 120000,
-        });
-
-        await newOTPVerification.save();
-
-        await transporter.sendMail(mailOptions, async (err, status) => {
-            if (err) {
-                console.log('Err', err);
-            } else {
+//             sentPasswordOTPVerificationEmail(req, res, req.body.email, userExist._id);
+//             res.render('forgetPassword-otp', { message: "Otp sent to your mail" ,user:null});
+//         } else {
 
 
 
+//             res.render('forgetpassword', { message: "Account details doesnt match" ,user:null});
 
-            }
-        });
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// };
 
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-const passwordOTPVerification = async (req, res) => {
-    try {
-        const userId = req.session.id3;
-        const otp = req.body.fullOTP;
+// const sentPasswordOTPVerificationEmail = async (req, res, email, _id) => {
+//     try {
+//         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+//         req.session.otp2 = otp;
+//         console.log("forgot password");
 
-        if (!otp) {
-            const errorMessage = "Empty OTP details are not allowed";
-            return res.redirect(`/otp-page?error=${errorMessage}`);
-        } else {
-            const userOTPVerificationRecords = await UserOTPVerification.find({
-                userId
-            });
-
-            if (userOTPVerificationRecords.length <= 0) {
-                const errorMessage = "Ivalid otp, Please request again";
-                return res.redirect(`/otp-page?error=${errorMessage}`);
-            } else {
-                const { expiresAt } = userOTPVerificationRecords[0];
-                const hashedOTP = userOTPVerificationRecords[0].otp;
-
-                if (expiresAt < Date.now()) {
-                    await UserOTPVerification.deleteMany({ userId });
-                    const errorMessage = "Code has expired. Please request again.";
-                    return res.redirect(`/otp-page?error=${errorMessage}`);
-                } else {
-                    const validOTP = await bcrypt.compare(otp, hashedOTP);
-
-                    if (!validOTP) {
-                        const errorMessage = "Invalid code passed. Check your inbox";
-                        return res.redirect(`/otp-page?error=${errorMessage}`);
-                    } else {
+//         console.log(req.session.otp2);
 
 
-                        await UserOTPVerification.deleteMany({ userId });
-                        res.render("forgetpassword-change")
-                    }
-                }
-            }
-        }
-    } catch (error) {
-        const errorMessage = "An error occurred during OTP verification";
-        return res.redirect(`/otp-page?error=${errorMessage}`);
-    }
-};
+//         const mailOptions = {
+//             from: "nrnayana1@gmail.com",
+//             to: email,
+//             subject: "Verify your email",
+//             html: `<p>Enter <b>${otp}</b> in the app to reset your password</p>`,
+//         };
+
+
+//         // Hash password
+//         const hashedOTP = await bcrypt.hash(otp, 10);
+
+//         const newOTPVerification = new UserOTPVerification({
+//             userId: _id,
+//             otp: hashedOTP,
+//             createdAt: Date.now(),
+//             expiresAt: Date.now() + 120000,
+//         });
+
+//         await newOTPVerification.save();
+
+//         await transporter.sendMail(mailOptions, async (err, status) => {
+//             if (err) {
+//                 console.log('Err', err);
+//             } else {
+
+
+
+
+//             }
+//         });
+
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// };
+// const passwordOTPVerification = async (req, res) => {
+//     try {
+//         const userId = req.session.id3;
+//         const otp = req.body.fullOTP;
+
+//         if (!otp) {
+//             const errorMessage = "Empty OTP details are not allowed";
+//             return res.redirect(`/otp-page?error=${errorMessage}`);
+//         } else {
+//             const userOTPVerificationRecords = await UserOTPVerification.find({
+//                 userId
+//             });
+
+//             if (userOTPVerificationRecords.length <= 0) {
+//                 const errorMessage = "Ivalid otp, Please request again";
+//                 return res.redirect(`/otp-page?error=${errorMessage}`);
+//             } else {
+//                 const { expiresAt } = userOTPVerificationRecords[0];
+//                 const hashedOTP = userOTPVerificationRecords[0].otp;
+
+//                 if (expiresAt < Date.now()) {
+//                     await UserOTPVerification.deleteMany({ userId });
+//                     const errorMessage = "Code has expired. Please request again.";
+//                     return res.redirect(`/otp-page?error=${errorMessage}`);
+//                 } else {
+//                     const validOTP = await bcrypt.compare(otp, hashedOTP);
+
+//                     if (!validOTP) {
+//                         const errorMessage = "Invalid code passed. Check your inbox";
+//                         return res.redirect(`/otp-page?error=${errorMessage}`);
+//                     } else {
+
+
+//                         await UserOTPVerification.deleteMany({ userId });
+//                         res.render("forgetpassword-change")
+//                     }
+//                 }
+//             }
+//         }
+//     } catch (error) {
+//         const errorMessage = "An error occurred during OTP verification";
+//         return res.redirect(`/otp-page?error=${errorMessage}`);
+//     }
+// };
 
 
 
@@ -894,8 +1038,8 @@ module.exports={
     loginLoad,
     varifyLogin,
     loadHome,
-    forgotLoad,
-    forgotVarify,
+    // forgotLoad,
+    // forgotVarify,
     sentOTPVerificationEmail,
     loadOTPpage,
     OTPVerification,
@@ -907,9 +1051,9 @@ module.exports={
     loadeditProfile,
     editProfile,
     resendOTP,
-    forgotPassword,
-    forgotPasswordOTP,
-    passwordOTPVerification
+    // forgotPassword,
+    // forgotPasswordOTP,
+    // passwordOTPVerification
     
    
    

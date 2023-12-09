@@ -125,3 +125,159 @@
 </tr>
 <% } %>
 </table> -->
+
+
+
+
+
+
+
+
+
+
+
+<form method="post" action=" ">
+  <div class="content-header">
+      <h2 class="content-title ms-7" >Add New Banner</h2>
+      <% if (typeof message !== 'undefined' && message) { %>
+          <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+      <% } %><br>
+      
+  </div>
+  <div class="col-lg-3">
+      <div class="card mb-4" style="width:647PX">
+          <div class="card-header">
+              <h4>Banner Image</h4>
+          </div>
+          <div class="card-body">
+              <div class="input-upload">
+                  <img src="assetsb/imgs/theme/upload.svg" alt="">                           
+             
+                  <input type="file" name="image" id="image" class="form-control" accept="image/*">
+              </div>
+          </div>
+      </div> <!-- card end// -->
+     
+  </div>
+  <!-- card end// -->
+          
+      </div>
+      
+  </div>
+ 
+  <div class="row">
+      <div class="col-9">
+          
+      </div>
+
+      <div class="col-lg-6">
+          <div class="card mb-4">
+              <div class="card-header">
+                  <h4>Basic</h4>
+              </div>
+              <div class="card-body">
+                  <form>
+                      <div class="mb-4">
+                          <label class="form-label">Select Banner Type</label>
+                      <select class="form-select">
+                          <option value="category Banner" >Category Offer</option>
+                          <option value="product Banner">Product Offer</option>
+                          <option value="new Arrival">New Arrival</option>
+                          <option value="Deals and Promotions">Deals and Promotions</option>
+                          <option value="Seasonal Sales">Seasonal Sales</option>
+                      </select>
+                      </div>
+                      <div class="mb-4">
+                          <label class="form-label">Title</label>
+                          <input type="text" placeholder="" class="form-control" name="title">
+                      </div>
+                      <div class="mb-4">
+                          <label class="form-label">Link</label>
+                          <input type="text" placeholder="" class="form-control" name="link">
+                      </div>
+                      <div class="mb-4">
+                          <label class="form-label">Description</label>
+                          <input type="text" placeholder="" class="form-control" name="description">
+                      </div>
+                     
+                      <div class="mb-4">
+                          <label class="form-label">Offer</label>
+                          <input type="text" placeholder="" class="form-control" name="offer">
+                          <div class="mb-4">
+                              <label class="form-label">Subtitle</label>
+                              <input type="text" placeholder="" class="form-control" name="subtitle">
+                          </div>
+                      </div>
+                     
+                      
+                 
+              </div>
+          </div>
+             
+          
+      </div>
+      
+      <div class="col-lg-6">
+          <div class="card mb-4"  style="height: 583px;">
+              <div class="card-header">
+                  <h4></h4>
+              </div>
+              <div class="card-body">
+             
+
+
+
+                      <label class="form-label">Select Category</label>
+                      <select class="form-select">
+                          <% category.forEach(category=>{%>
+                              <option value="<%=category._id%>">
+                                  <%= category.category %>
+                              </option>
+                              <% }) %>
+
+                     
+                          
+                      </select><br>
+
+                      <label class="form-label">Select Product</label>
+                      <select class="form-select">
+                          <% product.forEach(product=>{%>
+                              <option value="<%=product._id%>">
+                                  <%= product.name%>
+                              </option>
+                              <% }) %>
+
+                     
+                          
+                      </select>
+                      <div class="mb-4">
+                      
+                          
+                        
+                              
+                    
+                      </div>
+                      <div class="mb-4">
+                          <label class="form-label">Start Date</label>
+                          <input type="date" placeholder="" class="form-control" name="startDate">
+                      </div>
+                      <div class="mb-4">
+                          <label class="form-label">End Date</label>
+                          <input type="date" placeholder="" class="form-control" name="endDate">
+                      </div>
+                      
+                         
+                      <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Add Banner">
+                      </div>
+                      
+                      
+                      
+                
+              </div>
+              
+          </div> <!-- card end// -->
+      </div>
+          
+      </div>
+      </div>
+  </form>

@@ -8,7 +8,10 @@ const bannerSchema = new mongoose.Schema({
   link: String,
   description:String,
   subtitle: String,
-  category:String,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+}, 
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'

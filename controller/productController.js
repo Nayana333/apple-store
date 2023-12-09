@@ -129,15 +129,17 @@ const loadProduct = async (req, res) => {
     const limit = 5; 
 
     const skip = (page - 1) * limit; 
-
-    const query = {
-      $or: [
-        { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { category: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { price: { $regex: '.*' + search + '.*', $options: 'i' } },
-      ],
-    };
-
+    const parsedSearch = parseFloat(search);
+const query = {
+  $or: [
+    { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+    { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+    !isNaN(parsedSearch) ? { price: { $gte: parsedSearch } } : {}, // Check if parsedSearch is a valid number
+  ],
+};
+if (!isNaN(parsedSearch)) {
+  query.$or.push({ price: parsedSearch });
+}
     const adminData = await Product.find(query)
       .skip(skip) 
       .limit(limit);

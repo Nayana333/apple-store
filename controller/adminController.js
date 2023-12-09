@@ -93,6 +93,7 @@ const adminDashboard=async(req,res)=>{
         {$group:{_id:null,totalAmount:{$sum:"totalAmount"}}},
 
        ]),
+       
        User.countDocuments({isBlocked:false,is_verified:true}),
        Order.countDocuments(),
        Product.countDocuments(),
@@ -111,12 +112,17 @@ const adminDashboard=async(req,res)=>{
        ]),
        User.find({isBlocked:false,is_verified:true}).sort({date:-1}).limit(5)
     ])
+
+    
+    console.log('monthlyEarnings'+monthlyEarnings);
     const adminData=req.session.adminData
     const totalRevenueValue=totalRevenue.length > 0 ?totalRevenue[0].totalAmount : 0;
     const monthlyEarningsValue=monthlyEarnings.length > 0 ?monthlyEarnings[0].monthlyAmount : 0;
+    console.log(monthlyEarningsValue);
     const monthlyDataArray=await charData.getMonthlyDataArray();
     const dailyDataArray=await charData.getDailyDataArray();
     const yearlyDataArray=await charData.getYearlyDataArray();
+    
 
         var search='';
         if(req.query.search){

@@ -39,17 +39,7 @@
                         <span class="text">Admin Dashboard</span>
                     </a>
                 </li>
-                <!-- <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Products</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="  ">Product List</a>
-                        <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a>
-                    </div>
-                </li> -->
+                
                 <li class="menu-item has-submenu ">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
                         <span class="text">Users</span>
@@ -103,12 +93,11 @@
                     </div> 
                 </li>-->
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text">Coupon</span>
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="/admin/new-coupon">Add Coupon</a>
-                        <a href="/admin/viewCoupon">View Coupon</a>
+                        <a href="/admin/orderlist">Order list </a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -117,7 +106,7 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin/new-coupon">Add Coupon</a>
-                        <a href="/admin/viewCategory">View Coupon</a>
+                        <a href="/admin/viewCoupon">View Coupon</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -167,105 +156,109 @@
         </nav>
     </aside>
     <main class="main-wrap">
-        
         <%- include("../partials/header2")%>
 
-        <!-- Your form code -->
-<form method="get" action="" style="display: flex;">
-    <select name="filterBy" class="form-control" style="position: relative; left: 3px; width:170px">
-        <option value="listed" <%= filterBy === "listed" ? "selected" : "" %>>Listed</option>
-        <option value="unlisted" <%= filterBy === "unlisted" ? "selected" : "" %>>UnListed</option>
-    </select>
-    <input class="btn btn-light rounded btn-sm font-sm" type="submit" value="Filter" name="button">
-</form>
-<!-- Rest of your EJS code -->
 
-         
+    <div class="card m-3 ">
+        <div class="card-body text-center " >
+        
+<table class="table align-middle table-nowrap mb-0 ms-4">
+  
+  <thead class="table-light"> 
+  <tr>
+                              
+                                       
+                                
+    <th class="align-middle" scope="col">Banner</th>
+    <th class="align-middle" scope="col">Banner Type</th>
+    <th class="align-middle" scope="col">Title</th>
+    <th class="align-middle" scope="col">Category</th>
+    <th class="align-middle" scope="col">Product</th>
+    <th class="align-middle" scope="col">Offer</th>
+    <th class="align-middle" scope="col">Start</th>
+    <th class="align-middle" scope="col">End</th>
+    <th class="align-middle" scope="col">List/Unlist</th>
+    <th class="align-middle" scope="col">EDIT</th>
+    
 
-        
-           
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Listed</a>
-                <a class="dropdown-item" href="#">UnListed</a>
-                </div>
-        <table class="table align-middle table-nowrap mb-0 ms-4">
-            <!-- Table header -->
-            <thead class="table-light"> 
-                <tr>                                   
-                    <th class="align-middle" scope="col">IMAGE</th>                          
-                    <th class="align-middle" scope="col">CATEGORY</th>
-                    <th class="align-middle" scope="col">DESCRIPTION</th>
-                    <th class="align-middle" scope="col">Listed Status</th>
-                    <th class="align-middle" scope="col">LIST/UNLIST</th>
-                    <th class="align-middle" scope="col">EDIT</th>
-                </tr>
-            </thead>
-            <!-- Table body -->
-            <tbody>
-                <% if (categ.length > 0) { %>
-                    <% for (let i = 0; i < categ.length; i++) { %>
-                        <tr>
-                            <td>
-                                <img src="/public/categoryImages/<%= categ[i].image %>" style="width:100px" alt="hello">
-                            </td>
-                            <td><%= categ[i].category %></td>
-                            <td style="width: 19%;"><%= categ[i].description %></td>
-                            <td>
-                                <% if (categ[i].isListed) { %>
-                                    <p>Listed</p>
-                                <% } else { %>
-                                    <p>Unlisted</p>
-                                <% } %>
-                            </td>
-                            <td>
-                                <% if (categ[i].isListed) { %>
-                                    <a href="/admin/unlistCategory?id=<%= categ[i]._id.toString() %>">
-                                        <p class="text-danger ms-4">Unlist</p>
-                                    </a>
-                                <% } else { %>
-                                    <a href="/admin/listCategory?id=<%= categ[i]._id.toString() %>">
-                                        <p class="text-primary ms-4">List</p>
-                                    </a>
-                                <% } %>
-                            </td>
-                            <td>
-                                <a href="/admin/editCategory?id=<%= categ[i]._id %>" class="btn btn-xs">Edit</a>
-                            </td>
-                        </tr>
-                    <% } %>
-                <% } else { %>
-                    <!-- If no categories found -->
-                    <tr>
-                        <td colspan="6">Category not found</td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-        
-        <!-- Pagination links -->
-        <% if (totalPages > 1) { %>
-            <div class="pagination">
-                <% if (currentPage > 1) { %>
-                    <a href="/admin/viewCategory?page=<%= currentPage - 1 %>">Previous</a>
-                <% } %>
-        
-                <% for (let page = 1; page <= totalPages; page++) { %>
-                    <a href="/admin/viewCategory?page=<%= page %>"><%= page %></a>
-                <% } %>
-        
-                <% if (currentPage < totalPages) { %>
-                    <a href="/admin/viewCategory?page=<%= currentPage + 1 %>">Next</a>
-                <% } %>
-            </div>
+   
+   
+</tr>
+</thead>
+<% if (banner.length > 0) {
+    for (let i = 0; i < banner.length; i++) { %>
+        <tr>
+            <td>
+                <img src="/public/bannerImages/<%= banner[i].image%>" style="width:70px" alt="hello">
+
+            </td>
+            <td ><%= banner[i].bannerType %></td>
+   
+            <td><%= banner[i].title %></td>
+            <td><%= banner[i].category.category%></td>
+            <td><%= banner[i].product.name%></td>
+            <td><%= banner[i].offer%></td>
+            <td><%= banner[i].startDate.toDateString()%></td>
+            <td><%= banner[i].endDate.toDateString()%></td>
+            
+              <td>
+                <% if (banner[i].isListed) { %>
+                    <a href="/admin/unlistBanner?id=<%= banner[i]._id.toString() %>">
+                     
+                       <p class="text-danger ms-4">Unlist</p>
+                     
+                    </a>
+                  <% } else { %>
+                    <a href="/admin/unlistBanner?id=<%= banner[i]._id.toString() %>">
+                      
+                        <p class="text-primary ms-4">List</p>
+                     
+                    </a>
+                  <% } %>
+ </td>
+ <td>
+    <td><a href="/admin/editBanner?id=<%= banner[i]._id.toString()%>" class="btn btn-xs">Edit</a></td>
+
+ </td>
+            
+        </tr>
+         <%
+      } %>
+
+  <%}
+  else{
+      %>
+      <tr>
+          <td colspan="5"> Banner not found</td>
+
+      </tr>
+      <%
+      
+  }
+  %>
+</table>
+<!-- Pagination links -->
+<div class="pagination">
+    <% if (currentPage > 1) { %>
+        <a href="?page=<%= currentPage - 1 %>">Previous</a>
+    <% } %>
+
+    <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (i === currentPage) { %>
+            <span><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %>"><%= i %></a>
         <% } %>
+    <% } %>
+
+    <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>">Next</a>
+    <% } %>
 </div>
 
 
-</div> 
-</div>
-</div>
-</div>                                           
-        </section> 
+   
+        </section> <!-- content-main end// -->
        
                     <div class="text-sm-end">
                    

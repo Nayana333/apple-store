@@ -50,8 +50,8 @@ user_route.post('/registration', upload.single('image'),userController.insertUse
 user_route.get('/',userController.loadHome);
 user_route.get('/login',userController.loginLoad);
 user_route.post('/login',userController.varifyLogin);
-user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
-user_route.post('/forgoit',auth.isLogout,userController.forgotVarify);
+// user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
+// user_route.post('/forgoit',auth.isLogout,userController.forgotVarify);
 user_route.get('/otp-page',userController.loadOTPpage);
 user_route.post('/otp-page',userController.OTPVerification);
 user_route.get('/logout',auth.isLogin,userController.userLogout);
@@ -87,11 +87,13 @@ user_route.post('/razorpayOrder',checkoutController.razorpayOrder)
 user_route.get('/resend-otp',userController.resendOTP)
 user_route.get('/emptyCart',auth.isLogin,cartController.emptyCart)
 user_route.get('/emptyWishlist',auth.isLogin,wishlistController.emptywishlist)
-user_route.get('/forgotPassword',userController.forgotPassword)
-user_route.post('/forgotPassword', userController.forgotPasswordOTP)
-user_route.post('/passwordotpVerification', userController.passwordOTPVerification)
+// user_route.get('/forgotPassword',userController.forgotPassword)
+// user_route.post('/forgotPassword', userController.forgotPasswordOTP)
+// user_route.post('/passwordotpVerification', userController.passwordOTPVerification)
 user_route.get('/generate-invoice/:orderId',auth.isLogin,pdfController.generateInvoice)
 user_route.post('/returnOrder',auth.isLogin,checkoutController.returnOrder)
+
+
 
 
 

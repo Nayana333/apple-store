@@ -83,24 +83,16 @@ const addCategory= async (req, res) => {
 const loadCategory = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        var search = '';
-        const perPage = 5;
-        let sortBy = ''; // Capture the sortBy value from request
-        if (req.query.sortBy) {
-            sortBy = req.query.sortBy;
-        }
+        let search = '';
+        let filterBy = ''; // Add this line to capture the filterBy value
 
+        const perPage = 5;
         if (req.query.search) {
             search = req.query.search;
         }
 
-        let sortCondition = {}; // Define an empty object for sort condition
-
-        // Determine the sort condition based on sortBy value
-        if (sortBy === 'listed') {
-            sortCondition = { is_listed: 1 }; // Sort by is_listed field ascending (true first)
-        } else if (sortBy === 'unlist') {
-            sortCondition = { is_listed: -1 }; // Sort by is_listed field descending (false first)
+        if (req.query.filterBy) {
+            filterBy = req.query.filterBy.toLowerCase(); // Capture the filterBy value
         }
 
         const totalCount = await categ.countDocuments({
@@ -108,6 +100,8 @@ const loadCategory = async (req, res) => {
                 { category: { $regex: '.*' + search + '.*', $options: 'i' } },
                 { description: { $regex: '.*' + search + '.*', $options: 'i' } },
             ],
+            // Add the condition for isListed based on filterBy value
+            isListed: filterBy === 'listed' ? true : filterBy === 'unlisted' ? false : { $exists: true },
         });
 
         const adminData = await categ
@@ -116,16 +110,19 @@ const loadCategory = async (req, res) => {
                     { category: { $regex: '.*' + search + '.*', $options: 'i' } },
                     { description: { $regex: '.*' + search + '.*', $options: 'i' } },
                 ],
+                // Add the condition for isListed based on filterBy value
+                isListed: filterBy === 'listed' ? true : filterBy === 'unlisted' ? false : { $exists: true },
             })
-            .sort(sortCondition) // Apply the sort condition
             .skip((page - 1) * perPage)
-            .limit(perPage);
+            .limit(perPage).sort({category:1});
 
-        res.render('viewCategory', {
-            categ: adminData,
-            currentPage: page,
-            totalPages: Math.ceil(totalCount / perPage),sortBy: req.query.sortBy || '',
-        });
+            res.render('viewCategory', {
+                categ: adminData,
+                currentPage: page,
+                totalPages: Math.ceil(totalCount / perPage),
+                filterBy: filterBy
+            });
+            
     } catch (error) {
         console.log(error.message);
     }
