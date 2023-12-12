@@ -357,6 +357,12 @@
                                 <% if (product.length > 0) {
                                     for (let i = 0; i < product.length; i++) { %> 
                                 <div class="col-lg-3 col-md-4 col-12 col-sm-6" >
+                                    <% if (product[i].discountStatus && new Date(product[i].startDate) <= new Date() && new Date(product[i].endDate) >= new Date()) { %>
+                                                                    
+                                        <% if (product[i].price > product[i].discountPrice) { %>
+                                            <span class="product-label label-top">Sale</span>
+                                        <% } %>
+                                    <% } %>
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
@@ -388,10 +394,23 @@
                                                     <span>90%</span>
                                                 </span>
                                             </div>
-                                            <div class="product-price">
-                                                <span><%= product[i].discountPrice %></span>
-                                                <span class="old-price"><%= product[i].price%></span>
-                                            </div>
+                                            <% if (product[i].quantity !== 0) { %>       
+                                                <div class="product-price">
+                                                    <% if (product[i].discountStatus && new Date(product[i].startDate) <= new Date() && new Date(product[i].endDate) >= new Date()) { %>
+                                                        ₹ <%= product[i].discountPrice %>
+                                                        <% if (product[i].price > product[i].discountPrice) { %>  
+                                                            <span class="old-price ml-3" style="text-decoration: line-through;"> ₹ <%= product[i].price %> </span>
+                                                    
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        ₹ <%= product[i].price %>
+                                                    <% } %>
+                                                </div><!-- End .product-price -->
+                                            <% } else { %>
+                                                <div class="my-3" style="display: flex; align-items: center; color: red;">
+                                                    <p style="color: red; font-size: 12px;">Product out of stock</p>
+                                                </div>
+                                            <% } %>
                                             <div class="product-action">
                                                 <form class="add-to-cart-form"
                                                     action="/addtoCart/<%= product[i]._id %>"

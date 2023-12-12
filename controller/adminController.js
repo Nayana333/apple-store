@@ -88,9 +88,10 @@ const logOut=async(req,res)=>{
 
 const adminDashboard=async(req,res)=>{
     try{
-       const [totalRevenue,totalUsers,totalOrders,totalProducts,totalCategories,orders,monthlyEarnings,newUsers]=await Promise.all([Order.aggregate([
-        {$match:{status:"Payment Successfull"}},
-        {$group:{_id:null,totalAmount:{$sum:"totalAmount"}}},
+       const [totalRevenue,totalUsers,totalOrders,totalProducts,totalCategories,orders,monthlyEarnings,newUsers]=await Promise.all
+       ([Order.aggregate([
+        {$match:{status:"payment successfull"}},
+        {$group:{_id:null,totalAmount:{$sum:"$totalAmount"}}},
 
        ]),
        
@@ -102,18 +103,18 @@ const adminDashboard=async(req,res)=>{
        Order.aggregate([
         {
         $match: {
-            status:"Payment Successfull",
+            status:"payment successfull",
             orderDate:{$gte:new Date(new Date().getFullYear(),new Date().getMonth(),1)},
 
         },
     },
-    {$group: {_id: null, totalAmount: { $sum: "$totalAmount" }}},
+    {$group: {_id: null, monthlyAmount: { $sum: "$totalAmount" }}},
         
        ]),
        User.find({isBlocked:false,is_verified:true}).sort({date:-1}).limit(5)
-    ])
+    ]);
 
-    
+
     console.log('monthlyEarnings'+monthlyEarnings);
     const adminData=req.session.adminData
     const totalRevenueValue=totalRevenue.length > 0 ?totalRevenue[0].totalAmount : 0;
@@ -137,6 +138,7 @@ const adminDashboard=async(req,res)=>{
         ]
                
     });
+    console.log(totalRevenueValue+'total');
         res.render('dashboard',{admin: adminData,
         orders,
         newUsers,
@@ -177,6 +179,7 @@ const loadDashboard = async(req,res)=>{
     try{
         const page = req.query.page || 1;
         const perPage = 5; 
+        let filterBy = '';
         const skip = (page - 1) * perPage; 
         
         var search='';
@@ -184,6 +187,10 @@ const loadDashboard = async(req,res)=>{
             search=req.query.search;
             console.log(search)
         }
+        if (req.query.filterBy) {
+            filterBy = req.query.filterBy.toLowerCase(); 
+        }
+
         const totalUsers = await User.countDocuments({
             is_admin: 0,
             $or: [
@@ -191,6 +198,7 @@ const loadDashboard = async(req,res)=>{
                 { email: { $regex: '.*' + search + '.*', $options: 'i' } },
                 { mobile: { $regex: '.*' + search + '.*', $options: 'i' } },
             ],
+            is_blocked: filterBy === 'blocked' ? true : filterBy === 'unblocked' ? false : { $exists: true },
         });
 
         const totalPages = Math.ceil(totalUsers / perPage);
@@ -200,11 +208,12 @@ const loadDashboard = async(req,res)=>{
             { name:{$regex:'.*'+search+'.*',$options:'i'}},
             { email:{$regex:'.*'+search+'.*',$options:'i'}},
             { mobile:{$regex:'.*'+search+'.*',$options:'i'}},
-        ]
+        ],
+        is_blocked: filterBy === 'blocked' ? true : filterBy === 'unblocked' ? false : { $exists: true },
                
     }).sort({ name: 1 }) .skip(skip)
     .limit(perPage);;
-        res.render('userDetails',{user:adminData,totalPages, currentPage: page })
+        res.render('userDetails',{user:adminData,totalPages, currentPage: page , filterBy: filterBy})
 
 
     }catch(error){

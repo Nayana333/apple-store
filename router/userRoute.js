@@ -47,25 +47,34 @@ const storage=multer.diskStorage({destination:function(req,res,cb){
 const upload=multer({storage:storage});
 user_route.get('/registration', userController.loadRegister);
 user_route.post('/registration', upload.single('image'),userController.insertUser);
+
 user_route.get('/',userController.loadHome);
 user_route.get('/login',userController.loginLoad);
 user_route.post('/login',userController.varifyLogin);
+
 // user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
 // user_route.post('/forgoit',auth.isLogout,userController.forgotVarify);
 user_route.get('/otp-page',userController.loadOTPpage);
 user_route.post('/otp-page',userController.OTPVerification);
+
 user_route.get('/logout',auth.isLogin,userController.userLogout);
+
 user_route.get('/product',userController.product);
 user_route.get('/aboutProduct',productController.productpageLOad)
+
 user_route.get('/contact',userController.loadContact)
-user_route.get('/userhome',userController.loadHome)
+user_route.get('/userhome',auth.isUserBlocked,userController.loadHome)
+
 user_route.get('/logout',auth.isLogin,userController.logOut)
-user_route.get('/viewprofile',auth.isLogin,userController.loadProfile)
+
+user_route.get('/viewprofile',auth.isLogin,auth.isUserBlocked,userController.loadProfile)
 user_route.get('/editprofile',auth.isLogin,userController.loadeditProfile)
 user_route.post('/editprofile', upload.single('image'),userController.editProfile);
-user_route.get('/cart',auth.isLogin,cartController.loadCart)
+
+user_route.get('/cart',auth.isLogin,auth.isUserBlocked,cartController.loadCart)
 user_route.get('/checkout',auth.isLogin,checkoutController.loadCheckout)
 user_route.get('/wishlist',auth.isLogin,wishlistController.loadWishlist)
+
 user_route.get('/addtoWishlist/:productId',auth.isLogin,wishlistController.addtoWishlist)
 user_route.get('/userOrderdetails',auth.isLogin,orderController.loadOrderdetailsuser)
 user_route.get('/getwishlist',auth.isLogin,wishlistController.addtoWishlist)
@@ -76,6 +85,9 @@ user_route.put('/updateCart/', cartController.updateCart);
 user_route.put('/updateCart',cartController.updateCartCount)
 user_route.get('/addAddress',auth.isLogin,addressController.loaduserProfile)
 user_route.post('/postAddress',auth.isLogin,addressController.postAddress)
+user_route.get('/addAddresscheckOut',auth.isLogin,addressController.loadAddAddresscheckOut)
+user_route.post('/postAddresscheckOut',auth.isLogin,addressController.postAddresscheckOut)
+
 user_route.post('/cashondelivery',auth.isLogin,checkoutController.cashOnDelivery)
 user_route.post('/walletPayment',auth.isLogin,checkoutController.walletPayment)
 user_route.get('/orderPlaced',auth.isLogin,orderController.orderPlaced)
@@ -92,6 +104,7 @@ user_route.get('/emptyWishlist',auth.isLogin,wishlistController.emptywishlist)
 // user_route.post('/passwordotpVerification', userController.passwordOTPVerification)
 user_route.get('/generate-invoice/:orderId',auth.isLogin,pdfController.generateInvoice)
 user_route.post('/returnOrder',auth.isLogin,checkoutController.returnOrder)
+user_route.get('/deleteAddress',auth.isLogin,addressController.deleteAddress)
 
 
 

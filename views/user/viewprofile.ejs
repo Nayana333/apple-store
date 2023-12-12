@@ -237,7 +237,7 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Order</th>
+                                                                <th>Order Id</th>
                                                                 <th>Date</th>
                                                                 <th>Status</th>
                                                                 <th>Total</th>
@@ -248,7 +248,7 @@
                                                             <% if (order.length > 0) {
                                                                 for (let i = 0; i < order.length; i++) { %> 
                                                             <tr>
-                                                                <td><%=order[i]._id %></td>
+                                                                <td><%=order[i].o_id %></td>
                                                                 <td><%=order[i].orderDate.toDateString() %></td>
                                                                 <td><%=order[i].status %></td>
                                                                 <td><%=order[i].totalAmount%></td>
@@ -268,13 +268,60 @@
                                             <div class="card-header" style="height: 155px">
                                                 
                                                 <center><h2 class="mb-0" style="color:#222222a8"> Your Wallet Balance</h2></center><br>
-                                                <center><h3 class="mb-0"  style="color:#222222a8"><%=user.walletBalance%>₹</h3></center>
+
+                                                <center>
+                                                    <h3 class="mb-0" style="color:#222222a8">
+                                                      <% if (user.walletBalance < 0) { %>
+                                                        0₹
+                                                      <% } else { %>
+                                                        <%= user.walletBalance %>₹
+                                                      <% } %>
+                                                    </h3>
+                                                  </center>
+
+                                                  
                                                 
                                                 
                                             </div>
                                            
                                         </div>
+
+                                        <table class="table">
+                                            <thead>
+                                              <tr>
+                                                <th>Description</th>
+                                                <th>Amount</th>
+                                                <th>Type</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <% if (transaction && transaction.length > 0) { %>
+                                                <% for (let i = 0; i < transaction.length; i++) { %> 
+                                                  <tr>
+                                                    <td>
+                                                      <% const description = transaction[i].description.split(':'); %>
+                                                      <% if(description.length > 1) { %>
+                                                        <%= description[0]  %>
+                                                        </span>
+                                                      <% } else { %>
+                                                        <%= transaction[i].description %>
+                                                      <% } %>
+                                                    </td>
+                                                    <td><%= transaction[i].amount %></td>
+                                                    <td style="color: <%= transaction[i].type === 'credit' ? 'green' : 'red' %>;">
+                                                    <%= transaction[i].type %></td>
+                                                  </tr>
+                                                <% } %>
+                                              <% } %>
+                                            </tbody>
+                                          </table>
+                                          
+
+                                          
+                                          
                                     </div>
+
+
                                     <div class="tab-pane fade" id="coupon-details" role="tabpanel" aria-labelledby="coupon-details-tab" ">
                                         <center><h2 class="mb-0 " style="color:#222222a8">Available Coupons</h2></center><br>
                                         <div class="d-flex justify-content-space-between  mt-4 col-lg-12" style="flex-wrap: wrap;">
@@ -328,6 +375,8 @@
                                             <center><p><%= address[i].city%></p></center>
                                             <center><p><%= address[i].pin %></p></center>
                                             <center><p><%= address[i].phone %></p></center>
+                                            <a style="color: red;position:relative;left:524px"   href="/deleteAddress?addressId=<%=address[i]._id%>">delete</a>
+
                                                
                                             </div><br>
                                             <% } 

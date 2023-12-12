@@ -128,7 +128,7 @@ const insertUser = async (req, res) => {
                 res.render('registration',{message:'Invalid Refferral Code'});
             }
             if(referrer.referredUsers.includes(req.body.email)){
-                res.render('registratin',{message:'Refferal code has Already been used by this email '})
+                res.render('registration',{message:'Refferal code has Already been used by this email '})
 
 
             }
@@ -153,13 +153,13 @@ const insertUser = async (req, res) => {
   
         const emailExists = await User.exists({ email: req.body.email });
         if (emailExists) {
-            return res.render('registration', {user,message: 'Email already exists', isError: true });
+            return res.render('registration', {user,message: 'Email already exists' });
         }
 
         // Check if phone number already exists
         const phoneExists = await User.exists({ mobile: req.body.mobile });
         if (phoneExists) {
-            return res.render('registration',{user, message: 'Phone number already exists', isError: true });
+            return res.render('registration',{user, message: 'Phone number already exists' });
         }
 
         const userData = await user.save();
@@ -171,13 +171,13 @@ const insertUser = async (req, res) => {
         if (userData) {
             res.render('otp-page', { user: userData, isError: false });
         } else {
-            res.render('registration', { message: "Registration Failed", isError: true });
+            res.render('registration', { message: "Registration Failed" });
         }
     }
 
     } catch (error) {
         console.log(error.message);
-        res.render('registration', { message: "Registration Failed", isError: true });
+        res.render('registration', { message: "Registration Failed" });
     }
 };
 
@@ -652,164 +652,118 @@ const userLogout =async(req,res)=>{
     }
 
 }
-const product =async(req,res)=>{
-    try{
 
-        const page = req.query.page || 1;
-        const limit = 4;
-        const skip = (page - 1) * limit;
-        const cartData=req.session.cartLength;
-        
-    const category=await Category.find({})
-     
-        const categories = Array.isArray(req.query.category) ? req.query.category : [req.query.category];
-        console.log(categories);
-        const priceRange = req.query.price || 'all';
-        const colors = Array.isArray(req.query.color) ? req.query.color : [req.query.color];
+
+const product = async (req, res) => {
+    try {
+      const page = req.query.page || 1;
+      const limit = 4;
+      const skip = (page - 1) * limit;
+      const cartData = req.session.cartLength;
+  
+      const category = await Category.find({});
+  
+      const categories = Array.isArray(req.query.category) ? req.query.category : [req.query.category];
+      const priceRange = req.query.price || 'all';
+      const colors = Array.isArray(req.query.color) ? req.query.color : [req.query.color];
       var search = '';
       if (req.query.search) {
-          search = req.query.search;
-          console.log(search);
+        search = req.query.search;
       }
-      const sortBy=req.query.sortBy || 'priceLowToHigh';
-    
-        const userId=req.session.user_id
-        const user=await User.findById(userId)
-        
-        let minPrice=0
-        let maxPrice=Number.MAX_VALUE;
-        switch(priceRange){
-            case 'under25':
-                minPrice = 0;
-                maxPrice = 20000;
-                break;
-            case '25to50':
-                minPrice = 20000;
-                maxPrice = 40000;
-                break;
-            case '50to100':
-                minPrice = 40000;
-                maxPrice = 60000;
-                break;
-            case '100to200':
-                minPrice = 60000;
-                maxPrice = 80000;
-                break;
-            case '100above':
-                minPrice = 80000;
-                break;
-            default:
-               
-                break;
-        }
-        
-        let sortQuery = {};
-
-
-    if (sortBy === 'priceLowToHigh') {
-      sortQuery = { price: 1 };
-    } else if (sortBy === 'priceHighToLow') {
-      sortQuery = { price: -1 };
+      const sortBy = req.query.sortBy || 'priceLowToHigh';
+  
+      const userId = req.session.user_id;
+      const user = await User.findById(userId);
+  
+      let minPrice = 0;
+      let maxPrice = Number.MAX_VALUE;
+      switch (priceRange) {
+        case 'under25':
+          minPrice = 0;
+          maxPrice = 20000;
+          break;
+        case '25to50':
+          minPrice = 20000;
+          maxPrice = 40000;
+          break;
+        case '50to100':
+          minPrice = 40000;
+          maxPrice = 60000;
+          break;
+        case '100to200':
+          minPrice = 60000;
+          maxPrice = 80000;
+          break;
+        case '100above':
+          minPrice = 80000;
+          break;
+        default:
+          break;
+      }
+  
+      let sortQuery = {};
+  
+      if (sortBy === 'priceLowToHigh') {
+        sortQuery = { price: 1 };
+      } else if (sortBy === 'priceHighToLow') {
+        sortQuery = { price: -1 };
+      }
+  
+      const filter = {
+        $and: [
+          { list: true }, // Filter for products where 'list' is true
+          { $or: [{ category: { $in: categories.map(c => new RegExp(c, 'i')) } }] },
+          { price: { $gte: minPrice, $lte: maxPrice } },
+          { productColor: { $in: colors.map(c => new RegExp(c, 'i')) } },
+        ],
+      };
+  
+      const searchFilter = {
+        $or: [
+          { name: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { category: { $regex: '.*' + search + '.*', $options: 'i' } },
+          { discountPrize: { $regex: '.*' + search + '.*', $options: 'i' } },
+        ],
+      };
+  
+      const totalProducts = await Product.countDocuments({
+        $and: [
+          filter,
+          searchFilter,
+        ],
+      });
+  
+      const adminData = await Product.find({
+        $and: [
+          filter,
+          searchFilter,
+        ],
+      }).sort(sortQuery).skip(skip).limit(limit);
+  
+      const selectedCategories = categories;
+      const selectedPriceRange = priceRange;
+      selectedColors = colors;
+  
+      res.render('productpage', {
+        product: adminData,
+        user,
+        sortBy,
+        category,
+        selectedCategories,
+        selectedPriceRange,
+        selectedColors,
+        currentPage: parseInt(page),
+        cartData,
+        totalPages: Math.ceil(totalProducts / limit),
+      });
+  
+    } catch (error) {
+      console.log(error.message);
     }
-       
-const filter={
-    $or:[
-        {category: { $in: categories.map(c => new RegExp(c, 'i')) } },
-
-      
-    ],
-    price: { $gte: minPrice, $lte: maxPrice },
-    productColor: { $in: colors.map(c => new RegExp(c, 'i')) },
-
-};
-const searchFilter = {
-    $or: [
-        { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { category: { $regex: '.*' + search + '.*', $options: 'i' } },
-        { discountPrize: { $regex: '.*' + search + '.*', $options: 'i' } },
-    ],
-};
-
-const totalProducts = await Product.countDocuments({
-    $and: [
-        filter,
-        searchFilter,
-    ],
-});
-
-const adminData = await Product.find({
-    $and: [
-        filter,
-        searchFilter,
-    ],
-}).sort(sortQuery) .skip(skip).limit(limit);;
-        const selectedCategories=categories;
-        const selectedPriceRange=priceRange;
-        selectedColors=colors
-        
-        res.render('productpage', {product: adminData,user,sortBy,category,selectedCategories,selectedPriceRange,selectedColors, currentPage: parseInt(page),cartData,
-            totalPages: Math.ceil(totalProducts / limit),})
+  };
+  
 
 
-    }catch(error){
-        console.log(error.message)
-    }
-
-}
-
-// const product = async (req, res) => {
-//     try {
-//       const currentPage = parseInt(req.query.page) || 1; // Get the requested page or default to page 1
-//       const itemsPerPage = 4; // Number of products per page
-//       let search = '';
-//       const sortBy = req.query.sortBy || 'priceLowToHigh';
-  
-//       if (req.query.search) {
-//         search = req.query.search;
-//         console.log(search);
-//       }
-  
-//       let sortQuery = {};
-  
-//       if (sortBy === 'priceLowToHigh') {
-//         sortQuery = { price: 1 };
-//       } else if (sortBy === 'priceHighToLow') {
-//         sortQuery = { price: -1 };
-//       }
-  
-//       const userId = req.session.user_id;
-//       const user = await User.findById(userId);
-//   // Fetch total count of products based on search/filter criteria
-//       const totalProducts = await Product({
-//         $or: [
-//           { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-//           { category: { $regex: '.*' + search + '.*', $options: 'i' } },
-//           { discountPrize: { $regex: '.*' + search + '.*', $options: 'i' } },
-//         ],
-//       });
-  
-//       // Calculate total pages based on total products and items per page
-//       const totalPages = Math.ceil(totalProducts / itemsPerPage);
-  
-//       // Fetch products for the current page
-//       const adminData = await Product.find({
-//         $or: [
-//           { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-//           { category: { $regex: '.*' + search + '.*', $options: 'i' } },
-//           { discountPrize: { $regex: '.*' + search + '.*', $options: 'i' } },
-//         ],
-//       })
-//         .sort(sortQuery)
-//         .skip((currentPage - 1) * itemsPerPage)
-//         .limit(itemsPerPage);
-  
-//       res.render('productpage', { product: adminData, user, sortBy, totalPages, currentPage });
-//     } catch (error) {
-//       console.log(error.message);
-//       res.status(500).send('Error fetching products');
-//     }
-//   };
-  
 
 
   
@@ -832,7 +786,13 @@ const loadProfile = async (req, res) => {
         
        
         const id = req.session.user_id; 
-        const coupon = await Coupon.find({ isListed: true }).sort({ expiry:1 });
+        const transaction=await Transaction.find({user:id})
+        const currentDate = new Date();
+        // const coupon = await Coupon.find({ isListed: true }).sort({ expiry:1 });
+        const coupon = await Coupon.find({
+            isListed: true,
+            expiry: { $gt: currentDate } 
+          }).sort({ expiry: 1 });
 
         console.log(coupon);
       
@@ -843,7 +803,7 @@ const loadProfile = async (req, res) => {
        
        
 
-        res.render('viewprofile', { user: userData ,address,order,coupon});
+        res.render('viewprofile', { user: userData ,address,order,coupon,transaction});
 
     } catch (error) {
         console.log(error.message);

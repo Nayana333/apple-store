@@ -13,7 +13,6 @@ const productSchema = new mongoose.Schema({
     name: String,
     category: String,
     price: Number,
-    discountPrice: Number,
     quantity: Number,
     productImages: [String], 
     battery: String,
@@ -33,6 +32,17 @@ const productSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+
+      discountPrice: {
+        type: Number,
+        default: 0,
+      },
+      discount:Number,
+      startDate: Date,
+      endDate: Date,
+      discountStatus: {
+          type:Boolean,
+      default:true}
 });
 
 module.exports = mongoose.model('Product',productSchema);

@@ -34,30 +34,49 @@ const addCoupon = async (req, res) => {
         console.log(newCoupon);
 
         await newCoupon.save();
-        res.redirect('/admin/dashboard');
+        res.render('new-coupon',{message:"coupon added successfully"});
     } catch (err) {
         console.log("error adding coupon", err);
         res.status(500).send("error adding coupon");
     }
 };
 
-const loadCoupon=async(req,res)=>{
-          try{
+// const loadCoupon=async(req,res)=>{
+//           try{
               
-              
-                 
-              
-      
-             const coupon =await Coupon.find({});
+
+//              const coupon =await Coupon.find({});
         
         
-              res.render('viewCoupon',{coupon})
+//               res.render('viewCoupon',{coupon})
       
       
-          }catch(error){
-              console.log(error.message)
-          }
-      }
+//           }catch(error){
+//               console.log(error.message)
+//           }
+//       }
+const loadCoupon = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1; 
+    const limitPerPage = 5; 
+
+    const totalCoupons = await Coupon.countDocuments({});
+    const totalPages = Math.ceil(totalCoupons / limitPerPage);
+    
+
+    const coupon = await Coupon.find({})
+    .sort({expiry:1 })
+      .skip((page - 1) * limitPerPage)
+      .limit(limitPerPage);
+
+    res.render('viewCoupon', { coupon, totalPages, currentPage: page });
+  } catch (error) {
+    console.log(error.message);
+    
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 
 
       const editCoupon=async(req,res)=>{

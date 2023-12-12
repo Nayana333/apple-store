@@ -256,7 +256,7 @@
                             </div><br><br>
                             <% } 
                             } %>
-                            <a class="btn btn-outline-primary-2 btn-order btn-block" href="/addAddress">Add New Address</a>
+                            <a class="btn btn-outline-primary-2 btn-order btn-block" href="/addAddresscheckOut">Add New Address</a>
                         </div>
                         </div>
 
@@ -354,17 +354,23 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">available coupons</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+            <% if (coupon.length > 0) {
+                for (let i = 0; i < coupon.length; i++) { %> 
+
+                    <p><b><%=coupon[i].code%></b></p>
+
+                    <% } 
+                } %>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

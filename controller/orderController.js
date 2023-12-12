@@ -74,7 +74,7 @@ const  orderDetails= async (req, res) => {
     } catch (error) {
       console.error('Error fetching order details:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-    }
+ }
   };
 
 const cancelOrder = async (req, res) => {
@@ -119,35 +119,96 @@ const cancelOrder = async (req, res) => {
       console.log(error.message);
     }
   };
-  const  orderList= async (req, res) => {
-    try {
-      const userId= req.session.user_id
-      const orderId = req.query.orderId;
-      const user= await User.findById(userId); 
-      const address1=await Address.find({user:userId})
+//   const  orderList= async (req, res) => {
+//     try {
+//       const userId= req.session.user_id
+//       const orderId = req.query.orderId;
+//       const user= await User.findById(userId); 
+//       const address1=await Address.find({user:userId})
      
   
   
-      const orderData = await Order.find({})
-        .populate('user')
-        .populate({
-          path: 'address',
-          model: 'Address',
-        })
-        .populate({
-          path: 'items.product',
-          model: 'Product',
-        })
+//       const orderData = await Order.find({})
+//         .populate('user')
+//         .populate({
+//           path: 'address',
+//           model: 'Address',
+//         })
+//         .populate({
+//           path: 'items.product',
+//           model: 'Product',
+//         }) .sort({ orderDate: -1 });
        
         
-      res.render('orderlist', {  orderData, user ,address1,});
+//       res.render('orderlist', {  orderData, user ,address1,});
       
 
-    } catch (error) {
-      console.error('Error fetching order details:', error);
-      res.status(500).json({ error: 'Internal Server Error'});
-}
-  };
+//     } catch (error) {
+//       console.error('Error fetching order details:', error);
+//       res.status(500).json({ error: 'Internal Server Error'});
+// }
+//   };
+
+
+const orderList = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const filterBy = req.query.filterBy; 
+    let search = '';
+    if (req.query.search) {
+      search = req.query.search;
+    }
+    console.log(search);
+    
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage = 5;
+
+    const user = await User.findById(userId);
+    const address1 = await Address.find({ user: userId });
+
+    let filter = {}; 
+    if (filterBy) {
+      filter.status = filterBy;
+    }
+
+    
+    const totalCount = await Order.countDocuments({
+      status: { $regex: new RegExp(search, 'i') } 
+    });
+
+    
+    const totalOrders = await Order.countDocuments(filter);
+    const orderData = await Order.find({
+      $and: [
+        filter,
+        { status: { $regex: new RegExp(search, 'i') } } 
+      ]
+    })
+      .populate('user')
+      .populate({
+        path: 'address',
+        model: 'Address',
+      })
+      .populate({
+        path: 'items.product',
+        model: 'Product',
+      })
+      .sort({ orderDate: -1 })
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+
+    const totalPages = Math.ceil(totalOrders / perPage);
+
+    res.render('orderlist', { orderData, user, address1, currentPage, totalPages, filterBy, totalCount });
+
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
   const cancelOrderAdmin= async (req, res) => {
     try {
     const productdata=await Product.find({})
@@ -177,7 +238,7 @@ const cancelOrder = async (req, res) => {
         if (products instanceof mongoose.Types.ObjectId) {
           const foundProduct = await Product.findById(products);
           if (foundProduct) {
-            // Ensure 'quantity' property exists on the product object
+            
             foundProduct.quantity += item.quantity;
             await foundProduct.save();
           }

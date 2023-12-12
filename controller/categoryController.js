@@ -84,7 +84,7 @@ const loadCategory = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         let search = '';
-        let filterBy = ''; // Add this line to capture the filterBy value
+        let filterBy = ''; 
 
         const perPage = 5;
         if (req.query.search) {
@@ -92,7 +92,7 @@ const loadCategory = async (req, res) => {
         }
 
         if (req.query.filterBy) {
-            filterBy = req.query.filterBy.toLowerCase(); // Capture the filterBy value
+            filterBy = req.query.filterBy.toLowerCase(); 
         }
 
         const totalCount = await categ.countDocuments({
@@ -100,7 +100,7 @@ const loadCategory = async (req, res) => {
                 { category: { $regex: '.*' + search + '.*', $options: 'i' } },
                 { description: { $regex: '.*' + search + '.*', $options: 'i' } },
             ],
-            // Add the condition for isListed based on filterBy value
+         
             isListed: filterBy === 'listed' ? true : filterBy === 'unlisted' ? false : { $exists: true },
         });
 
@@ -110,7 +110,7 @@ const loadCategory = async (req, res) => {
                     { category: { $regex: '.*' + search + '.*', $options: 'i' } },
                     { description: { $regex: '.*' + search + '.*', $options: 'i' } },
                 ],
-                // Add the condition for isListed based on filterBy value
+                
                 isListed: filterBy === 'listed' ? true : filterBy === 'unlisted' ? false : { $exists: true },
             })
             .skip((page - 1) * perPage)

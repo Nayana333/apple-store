@@ -4,10 +4,12 @@ const Cart=require("../models/cartModel");
 const Address=require("../models/addressModel");
 const Order=require('../models/orderModel')
 const Coupon=require('../models/couponModel')
+const Product=require('../models/productModel')
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const Transaction = require('../models/transactionModel')
 const Razorpay = require('razorpay');
+const { ellipse } = require("pdfkit");
 const razorpay = new Razorpay({
 
   key_id	:'rzp_test_h5Hjivllk0VNGW',
@@ -22,6 +24,9 @@ const loadCheckout=async(req,res)=>{
     const userId=req.session.user_id;
    
     try{
+      const currentDate = new Date();
+      const coupon= await Coupon.find({ expiry: { $gt: currentDate } });
+
         const user=await User.findById(userId).exec();
 
        
@@ -41,7 +46,7 @@ const loadCheckout=async(req,res)=>{
       const subtotalWithShipping=subtotal+100;
       const outOfStockError=cartItems.some(item =>cart.quantity< item.quantity);
       const maxQuantityErr=cartItems.some(item =>cart.quantity > 2);
-      res.render('checkout',{user,cart:cartItems,subtotal,producttotal,subtotalWithShipping,address,outOfStockError,maxQuantityErr,cartData});
+      res.render('checkout',{user,cart:cartItems,subtotal,producttotal,subtotalWithShipping,address,outOfStockError,maxQuantityErr,cartData,coupon});
 
     }catch(error){
         console.log(error.message)
@@ -307,6 +312,7 @@ const calculateSubTotal=(cart)=>{
 // };
 
 
+
 const setStatus = async (req, res) => {
   try {
     const orderStatus = req.query.status;
@@ -320,7 +326,7 @@ const setStatus = async (req, res) => {
       update.$set.deliveryDate = Date.now();
       update.$set.paymentStatus='Payment Successful'
 
-    } else if (orderStatus === "Cancelled" || orderStatus === "Return Confirmed") {
+    } else if (orderStatus === "Cancelled" ) {
       const orderData = await Order.findOne({ _id: orderId })
         .populate('user')
         .populate({
@@ -343,6 +349,22 @@ const setStatus = async (req, res) => {
       if(orderData.paymentMethod=="Wallet Payment" || orderData.paymentMethod=="Online Payment" && orderData.paymentStatus == "Payment Successful"){
         update.$set.paymentStatus='Payment Refuned'
       }
+      else if(orderStatus === "Return Confirmed"){
+        let returnOrder = await Order.findById(orderId);
+        for (const item of returnOrder.items) {
+          const products = item.product;
+          
+          if (products instanceof mongoose.Types.ObjectId) {
+            const foundProduct = await Product.findById(products);
+            if (foundProduct) {
+            
+              foundProduct.quantity += item.quantity;
+              await foundProduct.save();
+            }
+          }
+
+      }
+    }
       else{
        
         update.$set.paymentStatus='Payment Declined'
@@ -369,6 +391,7 @@ const setStatus = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
 
 
 const applyCoupon=async(req,res)=>{
@@ -718,8 +741,16 @@ console.log('orderid'+order._id);
 
 const returnOrder = async (req, res) => {
   try {
+     
       const userId = req.session.user_id;
       const orderId = req.query.orderId;
+      const reason=req.query.reason;
+      
+      console.log(req.query.reason);
+
+      const order=await Order.findByIdAndUpdate(orderId,{$set:{reason:reason}})
+      console.log(order);
+
       
      
       const updatedOrder = await Order.findByIdAndUpdate(
@@ -740,6 +771,8 @@ const returnOrder = async (req, res) => {
 };
 
   
+
+
 
 
 module.exports={

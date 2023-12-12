@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/Applestore");
 const express = require("express");
 const app = express();
+
+
 app.use(express.static(__dirname + "/public"));
 // Import and use the user route
 const userRoute = require('./router/userRoute');

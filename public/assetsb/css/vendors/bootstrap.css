@@ -5411,7 +5411,7 @@ fieldset:disabled .btn {
 .page-item.active .page-link {
   z-index: 3;
   color: #fff;
-  background-color: #3167EB;
+  background-color: #088178;
   border-color: #3167EB;
 }
 
@@ -8530,7 +8530,7 @@ fieldset:disabled .btn {
 }
 
 .text-success {
-  color: #00B517 !important;
+  color: #000 !important;
 }
 
 .text-success-light {

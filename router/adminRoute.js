@@ -11,6 +11,7 @@ admin_route.use(session({
 
 
 
+
 const fs = require('fs');
 
 //category////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +97,8 @@ const checkoutController=require('../controller/checkoutController')
 const couponController=require('../controller/couponController')
 const excelController=require('../controller/excelController')
 const  bannerController=require('../controller/bannerController')
+const transactionController=require('../controller/transactionController')
+const discountController=require('../controller/discountController')
 
 // admin////////////////////////////////////////////////////
 
@@ -168,6 +171,25 @@ admin_route.get('/viewBanner',auth.isLogin,bannerController.loadBannerList)
 admin_route.get('/unlistBanner',auth.isLogin,bannerController.unlistBanner)
 admin_route.get('/editBanner',auth.isLogin,bannerController.loadEditBanner)
 admin_route.post('/editBanner', bannerUpload.single('image'),bannerController.editBanner);
+
+
+// Transaction//////////////////////////////////////////////////////////////////////////////
+
+admin_route.get('/transaction',auth.isLogin,transactionController.loadTransaction)
+
+
+//Discount//////////////////////////////////////////////////////////////////////////////////
+
+
+admin_route.get('/loadAddOffer',auth.isLogin,discountController.loadAddOffer)
+admin_route.post('/loadAddOffer',auth.isLogin,discountController.addOffer)
+admin_route.get('/loadOfferList',auth.isLogin,discountController.loadOfferList)
+admin_route.get('/loadEditOffer',auth.isLogin,discountController.loadEditOffer)
+admin_route.post('/loadEditOffer',auth.isLogin,discountController.editOffer)
+admin_route.get('/unlistOffer',auth.isLogin,discountController.unlisOffer)
+
+
+
 
 
 
