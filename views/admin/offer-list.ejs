@@ -98,39 +98,46 @@
                                     <% }
                                 } %>
                             </tbody>
-                        </table>
+                          </table>
+                            <% if (totalPages > 1) { %>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link text-success" href="/admin/loadOfferList?page=<%= currentPage - 1 %>" aria-label="Previous">Previous</a>
+          </li>
+        <% } %>
+  
+        <% for (let page = 1; page <= totalPages; page++) { %>
+          <li class="page-item <%= page === currentPage ? 'active' : '' %>">
+            <a class="page-link text-success" href="/admin/loadOfferList?page=<%= page %>"><%= page %></a>
+          </li>
+        <% } %>
+  
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item">
+            <a class="page-link text-success" href="/admin/loadOfferList?page=<%= currentPage + 1 %>" aria-label="Next">Next</a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  <% } else { %>
+    <table>
+      <tr>
+        <td colspan="5"></td>
+      </tr>
+    </table>
+  <% } %>
+                      
+                        <!-- Your existing table -->
+
+<!-- Pagination Controls -->
+
+  
                         
 
-<!-- Pagination -->
-<% if (totalPages > 1) { %>
-  <nav aria-label="Page navigation" >
-    <ul class="pagination justify-content-center" >
-      <% if (currentPage > 1) { %>
-        <li class="page-item">
-          <a class="page-link text-success" href="?page=1" aria-label="First">&laquo;</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link text-success" href="?page=<%= currentPage - 1 %>" aria-label="Previous">&lt;</a>
-        </li>
-      <% } %>
 
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-          <a class="page-link text-success" href="?page=<%= i %>"><%= i %></a>
-        </li>
-      <% } %>
 
-      <% if (currentPage < totalPages) { %>
-        <li class="page-item">
-          <a class="page-link text-success" href="?page=<%= currentPage + 1 %>" aria-label="Next">&gt;</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link text-success" href="?page=<%= totalPages %>" aria-label="Last">&raquo;</a>
-        </li>
-      <% } %>
-    </ul>
-  </nav>
-<% } %>
 
   
                     </div> <!-- table-responsive //end -->

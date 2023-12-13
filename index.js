@@ -5,7 +5,6 @@ const app = express();
 
 
 app.use(express.static(__dirname + "/public"));
-// Import and use the user route
 const userRoute = require('./router/userRoute');
 app.use('/', userRoute);
 const adminRoute = require("./router/adminRoute");

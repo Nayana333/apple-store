@@ -338,7 +338,7 @@
 
     <script>
         async function returnOrder(event, orderId) {
-            alert('called')
+            
             Swal.fire({
                 title: "Enter your reason for return",
                 input: "text",
@@ -346,7 +346,7 @@
                     autocapitalize: "off"
                 },
                 showCancelButton: true,
-                confirmButtonText: "Look up",
+                confirmButtonText: "Submit",
                 showLoaderOnConfirm: true,
                 preConfirm: async (reason) => {
                     const response = await fetch(`/returnOrder?orderId=${orderId}&reason=${reason}`, {

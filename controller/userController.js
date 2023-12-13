@@ -11,6 +11,7 @@ const Order=require('../models/orderModel')
 const Coupon=require('../models/couponModel')
 const Cart=require('../models/cartModel')
 const Transaction=require('../models/transactionModel')
+const Banner=require('../models/bannerModel')
 
 
 
@@ -156,7 +157,7 @@ const insertUser = async (req, res) => {
             return res.render('registration', {user,message: 'Email already exists' });
         }
 
-        // Check if phone number already exists
+       
         const phoneExists = await User.exists({ mobile: req.body.mobile });
         if (phoneExists) {
             return res.render('registration',{user, message: 'Phone number already exists' });
@@ -183,6 +184,7 @@ const insertUser = async (req, res) => {
 
 const loginLoad =async(req,res)=>{
     try{
+        const user=req.session.user_id;
        
         res.render('login',{user:null})
 
@@ -200,6 +202,7 @@ const varifyLogin=async(req,res)=>{
         const email=req.body.email;
         const password=req.body.password
         const userData= await User.findOne({email:email})
+        const user=userData;
 
        
         if(userData){
@@ -210,7 +213,7 @@ const varifyLogin=async(req,res)=>{
                     
                    {
                        
-                        res.render('login',{message:"please varify your mail"})
+                        res.render('login',{message:"please varify your mail",user:null})
 
                 }
             }
@@ -229,18 +232,18 @@ const varifyLogin=async(req,res)=>{
              
                         res.redirect('/userhome')
                     }else{
-                        res.render('login',{message:"Your account hasbeen temperrorly suspended",},)
+                        res.render('login',{message:"Your account hasbeen temperrorly suspended",user:null},)
                     }
                 
                 }
 
             }
             else{
-                res.render('login',{message:"Email and password do not match"},);
+                res.render('login',{message:"Email and password do not match",user:null},);
             }
 
         }else{
-            res.render('login',{message:"login invalid"})
+            res.render('login',{message:"login invalid",user:null})
         }
 
     }catch(error){
@@ -248,21 +251,10 @@ const varifyLogin=async(req,res)=>{
     }
 
 }
-// const loadHome=async(req,res)=>{
-//     try{
-      
-//         const userData= await Product.find({});
-//         const categoryData=await Category.find({})
-        
-//         res.render('home',{product:userData,category:categoryData})
 
-
-//     }catch(error){
-//         console.log(error.message)
-//     }
-// }
 const loadHome=async(req,res)=>{
     try{
+        const banner=await Banner.find({})
         const cartData=req.session.cartLength;
         const userId=req.session.user_id;
         console.log(userId);
@@ -270,11 +262,11 @@ const loadHome=async(req,res)=>{
         const userData= await Product.find({is_list:true});
         const categoryData=await Category.find({})
         if(user){
-            res.render('home1',{product:userData,category:categoryData,user:user,cartData})
+            res.render('home1',{product:userData,category:categoryData,user:user,cartData,banner})
 
         }
         else{
-            res.render('home1',{product:userData,category:categoryData,user:null,cartData:null})
+            res.render('home1',{product:userData,category:categoryData,user:null,cartData:null,banner})
 
         }
 
@@ -711,7 +703,7 @@ const product = async (req, res) => {
   
       const filter = {
         $and: [
-          { list: true }, // Filter for products where 'list' is true
+          { list: true }, 
           { $or: [{ category: { $in: categories.map(c => new RegExp(c, 'i')) } }] },
           { price: { $gte: minPrice, $lte: maxPrice } },
           { productColor: { $in: colors.map(c => new RegExp(c, 'i')) } },

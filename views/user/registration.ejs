@@ -239,7 +239,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" name="password" id="password" placeholder="Enter Password">
-                                                <span id="passwordError" class="error-message"></span>
+                                                
                                             </div>
                                             <div class="form-group">
                                                 <input  type="text" name="referralCode" id="password" placeholder="Enter RefferralCode">
@@ -377,10 +377,11 @@
             if (password.trim() === '') {
                 document.getElementById('passwordError').innerText = 'Please enter your password';
                 isValid = false;
-            } else if (!validatePassword(password)) {
-                document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
-                isValid = false;
             }
+            // } else if (!validatePassword(password)) {
+            //     document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
+            //     isValid = false;
+            // }
     
             if (image.trim() === '') {
                 document.getElementById('imageError').innerText = 'Please upload your photo';

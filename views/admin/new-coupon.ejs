@@ -28,7 +28,7 @@
     <main class="main-wrap">
         <%- include("../partials/header2")%>
         <section class="content-main">
-            <form action="/admin/addCoupon" method="post" >
+            <form action="/admin/addCoupon" method="post" id="couponForm" >
             <div class="row justify-content-center">
                 <!-- <h2 class="content-title">Add New category</h2> -->
                 <div class="col-9">
@@ -47,14 +47,14 @@
                             <h5 class="my-2">Coupon Info</h5>
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">coupon Code</label>
-                                <input type="text" placeholder="Type here" id="couponCode" class="form-control" name="couponCode" required >
+                                <input type="text" placeholder="Type here" id="couponCode" class="form-control" name="couponCode"  >
                                 <div class="error"></div>
                             </div>
                             <div class="row gx-3">
                                
                                 <div class="  mb-3">
                                     <label for="product_size" class="form-label">Discount(%)</label>
-                                    <input type="number"  class="form-control" name="discount" id="discount" required>                                                                   
+                                    <input type="number"  class="form-control" name="discount" id="discount">                                                                   
                                     <div class="error"></div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                
                                 <div class="  mb-3">
                                     <label for="product_size" class="form-label">Limit</label>
-                                    <input type="number"  class="form-control" name="limit" id="limit" required>                                                                   
+                                    <input type="number"  class="form-control" name="limit" id="limit" >                                                                   
                                     <div class="error"></div>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                 </div>
             </div>
         </form>
-              </section>
+       </section>
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -157,6 +157,77 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
+    <script>
+        document.getElementById('couponForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting initially
+            
+            // Validation for coupon form fields
+            const couponCode = document.querySelector('input[name="couponCode"]');
+            const discount = document.querySelector('input[name="discount"]');
+            const limit = document.querySelector('input[name="limit"]');
+            const minCartAmt = document.querySelector('input[name="minCartAmt"]');
+            const maxRedeemableAmt = document.querySelector('input[name="maxRedeemableAmt"]');
+            const expiryDate = document.querySelector('input[name="expiryDate"]');
+           
+    
+            // Clear previous error messages
+            clearErrors();
+    
+            // Perform validation checks
+            let isValid = true;
+    
+            if (couponCode.value.trim() === '') {
+                showError(couponCode, 'Please enter a coupon code');
+                isValid = false;
+            }
+
+            if (discount.value.trim() === '') {
+                showError(discount, 'Please enter a discount');
+                isValid = false;
+            }
+            if (limit.value.trim() === '') {
+                showError(limit, 'Please enter the Limit');
+                isValid = false;
+            }
+
+            if (minCartAmt.value.trim() === '') {
+                showError(minCartAmt, 'Please enter the minimum cart amount');
+                isValid = false;
+            }
+            if (maxRedeemableAmt.value.trim() === '') {
+                showError(maxRedeemableAmt, 'Please enter Max Redeemable Amount');
+                isValid = false;
+            }
+
+
+    
+            if (expiryDate.value.trim() === '') {
+                showError(expiryDate, 'Please select an expiry date');
+                isValid = false;
+            }
+    
+            
+            
+    
+            // If all validations pass, submit the form
+            if (isValid) {
+                this.submit();
+            }
+        });
+    
+        function showError(input, message) {
+            const errorDiv = input.nextElementSibling;
+            errorDiv.innerText = message;
+            errorDiv.style.color = 'red';
+        }
+    
+        function clearErrors() {
+            const errorFields = document.querySelectorAll('.error');
+            errorFields.forEach(function(errorField) {
+                errorField.innerText = '';
+            });
+        }
+    </script>
 </body>
 
 

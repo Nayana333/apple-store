@@ -26,6 +26,14 @@
     <%- include("../partials/aside")%>
     <main class="main-wrap">
         <%- include("../partials/header2")%>
+        <form id="filterForm" method="get" action="" style="display: flex;">
+          <select id="filterBy" name="filterBy" class="form-control" style="position: relative; left: 3px; width:170px">
+              <option value="listed" <%= filterBy === "listed" ? "selected" : "" %>>Listed</option>
+              <option value="unlisted" <%= filterBy === "unlisted" ? "selected" : "" %>>UnListed</option>
+          </select>
+          <input class="btn btn-light rounded btn-sm font-sm" type="submit" value="Filter" name="button" style="display: none;">
+      </form>
+        
 
 
     <div class="card m-3 ">
@@ -162,6 +170,13 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
+    <script>
+      document.getElementById('filterBy').addEventListener('change', function() {
+          document.getElementById('filterForm').submit();
+      });
+  </script>
+</body>
+    
 </body>
 
 

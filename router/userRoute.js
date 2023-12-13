@@ -14,8 +14,8 @@ const session=require("express-session")
 const config=require("../config/config")
 user_route.use(session({
    secret: config.sessionSecret,
-   resave: false, // Set resave to false
-   saveUninitialized: true, // Set saveUninitialized to true or false based on your needs
+   resave: false, 
+   saveUninitialized: true, 
 }));
 
 const auth=require('../middleware/auth')

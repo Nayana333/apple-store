@@ -5,28 +5,62 @@ const Category=require('../models/categoryModel')
 
 
 
+// const loadOfferList = async (req, res) => {
+//   try {
+//     const admin = req.session.adminData;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 5;
+
+//     const totalOffersCount = await Discount.countDocuments();
+//     const totalPages = Math.ceil(totalOffersCount / limit);
+//     const skip = (page - 1) * limit;
+
+//     const offer = await Discount.find()
+//       .populate({ path: 'discountedProduct', model: 'Product' })
+//       .skip(skip)
+//       .limit(limit);
+
+//     res.render('offer-list', { offer, admin, totalPages, currentPage: page });
+
+//   } catch (error) {
+//     console.error('Error fetching offer list:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+
 const loadOfferList = async (req, res) => {
   try {
     const admin = req.session.adminData;
     const page = parseInt(req.query.page) || 1;
     const limit = 5;
-
     const totalOffersCount = await Discount.countDocuments();
     const totalPages = Math.ceil(totalOffersCount / limit);
+
+    if (page < 1 || page > totalPages) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
     const skip = (page - 1) * limit;
 
     const offer = await Discount.find()
       .populate({ path: 'discountedProduct', model: 'Product' })
       .skip(skip)
-      .limit(limit);
+      .limit(limit).sort({endDate:1});
 
-    res.render('offer-list', { offer, admin, totalPages, currentPage: page });
+    res.render('offer-list', {
+      offer,
+      admin,
+      totalPages,
+      currentPage: page
+    });
 
   } catch (error) {
     console.error('Error fetching offer list:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 
 
@@ -182,7 +216,7 @@ const addOffer = async (req, res) => {
       console.log(offerId);
       const existingOffer=await Discount.findById(offerId);
       if(!existingOffer){
-         res.status(500).json({ error:"prod" });
+         res.status(500).json({ error:"product error" });
       }
       if(name !==existingOffer.name){
         const existingNameOffer=await Discount.findOne({name});

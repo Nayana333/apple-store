@@ -39,7 +39,7 @@ const postAddress=async(req,res)=>{
         return res.status(400).json({errorMessgae:addAddressResult.message});
     }
     const user = await User.findById(userId)
-    const addresses = await Address.find({ user: userId }).sort({ createdDate: -1 }).exec();
+    const addresses = await Address.find({ user: userId,address,order }).sort({ createdDate: -1 }).exec();
     res.redirect('/viewprofile')
 }
 const postAddresscheckOut=async(req,res)=>{

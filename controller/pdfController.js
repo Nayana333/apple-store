@@ -32,16 +32,16 @@ const generateInvoice=async(req,res)=>{
 
         doc
 
-        .fillColor("#444444") // Corrected 'fillerColor' to 'fillColor'
-        .fontSize(20) // Fixed method call to 'fontSize'
+        .fillColor("#444444") 
+        .fontSize(20) 
         .text('ZoneApple.com', 200, 50, { align: "right" })
         .text("682301", 200, 65, { align: "right" })
         .text("Maradu ", 200, 80, { align: "right" })
         .moveDown();
 
         doc 
-        .fillColor("#444444") // Corrected 'fillerColor' to 'fillColor'
-        .fontSize(20) // Fixed method call to 'fontSize'
+        .fillColor("#444444") 
+        .fontSize(20) 
         .text("Invoice", 50, 160);
         generateHr(doc, 185);
          const customerInformationTop=200;

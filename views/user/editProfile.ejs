@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <%- include("../upartials/header")%>
+    <%- include("../partials/header")%>
     <div class="mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
@@ -194,7 +194,7 @@
             </div>
         </div>
         <div class="row"  >
-        <form method="post" name="enq" style="padding: 15px; " enctype="multipart/form-data">
+        <form method="post" name="enq" style="padding: 15px; " enctype="multipart/form-data" onsubmit="return validateForm()">
             
             <div class="row" style="padding-left:25%; padding-right: 25%; ">
                 <img  src="/public/userImages/<%= user.image %> " style="width: 80px;" alt="Maxwell Admin"><br>
@@ -204,12 +204,14 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="eMail">Email</label>
-                        <input type="email" class="form-control" name="email" value="<%= user.email%>">
+                    <input type="email" class="form-control" name="email" value="<%= user.email %>" id="email">
+                    <div class="error" id="emailError"></div>
                 </div>
                 
                 <div class="form-group col-md-12">
                     <label for="phone">Phone</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= user.mobile%>">
+                    <input type="text" class="form-control" name="mobile" value="<%= user.mobile %>" id="phone">
+                    <div class="error" id="phoneError"></div>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="website">Username</label>
@@ -266,6 +268,39 @@
     <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
+    <script>
+        function validateForm() {
+            const email = document.getElementsByName('email')[0].value;
+            const phone = document.getElementsByName('mobile')[0].value;
+    
+            const emailError = document.getElementById('emailError');
+            const phoneError = document.getElementById('phoneError');
+    
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+            let isValid = true;
+    
+            // Email validation
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.style.color = 'red';
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+    
+            // Phone number validation
+            if (phone.length !== 10 || isNaN(phone)) {
+                phoneError.textContent = 'Please enter a valid 10-digit phone number';
+                phoneError.style.color = 'red';
+                isValid = false;
+            } else {
+                phoneError.textContent = '';
+            }
+    
+            return isValid;
+        }
+    </script>
 </body>
 
 

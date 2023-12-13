@@ -360,7 +360,7 @@
                                     <% if (product[i].discountStatus && new Date(product[i].startDate) <= new Date() && new Date(product[i].endDate) >= new Date()) { %>
                                                                     
                                         <% if (product[i].price > product[i].discountPrice) { %>
-                                            <span class="product-label label-top">Sale</span>
+                                            <span class="product-label label-top"></span>
                                         <% } %>
                                     <% } %>
                                     <div class="product-cart-wrap mb-30">
@@ -368,7 +368,7 @@
                                             <div class="product-img product-img-zoom">
                                                 <a href="/aboutProduct?id=<%= product[i]._id.toString()%>">
                                                     <img class="default-img" src="/public/productImages/<%= product[i].productImages[3] %>" alt="">
-                                                    <img class="hover-img" src="/public/productImages/<%= product[i].productImages[1] %>" alt="">
+                                                    <img class="hover-img" src="/public/productImages/<%= product[i].productImages[2] %>" alt="">
                                                 </a>
                                             </div>
                                            
@@ -416,7 +416,7 @@
                                                     action="/addtoCart/<%= product[i]._id %>"
                                                     method="post">
                                                     <button  type="submit"   data-product-id="<%= product[i]._id %>" aria-label="Add to Cart" class="action-btn hover-up" style="height: 43px;
-                                                        position: relative;left: 65px;"><i class="fi-rs-shopping-bag-add"></i></button>
+                                                        position: relative;left: 20px; width:27px"><i class="fi-rs-shopping-bag-add"></i></button>
                                                  
                                                     <input type="number" value="1"
                                                         name="qty" style="display: none;">

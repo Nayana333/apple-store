@@ -19,6 +19,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
 
     
 
@@ -31,28 +38,38 @@
                         <div class="mb-25" style="padding-left:25%;padding-top:5% ">
                             <h4>Address</h4>
                         </div>
-                        <form method="post" action="/postAddress?id=<%= user._id.toString()%>" style="width: 70%; padding-left:25%; " >
+
+
+                        <form method="post" action="/postAddress?id=<%= user._id.toString()%>" style="width: 70%; padding-left:25%; " onsubmit="return validateForm()">
                             <div class="form-group">
-                                <input type="text" required="" name="name" placeholder="Name">
+                                <input type="text" name="name" placeholder="Name">
+                                <div class="error" id="nameError"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" required="" name="houseName" placeholder="HouseName">
+                                <input type="text"  name="houseName" placeholder="HouseName">
+                                <div class="error" id="houseNameError"></div>
                             </div>
                             <div class="form-group">
-                                <input type="text" required="" name="street" placeholder="Street">
+                                <input type="text"  name="street" placeholder="Street">
+                                <div class="error" id="streetError"></div>
                             </div>
                             <div class="form-group">
-                                <input required="" type="text" name="city" placeholder="City">
+                                <input  type="text" name="city" placeholder="City">
+                                <div class="error" id="cityError"></div>
                             </div>
                             <div class="form-group">
-                                <input required="" type="text" name="state" placeholder="State">
+                                <input  type="text" name="state" placeholder="State">
+                                <div class="error" id="stateError"></div>
                             </div>
                             <div class="form-group">
-                                <input required="" type="text" name="pinCode" placeholder="Pincode">
+                                <input  type="text" name="pinCode" placeholder="Pincode">
+                                <div class="error" id="pinCodeError"></div>
                             </div>
                             <div class="form-group">
-                                <input required="" type="text" name="phone" placeholder="Phone">
+                                <inputtype="text" name="phone" placeholder="Phone">
+                                <div class="error" id="phoneError"></div>
                             </div>
+                            
                             <div class="row mb-2">
                                 <div class="col">
                                   <div class="form-check form-check-inline" style="margin-right: 40px;">
@@ -68,11 +85,12 @@
                                     <label class="form-check-label" for="flexRadioDefault3"> Other </label>
                                   </div>
                                 </div>
-                              </div>                         
+                              </div>       
                             <div class="col-md-12 "style="width: 70%; padding-left:35%;">
                                 <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">SAVE</button>
                             </div>
                         </form>
+                      
                     </div>
     <%- include("../partials/footer")%>
     <!-- Preloader Start -->
@@ -112,6 +130,81 @@
     <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
+
+    <script>
+        function validateForm() {
+            const name = document.getElementsByName('name')[0].value;
+            const houseName = document.getElementsByName('houseName')[0].value;
+            const street = document.getElementsByName('street')[0].value;
+            const city = document.getElementsByName('city')[0].value;
+            const state = document.getElementsByName('state')[0].value;
+            const pinCode = document.getElementsByName('pinCode')[0].value;
+            const phone = document.getElementsByName('phone')[0].value;
+    
+            const nameError = document.getElementById('nameError');
+            const houseNameError = document.getElementById('houseNameError');
+            const streetError = document.getElementById('streetError');
+            const cityError = document.getElementById('cityError');
+            const stateError = document.getElementById('stateError');
+            const pinCodeError = document.getElementById('pinCodeError');
+            const phoneError = document.getElementById('phoneError');
+    
+            const isNumber = value => !isNaN(value);
+    
+            let isValid = true;
+    
+            if (name === '') {
+                nameError.textContent = 'Name is required';
+                isValid = false;
+            } else {
+                nameError.textContent = '';
+            }
+    
+            if (houseName === '') {
+                houseNameError.textContent = 'HouseName is required';
+                isValid = false;
+            } else {
+                houseNameError.textContent = '';
+            }
+    
+            if (street === '') {
+                streetError.textContent = 'Street is required';
+                isValid = false;
+            } else {
+                streetError.textContent = '';
+            }
+    
+            if (city === '') {
+                cityError.textContent = 'City is required';
+                isValid = false;
+            } else {
+                cityError.textContent = '';
+            }
+    
+            if (state === '') {
+                stateError.textContent = 'State is required';
+                isValid = false;
+            } else {
+                stateError.textContent = '';
+            }
+    
+            if (pinCode === '' || pinCode.length !== 6 || !isNumber(pinCode)) {
+                pinCodeError.textContent = 'Pin code must be a 6-digit number';
+                isValid = false;
+            } else {
+                pinCodeError.textContent = '';
+            }
+    
+            if (phone === '' || phone.length !== 10 || !isNumber(phone)) {
+                phoneError.textContent = 'Phone number must be a 10-digit number';
+                isValid = false;
+            } else {
+                phoneError.textContent = '';
+            }
+    
+            return isValid; // Submit the form if all validations pass
+        }
+    </script>
 </body>
 
 

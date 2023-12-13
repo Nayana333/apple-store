@@ -93,34 +93,64 @@ const insertProduct = async(req,res)=>{
 
 
 
+
+
 // const loadProduct = async (req, res) => {
-//   try{
-          
-//     var search='';
-//     if(req.query.search){
-//         search=req.query.search;
-       
+//   try {
+//     let query = {};
+
+//     if (req.query.search) {
+//       const search = req.query.search.trim();
+//       const parsedSearch = parseFloat(search);
+
+//       query.$or = [
+//         { name: { $regex: new RegExp(search, 'i') } },
+//         { category: { $regex: new RegExp(search, 'i') } },
+//       ];
+
+//       if (!isNaN(parsedSearch)) {
+//         query.$or.push({ price: { $gte: parsedSearch } });
+//       }
 //     }
 
-//    const adminData =await Product.find({
-//     $or:[
-//       { name:{$regex:'.*'+search+'.*',$options:'i'}},
-//         { category:{$regex:'.*'+search+'.*',$options:'i'}},
-//         { price:{$regex:'.*'+search+'.*',$options:'i'}},
-        
-//     ]
-   
-// });
-//       res.render('viewProduct', {product: adminData });
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 5;
+//     const skip = (page - 1) * limit;
 
+//     const adminData = await Product.find(query)
+//       .skip(skip)
+//       .limit(limit);
+
+//     const totalProducts = await Product.countDocuments(query);
+//     const totalPages = Math.ceil(totalProducts / limit);
+
+//     res.render('viewProduct', {
+//       product: adminData,
+//       totalPages: totalPages,
+//       currentPage: page,
+//       search: req.query.search || '', 
+//     });
 //   } catch (error) {
-//       console.log(error.message);
+//     console.log(error.message);
+//     res.status(500).send('Error fetching products');
 //   }
-// }
+// };
+
 
 const loadProduct = async (req, res) => {
   try {
     let query = {};
+
+    
+    if (req.query.filterBy) {
+      const filterValue = req.query.filterBy;
+
+      if (filterValue === 'listed') {
+        query.list = true; 
+      } else if (filterValue === 'unlisted') {
+        query.list = false; 
+      }
+    }
 
     if (req.query.search) {
       const search = req.query.search.trim();
@@ -151,7 +181,8 @@ const loadProduct = async (req, res) => {
       product: adminData,
       totalPages: totalPages,
       currentPage: page,
-      search: req.query.search || '', 
+      search: req.query.search || '',
+      filterBy: req.query.filterBy || '', 
     });
   } catch (error) {
     console.log(error.message);
