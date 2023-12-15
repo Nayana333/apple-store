@@ -1,5 +1,6 @@
 const categ=require("../models/categoryModel");
 const User=require("../models/userModel");
+const mongoose= require("mongoose")
 
 const addCategory= async (req, res) => {
     try {
@@ -188,10 +189,10 @@ const loadCategory = async (req, res) => {
   }
   const unlistCategory = async (req, res) => {
     try {
-        const admin=  req.session.adminData
+        const admin=  req.session.adminData;
         const id = req.query.id;
-  
-  
+        console.log(id);
+        console.log(typeof(id))
         const category= await categ.findById(id);
   
        
@@ -201,7 +202,7 @@ const loadCategory = async (req, res) => {
   
         await category.save();
   
-        res.redirect('/admin/viewCategory');
+       res.status(200).json({message:"success"})
     } catch (error) {
         console.log(error.message);
   

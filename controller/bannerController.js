@@ -239,11 +239,10 @@ const loadBannerList = async (req, res) => {
 const unlistBanner=async(req,res)=>{
     try{
         const id=req.query.id;
-
         const banner=await Banner.findById(id);
         banner.isListed=!banner.isListed;
         await banner.save();
-        res.redirect('/admin/viewBanner');
+        res.status(200).json({message:"success"})
     }catch(error){
         console.log(error.message);
     }

@@ -153,6 +153,8 @@ admin_route.get('/viewCoupon',auth.isLogin,couponController.loadCoupon)
 admin_route.get('/editCoupon',auth.isLogin,couponController.editCoupon)
 admin_route.post('/editCoupon',auth.isLogin,couponController.updateCoupon)
 admin_route.get('/unlistCoupon', auth.isLogin,couponController.unlistCoupon);
+admin_route.get('/deleteCoupon',auth.isLogin,couponController.deleteCoupon)
+
 
 
 // Sales//////////////////////////////////////////////////////////////////////

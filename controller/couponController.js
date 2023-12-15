@@ -122,9 +122,6 @@ const loadCoupon = async (req, res) => {
                 
             };
       
-           
-            
-      
        
             await Coupon.findByIdAndUpdate(couponId, { $set: updateFields });
       
@@ -150,12 +147,38 @@ const loadCoupon = async (req, res) => {
       
             await coupon.save();
       
-            res.redirect('/admin/viewCoupon');
+            res.status(200).json({message:"succcess"})
         } catch (error) {
             console.log(error.message);
       
         }
       }
+
+
+      const deleteCoupon= async(req,res)=>{
+
+        try {
+            
+            const  couponId = req.query.couponId;
+
+            if (couponId) {
+                await Coupon.deleteOne({_id: couponId})
+            res.status(200).json({message:'success'});
+            } else {
+                res.status(404).json({message:'success'});
+            }
+            
+            const userId = req.query.userId;
+            
+                  
+            
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+      
+      
+      };
     
 
 
@@ -166,5 +189,6 @@ module.exports={
     loadCoupon,
     editCoupon,
     updateCoupon,
-    unlistCoupon
+    unlistCoupon,
+    deleteCoupon
 }

@@ -198,9 +198,10 @@ const loadProduct = async (req, res) => {
 const editProduct=async(req,res)=>{
     try{
         const id=req.query.id;
+        const categories=await Category.find()
         const adminData=await Product.findById({_id:id})
         if(adminData){
-            res.render('edit-product',{product:adminData});
+            res.render('edit-product',{product:adminData,categories});
         }
         else{
         res.redirect('/admin/dashboard');
@@ -219,7 +220,7 @@ const updateProduct= async (req, res) => {
     
       const product= await Product.findById(productId);
       if (!product) {
-          return res.render('edit-product', { message: "Product not found",product:product});
+          return res.render('edit-product', { message: "Product not found",product:product,category});
       }
 
       
@@ -254,14 +255,14 @@ const updateProduct= async (req, res) => {
 
 const unlistProduct = async (req, res) => {
   try {
-      const admin=  req.session.adminData
+      
       const id = req.query.id;
 
       const product = await Product.findById(id);
       product.list = !product.list;
       await product.save();
 
-      res.redirect('/admin/viewProduct');
+    res.status(200).json({message:'success'})
   } catch (error) {
       console.log(error.message);
 

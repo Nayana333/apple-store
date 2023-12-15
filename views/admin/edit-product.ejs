@@ -243,8 +243,17 @@
                                     <input type="text" name="name" placeholder="Type here" class="form-control" value="<%= product.name %>" id="product_name">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" name="category" placeholder="Type here" class="form-control" value="<%= product.category %>" id="category">
+                                    <label class="form-label">Select Categories</label>
+                                <select class="form-select">
+                                    <% categories.forEach(category=>{%>
+                                        <option value="<%=category._id%>">
+                                            <%= category.category %>
+                                        </option>
+                                        <% }) %>
+
+                               
+                                    
+                                </select>
                                 </div>
                                 </div>
 
@@ -271,7 +280,7 @@
                                 <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">  Quantity</label>
-                                        <input placeholder="type here" type="text" value="<%= product.quandity%>" name="quandity"class="form-control">
+                                        <input placeholder="type here" type="text" value="<%= product.quantity%>" name="quandity"class="form-control">
                                     </div>
 
                                     <div class="mb-4">
