@@ -29,7 +29,7 @@
         <%- include("../partials/header2")%>
 
         <section class="content-main">
-            <form id="'productform'" action="/admin/new-product" method="POST" enctype="multipart/form-data">
+            <form id="productForm" action="/admin/new-product" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
@@ -54,7 +54,7 @@
                                     <div class="error" id="quantityError"></div>
                                 </div>
                             </div>
-                          
+                        
                             <div class="mb-4">
                                 <label for="product_brand" class="form-label">Product Color</label>
                                 <input type="text" placeholder="Type here" class="form-control" name="productColor" id="productColor">
@@ -185,55 +185,86 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
-
     <script>
-        document.getElementById('productform').addEventListener('submit', function(event) {
-            var form = event.target;
-            var name = form.elements['name'].value.trim();
-            var quantity = form.elements['quantity'].value.trim();
-            var productColor = form.elements['productColor'].value.trim();
-
-            if (name === '' || quantity === '' || productColor === '') {
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('productForm');
+        const nameInput = document.getElementById('name');
+        const quantityInput = document.getElementById('quantity');
+        const productColorInput = document.getElementById('productColor');
+        const priceInput = document.getElementById('price');
+        const categorySelect = document.getElementById('categorySelect');
+    
+        function validateName() {
+            const nameValue = nameInput.value.trim();
+            if (nameValue === '') {
+                document.getElementById('nameError').textContent = 'Please enter a product title';
+                document.getElementById('nameError').style.color = 'red';
+                return false;
+            }
+            document.getElementById('nameError').textContent = '';
+            return true;
+        }
+    
+        function validateQuantity() {
+            const quantityValue = quantityInput.value.trim();
+            if (quantityValue === '') {
+                document.getElementById('quantityError').textContent = 'Please enter a quantity';
+                document.getElementById('quantityError').style.color = 'red';
+                return false;
+            }
+            document.getElementById('quantityError').textContent = '';
+            return true;
+        }
+    
+        function validateProductColor() {
+            const productColorValue = productColorInput.value.trim();
+            if (productColorValue === '') {
+                document.getElementById('productColorError').textContent = 'Please enter a product color';
+                document.getElementById('productColorError').style.color = 'red';
+                return false;
+            }
+            document.getElementById('productColorError').textContent = '';
+            return true;
+        }
+    
+        function validatePrice() {
+            const priceValue = priceInput.value.trim();
+            if (priceValue === '') {
+                document.getElementById('priceError').textContent = 'Please enter a product price';
+                document.getElementById('priceError').style.color = 'red';
+                return false;
+            }
+            document.getElementById('priceError').textContent = '';
+            return true;
+        }
+    
+        function isFormValid() {
+            const nameValid = validateName();
+            const quantityValid = validateQuantity();
+            const productColorValid = validateProductColor();
+            const priceValid = validatePrice();
+    
+            return nameValid && quantityValid && productColorValid && priceValid;
+        }
+    
+        form.addEventListener('submit', function (event) {
+            if (!isFormValid()) {
                 event.preventDefault();
-
-                if (name === '') {
-                    displayError('name', 'Please enter a product title', 'nameError');
-                } else {
-                    removeError('name', 'nameError');
-                }
-
-                if (quantity === '') {
-                    displayError('quantity', 'Please enter a quantity', 'quantityError');
-                } else {
-                    removeError('quantity', 'quantityError');
-                }
-
-                if (productColor === '') {
-                    displayError('productColor', 'Please enter a product color', 'productColorError');
-                } else {
-                    removeError('productColor', 'productColorError');
-                }
-                if (price=== '') {
-                    displayError('price', 'Please enter a product color', 'priceError');
-                } else {
-                    removeError('price', 'priceError');
-                }
+                alert('Please fill in all required fields.');
+            } else if (nameInput.value.trim() === '' && quantityInput.value.trim() === '' && productColorInput.value.trim() === '' && priceInput.value.trim() === '') {
+                event.preventDefault();
+                alert('Form cannot be empty.');
             }
         });
+    });
 
-        function displayError(fieldName, errorMessage, errorId) {
-            var inputField = document.getElementById(fieldName);
-            var errorDiv = document.getElementById(errorId);
-            errorDiv.textContent = errorMessage;
-            errorDiv.style.color = 'red';
-        }
 
-        function removeError(fieldName, errorId) {
-            var inputField = document.getElementById(fieldName);
-            var errorDiv = document.getElementById(errorId);
-            errorDiv.textContent = '';
-        }
-    </script>
+</script>
+    
+
+    
+
+        
 </body>
 
 
