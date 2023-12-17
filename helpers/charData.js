@@ -1,51 +1,6 @@
 const Order=require('../models/orderModel')
 
 
-// const getDailyDataArray=async()=>{
-
-//     const currentDate=new Date();
-//     const sevendaysAgo=new Date(currentDate);
-//     sevendaysAgo.setDate(currentDate.getDate()-7);
-
-//     const dailyOrders=await Order.aggregate([
-//         {
-//             $match:{
-//                 status:"Payment Successfull",
-//                 orderDate:{$gte:sevendaysAgo, $lte : currentDate}
-
-//             }
-//         },
-//         {
-//             $group:{
-//                 _id:{$dayOfWeek :'$orderDate'},
-//                 count :{$sum:1}
-//             }
-//         },
-//         {
-//             $sort:{'_id':1}
-//         }
-//     ]);
-
-//     const  dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-//     const dailyDataArray=[];
-//     for(let i=6;i>=0;i--){
-//         const dayIndex=new Date(currentDate);
-//         dayIndex.setDate(currentDate.getDate()-i);
-//         const foundDay=dailyOrders.find(order=>order._id===(dayIndex.getDay()=== 0 ? 7 : dayIndex.getDay()));
-//         count =foundDay =dailyOrders.find(order=>order._id===(dayIndex.getDay()=== 0 ? 7 :dayIndex.getDay()))
-//         const dayNameIndex=dayIndex.getIndex.getDay()=== 0 ? 6 : dayIndex.getDay() -1;
-//         const dayName=dayNames[dayNameIndex];
-//         dailyDataArray.push({day:dayName,count});
-
-
-//     }
-//     return dailyDataArray
-
-
-// }
-
-
-
 const getDailyDataArray = async () => {
     
     const currentDate = new Date(); 

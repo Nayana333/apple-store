@@ -21,8 +21,6 @@
                             </div>
                             <input type="hidden" name="fullOTP" id="fullOTP" />
                             <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Verify" type="submit">
-                            <a href="#" onclick="resendOtp()" class="btn btn-dark mt-3">Resend OTP</a>
-                        </form>
                         <p id="otp-timer" class="resend text-muted mb-0">00:00</p>
                         <p id="error-message" style="color: rgb(200, 3, 3);"></p>
                     </div>
@@ -65,10 +63,7 @@
             initializeTimer();
         };
 
-        function resendOtp() {
-            // Simulating resend action by resetting the timer
-            initializeTimer();
-        }
+        
     </script>
 </body>
 </html>

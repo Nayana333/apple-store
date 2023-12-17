@@ -9,6 +9,7 @@ const validator = require('validator');
 const  dateUtils = require('../helpers/dateUtils')
 const charData=require('../helpers/charData')
 const { product } = require("./userController");
+const session = require("express-session");
 
 
 const securePassword=async(password)=>{
@@ -236,8 +237,12 @@ const unblockUser= async (req, res) => {
 
         
         user.is_blocked = !user.is_blocked;
-
         await user.save();
+        if(user.is_blocked===true){
+            req.session.user_id = null;
+
+        }
+
 
         res.status(200).json({message:'success'});
 

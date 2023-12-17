@@ -71,70 +71,7 @@ const calculateSubTotal=(cart)=>{
     return productTotals;
   }
 
-  // const postCheckout = async (req, res) => {
-  //   const userId = req.session.user_id;
-  //   const { address, payment } = req.body;
-  
-  
-  //   try {
-  //     const user = await User.findById(userId);
-  //     const cart = await Cart.findOne({ user: userId }).populate({
-  //       path: 'items.product',
-  //       model: 'Product',
-  //     });
-      
-  
-  //     if (!user || !cart) {
-  //       console.error('User or cart not found.');
-  //     }
-  
-  //     const cartItems = cart.items || [];
-  //     let totalAmount = 0;
-  
-  //     for (const cartItem of cartItems) {
-  //       const product = cartItem.product;
-  
-  //       if (!product) {
-  //         console.error('Product not found.');
-  //       }
-  
-  //       if (product.quantity < cartItem.quantity) {
-  //         console.error('Not enough quantity in stock.');
-  //       }
-  
-  //       product.quantity -= cartItem.quantity;
-  
-  //       const shippingCost = 100;
-  //       const itemTotal = product.discountPrice * cartItem.quantity + shippingCost;
-  //       totalAmount += itemTotal;
-  
-  //       await product.save();
-  //     }
-  
-  //     const order = new Order({
-  //       user: userId,
-  //       address: address,
-  //       orderDate: new Date(),
-  //       status: 'Pending',
-  //       paymentMethod: payment,
-  //       totalAmount: totalAmount,
-  //       items: cartItems.map((cartItem) => ({
-  //         product: cartItem.product._id,
-  //         quantity: cartItem.quantity,
-  //         price: cartItem.product.discountPrice,
-  //       })),
-  //     });
-  
-  //     await order.save();
-  
-  //     await Cart.deleteOne({ user: userId });
-  
-  //     res.redirect('/orderPlaced');
-  //   } catch (error) {
-  //     console.error('Error placing the order:', error);
-  // }
-  // };
-
+ 
 
 
   const cashOnDelivery = async (req, res) => {
@@ -158,6 +95,8 @@ const calculateSubTotal=(cart)=>{
   
       const cartItems = cart.items || [];
       let totalAmount = 0;
+      const subtotal=calculateSubTotal(cartItems);
+      const subtotalWithShipping=subtotal+100;
   
       for (const cartItem of cartItems) {
         const product = cartItem.product;
@@ -206,6 +145,9 @@ const calculateSubTotal=(cart)=>{
         paymentMethod: 'Cash on delivery',
         paymentStatus: 'Payment Pending',
         totalAmount: totalAmount,
+        couponCode:couponCode,
+        couponDiscount:subtotalWithShipping-totalAmount,
+        orginalPrice:subtotalWithShipping,
         items: cartItems.map(cartItem => {
           const product = cartItem.product;
           const isDiscounted = product.discountStatus &&
@@ -498,7 +440,8 @@ const walletPayment = async (req, res) => {
 
     const cartItems = cart.items || [];
     let totalAmount = 0;
-
+    const subtotal=calculateSubTotal(cartItems)
+    const subtotalWithShipping=subtotal+100;
 
 
     if (couponCode) {
@@ -540,6 +483,9 @@ const walletPayment = async (req, res) => {
       paymentMethod: 'Wallet Payment',
       paymentStatus:'payment successfull',
       totalAmount: totalAmount,
+      couponCode:couponCode,
+      couponDiscount:subtotalWithShipping-totalAmount,
+      orginalPrice:subtotalWithShipping,
       items: cartItems.map(cartItem => ({
         product: cartItem.product._id,
         quantity: cartItem.quantity,
@@ -649,6 +595,10 @@ const razorpayOrder = async (req, res) => {
 
     const cartItems = cart.items || [];
     let totalAmount = 0;
+    const subtotal=calculateSubTotal(cartItems);
+    const subtotalWithShipping=subtotal+100;
+
+
 
     for (const cartItem of cartItems) {
       const product = cartItem.product;
@@ -683,6 +633,8 @@ const razorpayOrder = async (req, res) => {
       paymentMethod: 'Online Payment',
       paymentStatus: 'payment successfull',
       totalAmount: 500,
+      couponDiscount:subtotalWithShipping+totalAmount,
+      orginalPrice:subtotalWithShipping,
       items: cartItems.map(cartItem => ({
         product: cartItem.product._id,
         quantity: cartItem.quantity,

@@ -380,136 +380,6 @@ const sentOTPVerificationEmail = async (req, res, name, email, _id) => {
 }
 
 
-//varifyOTP
-
-
-// const OTPVerification = async (req, res) => {
-//     try {
-//         const userId = req.session.id2;
-//         const otp = req.body.fullOTP
-
-//         if (!otp) {
-//             const errorMessage = "Empty OTP details are not allowed";
-//             return res.redirect('/otp-page?error=${errorMessage}');
-//         } else {
-//             const userOTPVerificationRecords = await UserOTPVerification.find({
-//                 userId
-//             });
-
-//             if (userOTPVerificationRecords.length <= 0) {
-//                 const errorMessage = "Account record doesn't exist or has been verified already. Please sign up or...";
-//                 return res.redirect('/otp-page?error=${errorMessage}');
-//             } else {
-//                 const { expiresAt } = userOTPVerificationRecords[0];
-//                 const hashedOTP = userOTPVerificationRecords[0].otp;
-
-//                 if (expiresAt < Date.now()) {
-//                     await UserOTPVerification.deleteMany({ userId });
-//                     const errorMessage = "Code has expired. Please request again.";
-//                     return res.redirect('/otp-page?error=${errorMessage}');
-//                 } else {
-//                     const validOTP = await bcrypt.compare(otp, hashedOTP);
-
-//                     if (!validOTP) {
-//                         const errorMessage = "Invalid code passed. Check your inbox";
-//                         return res.redirect('/otp-page?error=${errorMessage}');
-//                     } else {
-//                         await User.updateOne({ _id: userId }, { is_verified: 1 });
-//                         await UserOTPVerification.deleteMany({ userId });
-//                       res.render('login',{user:null})
-//                     }
-//                 }
-//             }
-//         }
-//     } catch (error) {
-//         const errorMessage = "An error occurred during OTP verification";
-//         return res.redirect('/otp-page?error=${errorMessage}');
-// }
-// };
-
-
-// const OTPVerification = async (req, res) => {
-//     try {
-//         const userId = req.session.id2;
-//         const otp = req.body.fullOTP;
-
-//         if (!otp) {
-//             const errorMessage = "Empty OTP details are not allowed";
-//             return res.redirect('/otp-page?error=${errorMessage}');
-//         } else {
-//             const userOTPVerificationRecords = await UserOTPVerification.find({ userId });
-
-//             if (userOTPVerificationRecords.length <= 0) {
-//                 const errorMessage = "Account record doesn't exist or has been verified already. Please sign up or...";
-//                 return res.redirect('/otp-page?error=${errorMessage}');
-//             } else {
-               
-//                 const latestRecord = userOTPVerificationRecords[userOTPVerificationRecords.length - 1];
-//                 const { expiresAt, otp: hashedOTP } = latestRecord;
-
-//                 if (expiresAt < Date.now()) {
-//                     await UserOTPVerification.deleteMany({ userId });
-//                     const errorMessage = "Code has expired. Please request again.";
-//                     return res.redirect('/otp-page?error=${errorMessage}');
-//                 } else {
-//                     const validOTP = await bcrypt.compare(otp, hashedOTP);
-
-//                     if (!validOTP) {
-//                         const errorMessage = "Invalid code passed. Check your inbox";
-//                         return res.redirect('/otp-page?error=${errorMessage}');
-//                     } else {
-//                         console.log(userId+'outside');
-//                         if(req.session.refferralCode){
-//                             console.log(userId+'inside');
-//                             await User.updateOne({ _id: userId }, { is_verified: 1, walletBalance: 50 });
-//                             const referrer = await User.findOne({ referralCode: req.session.referralCode });
-//                             const user=await User.findOne({_id:userId})
-//                             referrer.referredUsers.push(user.email);
-//                             referrer.walletBalance +=100;
-//                             await referrer.save();
-
-//                             const referredUserTransaction=new Transaction({
-//                                 user:referrer._id,
-//                                 amount:100,
-//                                 type:'credit',
-//                                 date:Date.now(),
-//                                 paymentMethod:"Wallet Payment",
-//                                 description:'referral Bonus',
-
-//                             });
-//                             const refferedTransCtion=new Transaction({
-//                                 user:userId,
-//                                 amount:50,
-//                                 type:'credit',
-//                                 date:Date.now(),
-//                                 paymentMethod:"wallet Payment",
-//                                 description:'Referral Bonus'
-//                             })
-
-//                             await referredUserTransaction.save();
-//                             await refferedTransCtion.save();
-//                         }
-                      
-//                         latestRecord.used = true;
-//                         await latestRecord.save();
-
-//                         await User.updateOne({ _id: userId }, { is_verified: 1 });
-
-                       
-//                         await UserOTPVerification.deleteMany({ userId, used: false });
-
-//                         res.render('login', { user:null});
-//                     }
-//                 }
-//             }
-//         }
-//     } catch (error) {
-//         const errorMessage = "An error occurred during OTP verification";
-//         return res.redirect('/otp-page?error=${errorMessage}');
-//     }
-// };
-
-
 const OTPVerification = async (req, res) => {
     try {
         const userId = req.session.id2;
@@ -601,26 +471,9 @@ const OTPVerification = async (req, res) => {
 };
 
 
-const resendOTP = async (req, res) => {
-    try {
-        const userId = req.session.id2; 
 
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            const errorMessage = "User not found";
-            return res.redirect(`/otp-page?error=${errorMessage}`);
-        }
 
-       
-        await sentOTPVerificationEmail(req, res, user.name, user.email, user._id);
 
-        res.redirect('/otp-page'); 
-    } catch (error) {
-        const errorMessage = "An error occurred while resending OTP";
-        return res.redirect(`/otp-page?error=${errorMessage}`);
-    }
-};
 
 const loadOTPpage = async (req, res) => {
     const errorMessage = req.query.error;
@@ -1002,7 +855,8 @@ module.exports={
     loadProfile,
     loadeditProfile,
     editProfile,
-    resendOTP,
+   
+    
     // forgotPassword,
     // forgotPasswordOTP,
     // passwordOTPVerification

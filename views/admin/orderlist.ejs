@@ -72,6 +72,8 @@
                                     <th scope="col">Name</th>
                                    
                                     <th scope="col">Total</th>
+                                    <th scope="col">Method</th>
+
                                     <th scope="col">Status</th>
                                     
                                     <th scope="col">Date</th>
@@ -87,6 +89,7 @@
                                     <td><b><%= orderData[i].user.name%></b></td>
                                     
                                     <td><%= orderData[i].totalAmount%></td>
+                                    <td><%= orderData[i].paymentMethod%></td>
                                     <td>
                                         <span class="badge rounded-pill alert-info"><%= orderData[i].status %></span>
                                         <% if (orderData[i].status === "return Requested" && orderData[i].reason) { %>

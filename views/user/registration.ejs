@@ -219,53 +219,38 @@
                                             <br>
                                         </div>
                                         
-                                        <form id="form" method="post"  action=" " enctype="multipart/form-data">
-
+                                        <form id="registrationForm" method="post" action="" enctype="multipart/form-data">
                                             <div class="form-group">
-                                                <input type="text"  name="name" id="name" placeholder="Enter Name">
+                                                <input type="text" name="name" id="name" placeholder="Enter Name">
                                                 <span id="nameError" class="error-message"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text"  name="email" id="email" placeholder="Enter Email">
+                                                <input type="email" name="email" id="email" placeholder="Enter Email">
                                                 <span id="emailError" class="error-message"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="mobile" name="mobile" id="mobile" placeholder="Enter Mobile Number">
+                                                <input type="tel" name="mobile" id="mobile" placeholder="Enter Mobile Number">
                                                 <span id="mobileError" class="error-message"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" name="username" id="username" placeholder="Enter Usernmae">
+                                                <input type="text" name="username" id="username" placeholder="Enter Username">
                                                 <span id="usernameError" class="error-message"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" name="password" id="password" placeholder="Enter Password">
-                                                
+                                                <input type="password" name="password" id="password" placeholder="Enter Password">
+                                                <span id="passwordError" class="error-message"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input  type="text" name="referralCode" id="password" placeholder="Enter RefferralCode">
-                                                
+                                                <input type="text" name="referralCode" id="referralCode" placeholder="Enter Referral Code">
+                                                <span id="referralCodeError" class="error-message"></span>
                                             </div>
-                                            <!-- <div class="form-group">
-                                                <input  type="text" name="address" placeholder="Enter Address">
-                                            </div> -->
                                             <div class="form-group">
-                                                <input  type="file" name="image" id="image" placeholder="upload photo">
+                                                <input type="file" name="image" id="image" placeholder="Upload Photo">
                                                 <span id="imageError" class="error-message"></span>
-                                            </div>
-                                            <div class="login_footer form-group">
-                                                <div class="chek-form">
-                                                    <div class="custome-checkbox">
-                                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
-                                                        <label class="form-check-label" for="exampleCheckbox12"><span>I agree to terms &amp; Policy.</span></label>
-                                                    </div>
-                                                </div>
-                                                
                                             </div>
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Submit &amp; Register</button>
                                             </div>
-
-                                        
                                         </form>
                                         <div class="divider-text-center mt-15 mb-15">
                                             <span> or</span>
@@ -300,10 +285,11 @@
 
 
     <style>
+        
         .error-message {
             color: red;
-            margin-top: 5px;
         }
+   
     </style>
 
 
@@ -331,14 +317,32 @@
 
 
     <script>
-        document.getElementById('form').addEventListener('submit', function (event) {
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+    
             var name = document.getElementById('name').value;
             var email = document.getElementById('email').value;
             var mobile = document.getElementById('mobile').value;
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
+            var referralCode = document.getElementById('referralCode').value;
             var image = document.getElementById('image').value;
+
+
+            var inputFields = document.querySelectorAll('#registrationForm input');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                var errorId = input.id + 'Error';
+                document.getElementById(errorId).innerText = ''; 
+            });
+
+            input.addEventListener('focus', function() {
+                var errorId = input.id + 'Error';
+                document.getElementById(errorId).innerText = ''; 
+            });
+        });
     
+            // Clear previous error messages
             document.getElementById('nameError').innerText = '';
             document.getElementById('emailError').innerText = '';
             document.getElementById('mobileError').innerText = '';
@@ -377,11 +381,12 @@
             if (password.trim() === '') {
                 document.getElementById('passwordError').innerText = 'Please enter your password';
                 isValid = false;
+            } else if (!validatePassword(password)) {
+                document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
+                isValid = false;
             }
-            // } else if (!validatePassword(password)) {
-            //     document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
-            //     isValid = false;
-            // }
+    
+           
     
             if (image.trim() === '') {
                 document.getElementById('imageError').innerText = 'Please upload your photo';
@@ -389,8 +394,15 @@
             }
     
             if (!isValid) {
-                event.preventDefault(); // Prevent the form from submitting if there are errors
+                return false; // Prevent form submission if there are errors
             }
+    
+            // If everything is valid, you might want to submit the form here:
+            // You can add your AJAX submission code or simply let the form submit naturally
+            // For example:
+             document.getElementById('registrationForm').submit();
+    
+            return true; // Allow form submission
         });
     
         function validateEmail(email) {

@@ -388,7 +388,7 @@
                                             <div class="product-category">
                                                 <a href="shop-grid-right.html"><%= product[i].category %></a>
                                             </div>
-                                            <h2><a href="shop-product-right.html"><%= product[i].name %></a></h2>
+                                            <h2><a href="/aboutProduct?id=<%= product[i]._id.toString()%>"><%= product[i].name %></a></h2>
                                             <div class="rating-result" title="90%">
                                                 <span>
                                                     <span>90%</span>
@@ -416,7 +416,7 @@
                                                     action="/addtoCart/<%= product[i]._id %>"
                                                     method="post">
                                                     <button  type="submit"   data-product-id="<%= product[i]._id %>" aria-label="Add to Cart" class="action-btn hover-up" style="height: 43px;
-                                                        position: relative;left: 20px; width:27px"><i class="fi-rs-shopping-bag-add"></i></button>
+                                                        position: relative;left: 20px; width:-124px"><i class="fi-rs-shopping-bag-add"></i></button>
                                                  
                                                     <input type="number" value="1"
                                                         name="qty" style="display: none;">

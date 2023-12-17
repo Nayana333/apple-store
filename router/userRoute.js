@@ -67,11 +67,11 @@ user_route.get('/userhome',auth.isUserBlocked,userController.loadHome)
 
 user_route.get('/logout',auth.isLogin,userController.logOut)
 
-user_route.get('/viewprofile',auth.isLogin,auth.isUserBlocked,userController.loadProfile)
+user_route.get('/viewprofile',auth.isLogin,userController.loadProfile)
 user_route.get('/editprofile',auth.isLogin,userController.loadeditProfile)
 user_route.post('/editprofile', upload.single('image'),userController.editProfile);
 
-user_route.get('/cart',auth.isLogin,auth.isUserBlocked,cartController.loadCart)
+user_route.get('/cart',auth.isLogin,cartController.loadCart)
 user_route.get('/checkout',auth.isLogin,checkoutController.loadCheckout)
 user_route.get('/wishlist',auth.isLogin,wishlistController.loadWishlist)
 
@@ -96,7 +96,6 @@ user_route.get('/cancelOrder/:orderId',auth.isLogin,orderController.cancelOrder)
 user_route.post('/applyCoupon',auth.isLogin,checkoutController.applyCoupon)
 user_route.post('/updatePaymentStatus',checkoutController.updatePaymentStatus)
 user_route.post('/razorpayOrder',checkoutController.razorpayOrder)
-user_route.get('/resend-otp',userController.resendOTP)
 user_route.get('/emptyCart',auth.isLogin,cartController.emptyCart)
 user_route.get('/emptyWishlist',auth.isLogin,wishlistController.emptywishlist)
 // user_route.get('/forgotPassword',userController.forgotPassword)

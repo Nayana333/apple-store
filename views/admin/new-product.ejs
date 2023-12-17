@@ -29,7 +29,7 @@
         <%- include("../partials/header2")%>
 
         <section class="content-main">
-            <form name="productform" id="productform" action="/admin/new-product" method="POST" enctype="multipart/form-data">
+            <form id="'productform'" action="/admin/new-product" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
@@ -41,31 +41,27 @@
                 <div class="col-lg-6">
                     <div class="card mb-4" style="padding-bottom: 58px;">
                         <div class="card-body">
-                            <h5 class="my-2">Product Info</h5>
-                            <% if (typeof message !== 'undefined' && message) { %>
-                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
-                            <% } %><br>
+                            
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">Product title</label>
                                 <input type="text" placeholder="Type here" class="form-control" name="name" id="name">
-                                <div class="error"></div>
+                                <div class="error" id="nameError"></div>
                             </div>
                             <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Quanity</label>
-                                    <input type="number" placeholder="Type here" class="form-control" name="quantity">
-                                    <div class="error"></div>
+                                <div class="mb-3">
+                                    <label for="product_size" class="form-label">Quantity</label>
+                                    <input type="number" placeholder="Type here" class="form-control" name="quantity" id="quantity">
+                                    <div class="error" id="quantityError"></div>
                                 </div>
                             </div>
                           
                             <div class="mb-4">
-                                <label for="product_brand" class="form-label">product Color</label>
-                                <input type="text" placeholder="Type here" class="form-control" name="productColor">
-                                <div class="error"></div>
+                                <label for="product_brand" class="form-label">Product Color</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="productColor" id="productColor">
+                                <div class="error" id="productColorError"></div>
                             </div>
                         </div>
-                    </div> <!-- card end// -->
+                    </div>
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="my-2">Product Specifications</h5>
@@ -118,17 +114,11 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-4">
-                                <label class="form-label">Price</label>
-                                <input type="text" placeholder="Type here" class="form-control" name="price">
-                                <div class="error"></div>
+                                <label for="product_brand" class="form-label">Product price</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="price" id="price">
+                                <div class="error" id="priceError"></div>
                             </div>
-                            <div class="mb-4">
-                                <label class="form-label">Discount Price</label>
-                                <input type="text" placeholder="Type here" class="form-control" name="discountPrice">
-                                <div class="error"></div>
-                            </div>
-                          
-              
+                                        
                             <hr>
                             <h5 class="mb-3">Categories</h5>
                             <div class="col-sm-9">
@@ -144,14 +134,7 @@
                                     
                                 </select>
 
-                               
-
-                               
-                                    
-                                
-                            
-                            
-                            
+                                                        
                          
                         </div>
                        
@@ -202,6 +185,55 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
+
+    <script>
+        document.getElementById('productform').addEventListener('submit', function(event) {
+            var form = event.target;
+            var name = form.elements['name'].value.trim();
+            var quantity = form.elements['quantity'].value.trim();
+            var productColor = form.elements['productColor'].value.trim();
+
+            if (name === '' || quantity === '' || productColor === '') {
+                event.preventDefault();
+
+                if (name === '') {
+                    displayError('name', 'Please enter a product title', 'nameError');
+                } else {
+                    removeError('name', 'nameError');
+                }
+
+                if (quantity === '') {
+                    displayError('quantity', 'Please enter a quantity', 'quantityError');
+                } else {
+                    removeError('quantity', 'quantityError');
+                }
+
+                if (productColor === '') {
+                    displayError('productColor', 'Please enter a product color', 'productColorError');
+                } else {
+                    removeError('productColor', 'productColorError');
+                }
+                if (price=== '') {
+                    displayError('price', 'Please enter a product color', 'priceError');
+                } else {
+                    removeError('price', 'priceError');
+                }
+            }
+        });
+
+        function displayError(fieldName, errorMessage, errorId) {
+            var inputField = document.getElementById(fieldName);
+            var errorDiv = document.getElementById(errorId);
+            errorDiv.textContent = errorMessage;
+            errorDiv.style.color = 'red';
+        }
+
+        function removeError(fieldName, errorId) {
+            var inputField = document.getElementById(fieldName);
+            var errorDiv = document.getElementById(errorId);
+            errorDiv.textContent = '';
+        }
+    </script>
 </body>
 
 

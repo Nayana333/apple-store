@@ -209,36 +209,76 @@ const removeCart = async (req, res) => {
 
 }
   };
-  const updateCartCount = async (req, res) => {
-    try {
-      const userId = req.session.user_id;
-      const productId = req.query.productId;
-      const newQuantity = parseInt(req.query.quantity);
-  
-      const existingCart = await Cart.findOne({ user: userId });
-      if (existingCart) {
-        const existingCartItem = existingCart.items.find(
-          (item) => item.product.toString() === productId
-        );
-  
-        if (existingCartItem) {
-          existingCartItem.quantity = newQuantity;
-          existingCart.total = existingCart.items.reduce(
-            (total, item) => total + (item.quantity || 0),
-            0
-          );
-  
-          await existingCart.save();
-        }
-  
-        res.json({ success: true });
-      } else {
-        res.json({ success: false, error: "Cart not found" });
+//   const updateCartCount = async (req, res) => {
+//     try {
+//         const userId = req.session.user_id;
+//         const productId = req.query.productId;
+//         const newQuantity = parseInt(req.query.quantity);
+
+//         const existingCart = await Cart.findOne({ user: userId });
+//         if (existingCart) {
+//             const existingCartItem = existingCart.items.find(
+//                 (item) => item.product.toString() === productId
+//             );
+
+//             if (existingCartItem) {
+//                 existingCartItem.quantity = newQuantity;
+//                 existingCart.total = existingCart.items.reduce(
+//                     (total, item) => total + (item.quantity || 0),
+//                     0
+//                 );
+
+//                 await existingCart.save();
+//                 res.json({ success: true });
+//             } else {
+//                 res.json({ success: false, error: "Item not found in cart" });
+//             }
+//         } else {
+//             res.json({ success: false, error: "Cart not found" });
+//         }
+//     } catch (error) {
+//         console.error("Error updating cart:", error);
+//         res.json({ success: false, error: "Internal server error" });
+//     }
+// };
+
+
+const updateCartCount = async (req, res) => {
+  const userId = req.session.user_id;
+  const productId = req.params.productId;
+  const newQuantity = req.body.quantity;
+
+  try {
+      
+      const maxQuantity = 3;
+
+      const userCart = await Cart.findOne({ user: userId });
+
+      if (!userCart) {
+          return res.status(404).json({ error: 'User cart not found.' });
       }
-    } catch (error) {
-      console.error("Error updating cart:", error);
-      res.json({ success: false, error: "Internal server error" });
-}};
+
+      const cartItem = userCart.items.find((item) =>
+          item.product.equals(productId)
+      );
+
+      if (!cartItem) {
+          return res.status(404).json({ error: 'Product not found in cart.' });
+      }
+
+  
+      if (newQuantity >= 0 && newQuantity <= 4) {
+          cartItem.quantity = newQuantity;
+          await userCart.save();
+          res.sendStatus(200);
+      } else {
+          res.status(400).json({ error: `Quantity must be between 0 and ${maxQuantity}.` });
+      }
+  } catch (error) {
+      console.error('Error updating quantity:', error);
+      res.status(500).json({ error: 'An error occurred while updating quantity.' });
+  }
+};
 
 const emptyCart=async(req,res)=>{
   try{
