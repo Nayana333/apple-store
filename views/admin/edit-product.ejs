@@ -244,15 +244,13 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Select Categories</label>
-                                <select class="form-select">
-                                    <% categories.forEach(category=>{%>
-                                        <option value="<%=category._id%>">
+                                    <label class="form-label">Select Categories</label>
+                                <select class="form-select" name="category"> 
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.category %>"> 
                                             <%= category.category %>
                                         </option>
-                                        <% }) %>
-
-                               
-                                    
+                                    <% }) %>
                                 </select>
                                 </div>
                                 </div>

@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/Applestore");
+require("dotenv").config()
+mongoose.connect(process.env.MONGO_URL)
+.then((e)=>console.log('Mongo connected sucessfully'));
 const express = require("express");
 const app = express();
+
 
 
 app.use(express.static(__dirname + "/public"));
@@ -14,3 +17,4 @@ app.use('/admin',adminRoute)
 app.listen(3002, function () {
   console.log("Server is running");
 });
+

@@ -23,7 +23,7 @@ const insertProduct = async(req,res)=>{
             const existingProduct = await Product.findOne({ name: req.body.name });
           
             if (existingProduct) {
-                return res.render('new-product', { message: "Product already exists" });
+                return res.render('new-product', { message: "Product already exists",categories });
             }
           
      
@@ -77,7 +77,7 @@ const insertProduct = async(req,res)=>{
             }
           
             const savedProduct = await new Product(newProduct).save();
-            return res.render('new-product',{categories, message: " Product added successfully" });
+            return res.render('new-product',{ message: " Product added successfully",categories});
           } catch (error) {
            
             res.render('new-product', { error: error.message });

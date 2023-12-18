@@ -36,6 +36,9 @@
                     <div class="card mb-4" style="width: 647px;">
                         <div class="card-header">
                             <h4>Banner Image</h4>
+                            <% if (typeof message !== 'undefined' && message) { %>
+                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+                            <% } %>
                         </div>
                         
                         <div class="card-body">
@@ -51,7 +54,7 @@
                     <div class="col-lg-6">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h4>Basic</h4>
+                                <h4>Details</h4>
                             </div>
                             <div class="card-body">
                                 <div class="mb-4">

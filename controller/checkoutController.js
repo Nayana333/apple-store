@@ -12,8 +12,8 @@ const Razorpay = require('razorpay');
 const { ellipse } = require("pdfkit");
 const razorpay = new Razorpay({
 
-  key_id	:'rzp_test_h5Hjivllk0VNGW',
-  key_secret:'uSIbB1jtGB7Si0ddUDg1Ood8'
+  key_id	:process.env.KEY,
+  key_secret:process.env.KEY_SECRET
   
 	
 });
