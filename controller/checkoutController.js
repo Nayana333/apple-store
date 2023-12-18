@@ -1,6 +1,7 @@
 const User=require("../models/userModel");
 const category=require("../models/categoryModel");
 const Cart=require("../models/cartModel");
+require("dotenv").config()
 const Address=require("../models/addressModel");
 const Order=require('../models/orderModel')
 const Coupon=require('../models/couponModel')
