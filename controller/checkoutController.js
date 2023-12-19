@@ -633,7 +633,7 @@ const razorpayOrder = async (req, res) => {
       status: 'payment successfull',
       paymentMethod: 'Online Payment',
       paymentStatus: 'payment successfull',
-      totalAmount: 500,
+      totalAmount: totalAmount,
       couponDiscount:subtotalWithShipping+totalAmount,
       orginalPrice:subtotalWithShipping,
       items: cartItems.map(cartItem => ({

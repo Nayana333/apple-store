@@ -104,11 +104,8 @@ const generateInvoice=async(req,res)=>{
     doc
         .font("Helvetica")
         .text("Total Amount (Rs) + shipping charges:", 50, totalPricePosition)
-        .text(`Rs ${orders.price}`, 250, totalPricePosition)
-        .text("Coupon Code:", 50, totalPricePosition + 15)
-        .text(`${orders.couponCode}`, 250, totalPricePosition + 15)
-        .text("Coupon Discount (Rs):", 50, totalPricePosition + 30)
-        .text(`Rs ${orders.couponDiscount}`, 250, totalPricePosition + 30);
+        .text(`Rs ${orders.totalAmount}`, 250, totalPricePosition)
+       
     
     const totalWithDiscountPosition = totalPricePosition + 60; 
     

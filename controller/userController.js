@@ -855,8 +855,6 @@ module.exports={
     loadProfile,
     loadeditProfile,
     editProfile,
-   
-    
     // forgotPassword,
     // forgotPasswordOTP,
     // passwordOTPVerification
