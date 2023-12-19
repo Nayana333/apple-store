@@ -413,3 +413,46 @@ module.exports={
       <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">SAVE</button>
   </div>
 </form>
+
+
+
+
+
+
+
+<script>
+  // JavaScript code for the timer and resend functionality
+  function startTimer(duration, display) {
+      var timer = duration;
+      var minutes, seconds;
+      var intervalId = setInterval(function () {
+          minutes = parseInt(timer / 60, 10);
+          seconds = parseInt(timer % 60, 10);
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+          display.textContent = minutes + ":" + seconds;
+          if (--timer < 0) {
+              clearInterval(intervalId);
+              display.textContent = "00:00";
+              showErrorMessage();
+          }
+      }, 1000);
+  }
+
+  function showErrorMessage(message) {
+      var errorMessageElement = document.getElementById('error-message');
+      errorMessageElement.textContent = message || 'Time expired. Please try again.';
+  }
+
+  function initializeTimer() {
+      var timerDuration = 60;
+      var display = document.getElementById('otp-timer');
+      startTimer(timerDuration, display);
+  }
+
+  window.onload = function () {
+      initializeTimer();
+  };
+
+  
+</script>

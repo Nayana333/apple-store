@@ -21,7 +21,8 @@
                             </div>
                             <input type="hidden" name="fullOTP" id="fullOTP" />
                             <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Verify" type="submit">
-                        <p id="otp-timer" class="resend text-muted mb-0">00:00</p>
+                            <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Resend-OTP" id="resendOTPButton" type="submit">
+                        <p id="timer" class="resend text-muted mb-0">00:00</p>
                         <p id="error-message" style="color: rgb(200, 3, 3);"></p>
                     </div>
                 </div>
@@ -29,41 +30,36 @@
         </div>
     </section>
 
+    
     <script>
-        // JavaScript code for the timer and resend functionality
-        function startTimer(duration, display) {
-            var timer = duration;
-            var minutes, seconds;
-            var intervalId = setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-                display.textContent = minutes + ":" + seconds;
-                if (--timer < 0) {
-                    clearInterval(intervalId);
-                    display.textContent = "00:00";
-                    showErrorMessage();
-                }
-            }, 1000);
+        // Set the initial time to 60 seconds (1 minute)
+        let timerSeconds = 30;
+      
+        // Function to update the timer display
+        function updateTimer() {
+          const timerElement = document.getElementById("timer");
+          timerElement.textContent = `Timer: ${Math.floor(timerSeconds / 60)}:${(timerSeconds % 60)
+            .toString()
+            .padStart(2, "0")}`;
+      
+          if (timerSeconds <= 0) {
+            
+            document.getElementById("resendOTPButton").removeAttribute("disabled");
+          } else {
+            // Continue the countdown
+            timerSeconds--;
+            setTimeout(updateTimer, 1000); // Update the timer every 1 second
+          }
         }
+        updateTimer();
+    
+                const alert = document.getElementById('message')
+                setTimeout(() => {
+                    alert.style.display = 'none'
+                }, 3000);
+       </script>
 
-        function showErrorMessage(message) {
-            var errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.textContent = message || 'Time expired. Please try again.';
-        }
 
-        function initializeTimer() {
-            var timerDuration = 60;
-            var display = document.getElementById('otp-timer');
-            startTimer(timerDuration, display);
-        }
 
-        window.onload = function () {
-            initializeTimer();
-        };
-
-        
-    </script>
 </body>
 </html>
