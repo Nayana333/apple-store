@@ -1,0 +1,184 @@
+<!-- <% include('../layoutes/header.ejs') %>
+
+<h1>Login</h1>
+<form action="/login" method="post" >
+    <% if(typeof message !=='undefined' ){ %>
+        
+        <p style="color: green;">
+            <h4><%=message%></h4>
+        </p>
+    <% } %>
+
+    <input type="email" name="email" placeholder="enter your E-mail" required>
+    <br><br>
+    <input type="password" name="password" placeholder="enter your password" required><br><br>
+    <input type="submit" value="Login"><br><br>
+    <a href="/forgot">forgot password?</a>
+</form>
+<% include('../layoutes/footer.ejs') %> -->
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>ZoneApple</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <style>
+        /* Custom shadow class */
+.custom-shadow {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* You can adjust the shadow values as needed */
+}
+
+    </style>
+</head>
+
+<body>
+    <%- include("../partials/header")%>
+    <%- include("../partials/mobileHeader")%>
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span>Login
+                   
+                </div>
+            </div>
+        </div>
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row" justify>
+                    <div class="col-lg-10 m-auto">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5 custom-shadow">
+                                    <div class="padding_eight_all bg-white">
+                                        <div class="row justify-content-center">
+                                        <div class="heading_s1">
+                                            <h3 class="mb-30">Reset Password </h3>
+                                            <% if (typeof message !== 'undefined' && message) { %>
+                                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+                                            <% } %><br>
+                                        </div>
+                                        <form action="/forgotpswSet" method="post" onsubmit="return validatePassword()">
+                                            <div class="form-group">
+                                                <input type="password" name="currentPassword" id="currentPassword" placeholder="Your New Password"><br>
+                                                <span id="currentPasswordError"></span><br>
+                                        
+                                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Your password"><br>
+                                                <span id="confirmPasswordError"></span><br>
+                                            </div>
+                                           
+                                            <div class="login_footer form-group">
+                                            </div>
+                                            <div class="form-group row justify-content-center">
+                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Reset password</button>
+                                                <br>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include("../partials/footer")%>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script>
+        function validatePassword() {
+            var currentPassword = document.getElementById('currentPassword').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+    
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/;
+    
+            var currentPasswordError = document.getElementById('currentPasswordError');
+            var confirmPasswordError = document.getElementById('confirmPasswordError');
+    
+            if (currentPassword !== confirmPassword) {
+                confirmPasswordError.innerHTML = "Passwords do not match";
+                confirmPasswordError.style.color = "red";
+                return false;
+            } else {
+                confirmPasswordError.innerHTML = "";
+            }
+    
+            if (!passwordRegex.test(currentPassword)) {
+                currentPasswordError.innerHTML = "Password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters";
+                currentPasswordError.style.color = "red";
+                return false;
+            } else {
+                currentPasswordError.innerHTML = "";
+            }
+    
+            return true;
+        }
+    </script>
+   
+    
+    <!-- Template  JS -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+</html>

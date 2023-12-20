@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="\public\assets\css\otp.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <section class="container-fluid bg-body-tertiary d-block">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
+                <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
+                    <div class="card-body p-5 text-center">
+                        <h4>Verify</h4>
+                        <% if (typeof message !== 'undefined' && message) { %>
+                            <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+                        <% } %>
+                        <p>Your code was sent to you via email</p>
+                        <form action="" method="post">
+                            <div id='inputs' class="otp-field mb-4">
+                                <input name="otp" id='input1' type='text' maxLength="1" />
+                                <input name="otp" id='input2' type='text' maxLength="1" />
+                                <input name="otp" id='input3' type='text' maxLength="1" />
+                                <input name="otp" id='input4' type='text' maxLength="1" />
+                            </div>
+                            <input type="hidden" name="fullOTP" id="fullOTP" />
+                            <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Verify" type="submit">
+                            </form>
+
+                        <p id="timer" class="resend text-muted mb-0">00:00</p>
+                        <p id="error-message" style="color: rgb(200, 3, 3);"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <script>
+        // Set the initial time to 60 seconds (1 minute)
+        let timerSeconds = 30;
+      
+        // Function to update the timer display
+        function updateTimer() {
+          const timerElement = document.getElementById("timer");
+          timerElement.textContent = `Timer: ${Math.floor(timerSeconds / 60)}:${(timerSeconds % 60)
+            .toString()
+            .padStart(2, "0")}`;
+      
+          if (timerSeconds <= 0) {
+            
+            document.getElementById("resendOTPButton").removeAttribute("disabled");
+          } else {
+            // Continue the countdown
+            timerSeconds--;
+            setTimeout(updateTimer, 1000); // Update the timer every 1 second
+          }
+        }
+        updateTimer();
+    
+                const alert = document.getElementById('message')
+                setTimeout(() => {
+                    alert.style.display = 'none'
+                }, 3000);
+       </script>
+
+
+
+</body>
+</html>

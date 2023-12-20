@@ -254,7 +254,7 @@ const varifyLogin=async(req,res)=>{
 
 const loadHome=async(req,res)=>{
     try{
-        const banner=await Banner.find({})
+        const banner=await Banner.find({isListed:true})
         const cartData=req.session.cartLength;
         const userId=req.session.user_id;
         console.log(userId);
@@ -326,8 +326,8 @@ const sentOTPVerificationEmail = async (req, res, name, email, _id) => {
     try {
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
         req.session.otp = otp;
-        
-        console.log(req.session.otp);
+
+        console.log(otp);
 ////create transporter/////////////////////////////////////////
 
     const transporter=nodemailer.createTransport({
@@ -384,35 +384,36 @@ const OTPVerification = async (req, res) => {
     try {
         const userId = req.session.id2;
         
-        const otp = req.session.otp;
-        console.log(otp,userId+"hello");
-   
+        let otp = req.body.otp;
+        otp = otp.join('')
+        console.log(otp+"body otp");
+
         
 
         if (!otp) {
             const errorMessage = "Empty OTP details are not allowed";
-            return res.redirect('/otp-page?error=${errorMessage}');
+            return res.redirect(`/otp-page?error=${errorMessage}`);
         } else {
             const userOTPVerificationRecords = await UserOTPVerification.find({ userId });
 
             if (userOTPVerificationRecords.length <= 0) {
                 const errorMessage = "Account record doesn't exist or has been verified already. Please sign up or...";
-                return res.redirect('/otp-page?error=${errorMessage}');
+                return res.redirect(`/otp-page?error=${errorMessage}`);
             } else {
                
                 const latestRecord = userOTPVerificationRecords[userOTPVerificationRecords.length - 1];
                 const { expiresAt, otp: hashedOTP } = latestRecord;
-
+                console.log(hashedOTP)
                 if (expiresAt < Date.now()) {
                     await UserOTPVerification.deleteMany({ userId });
                     const errorMessage = "Code has expired. Please request again.";
-                    return res.redirect('/otp-page?error=${errorMessage}');
+                    return res.redirect(`/otp-page?error=${errorMessage}`);
                 } else {
-                    const validOTP = await bcrypt.compare(otp, hashedOTP);
-
+                    const validOTP = bcrypt.compare(otp, hashedOTP);
+                    console.log(validOTP+"validity")
                     if (!validOTP) {
                         const errorMessage = "Invalid code passed. Check your inbox";
-                        return res.redirect('/otp-page?error=${errorMessage}');
+                        return res.redirect(`/otp-page?error=${errorMessage}`);
                     } else {
                       
                         latestRecord.used = true;
@@ -486,6 +487,8 @@ const loadOTPpage = async (req, res) => {
         console.log(error.message);
 }
 };
+
+
 const userLogout =async(req,res)=>{
     try{
         req.session.destroy();
@@ -606,12 +609,7 @@ const product = async (req, res) => {
       console.log(error.message);
     }
   };
-  
-
-
-
-
-  
+   
 
   const loadContact= async(req,res)=>{
     
@@ -703,136 +701,145 @@ const editProfile= async (req, res) => {
   }
   
 
-//   const forgotPassword = async (req, res) => {
 
-//     try {
+
+const loadresendOTPpage = async (req, res) => {
+    const errorMessage = req.query.error;
+    const user = req.user;
+    req.session.user = user
+    
+
+    try {
+    const userId = req.session.id2
+    const userData=await  User.findById(userId)
+    const name=userData.name;
+    const email=userData.email;
+    
+    
+        res.render('resend-otp', { user, errorMessage });
++
+
+        sentOTPVerificationEmail(req, res, name, email,userData._id);
+
+    } catch (error) {
+        console.log(error.message);
+}
+};
+
+
+
+
+const getForgotEmail=async(req,res)=>{
+    try{
+
+      const user =req.session.forgotPasswordUser;
+      if(req.query.error){
+       return res.render('forgot',{user:null,errorMessage:req.query.error})
+
+      }
+      res.render('forgot',{user:null})
         
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+const postForgotEmail=async(req,res)=>{
+    try{
+        const email=req.body.email;
+        const user=await User.findOne({email:email})
+        if(user){
+        req.session.forgotPasswordUser=user._id;
+        const name=user.name;
+        sentOTPVerificationEmail(req, res, name, email,user._id);
+        res.redirect('/forgotOtp')
+        }
+        else{
+            res.redirect('/forgotEmail')
+        }
 
 
-//         res.render('forgetpassword',{user:null})
-
-//     } catch (error) {
-
-//         console.log(error.message);
-
-//     }
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
 
+const getForgotOtp = async(req,res)=>{
+    try{
+        const user=req.session.forgotPasswordUser;
+        res.render('forgotOTP',{user:null})
+    }catch(error){
+        console.log(error.message)
+    }
+}
 
-// }
-// const forgotPasswordOTP = async (req, res) => {
-//     try {
-//         const user=req.session.user_id;
-//         const userExist = await User.findOne({ email: req.body.email });
+const verifyForgotOTP=async(req,res)=>{
+    try{
+       
+                const userId = req.session.forgotPasswordUser;
+                let otp = req.body.otp;
+                let forgotOTP = req.session.otp;
+                otp = otp.join('');
+                console.log(otp + "body otp");
+        
+                if (!otp) {
 
-//         if (userExist) {
-//             req.session.id3 = userExist._id
-//             console.log("forgot" + req.session.id3);
+                    const errorMessage = "Empty OTP details are not allowed";
+                    return res.redirect(`/forgotEmail?error=${errorMessage}`);
+                } else {
+        
+                   
+                        console.log(forgotOTP+"VERIFIED");
+                      
+                            const validOTP = otp==forgotOTP?true:false;
+                            console.log(validOTP + "validity");
+                            if (!validOTP) {
+                                const errorMessage = "Invalid code passed. Check your inbox";
+                                return res.redirect(`/forgotEmail?error=${errorMessage}`);
+                            } else {
+        
+                                delete req.session.fortgotOTP;
+        
+                               res.redirect('/forgotpswSet')
+                            }
+                        
+                    
+                }
+            } catch (error) {
+                const errorMessage = "An error occurred during OTP verification";
+                return res.redirect('/forgotEmail?error=${errorMessage}');
+            }
+        };
 
+        const getForgotpswset=async(req,res)=>{
+            try{
+                const user=req.session.forgotPasswordUser;
+                res.render('forgotpswset',{user:null})
+            }catch(error){
+                console.log(error.message);
+            }
+        }
 
-//             sentPasswordOTPVerificationEmail(req, res, req.body.email, userExist._id);
-//             res.render('forgetPassword-otp', { message: "Otp sent to your mail" ,user:null});
-//         } else {
-
-
-
-//             res.render('forgetpassword', { message: "Account details doesnt match" ,user:null});
-
-//         }
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// };
-
-// const sentPasswordOTPVerificationEmail = async (req, res, email, _id) => {
-//     try {
-//         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-//         req.session.otp2 = otp;
-//         console.log("forgot password");
-
-//         console.log(req.session.otp2);
-
-
-//         const mailOptions = {
-//             from: "nrnayana1@gmail.com",
-//             to: email,
-//             subject: "Verify your email",
-//             html: `<p>Enter <b>${otp}</b> in the app to reset your password</p>`,
-//         };
-
-
-//         // Hash password
-//         const hashedOTP = await bcrypt.hash(otp, 10);
-
-//         const newOTPVerification = new UserOTPVerification({
-//             userId: _id,
-//             otp: hashedOTP,
-//             createdAt: Date.now(),
-//             expiresAt: Date.now() + 120000,
-//         });
-
-//         await newOTPVerification.save();
-
-//         await transporter.sendMail(mailOptions, async (err, status) => {
-//             if (err) {
-//                 console.log('Err', err);
-//             } else {
-
-
-
-
-//             }
-//         });
-
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// };
-// const passwordOTPVerification = async (req, res) => {
-//     try {
-//         const userId = req.session.id3;
-//         const otp = req.body.fullOTP;
-
-//         if (!otp) {
-//             const errorMessage = "Empty OTP details are not allowed";
-//             return res.redirect(`/otp-page?error=${errorMessage}`);
-//         } else {
-//             const userOTPVerificationRecords = await UserOTPVerification.find({
-//                 userId
-//             });
-
-//             if (userOTPVerificationRecords.length <= 0) {
-//                 const errorMessage = "Ivalid otp, Please request again";
-//                 return res.redirect(`/otp-page?error=${errorMessage}`);
-//             } else {
-//                 const { expiresAt } = userOTPVerificationRecords[0];
-//                 const hashedOTP = userOTPVerificationRecords[0].otp;
-
-//                 if (expiresAt < Date.now()) {
-//                     await UserOTPVerification.deleteMany({ userId });
-//                     const errorMessage = "Code has expired. Please request again.";
-//                     return res.redirect(`/otp-page?error=${errorMessage}`);
-//                 } else {
-//                     const validOTP = await bcrypt.compare(otp, hashedOTP);
-
-//                     if (!validOTP) {
-//                         const errorMessage = "Invalid code passed. Check your inbox";
-//                         return res.redirect(`/otp-page?error=${errorMessage}`);
-//                     } else {
-
-
-//                         await UserOTPVerification.deleteMany({ userId });
-//                         res.render("forgetpassword-change")
-//                     }
-//                 }
-//             }
-//         }
-//     } catch (error) {
-//         const errorMessage = "An error occurred during OTP verification";
-//         return res.redirect(`/otp-page?error=${errorMessage}`);
-//     }
-// };
-
+        const passwordSet=async(req,res)=>{
+            try{
+                const user=req.session.forgotPasswordUser;
+                const password=req.body.confirmPassword;
+                console.log(password+'reset');
+                const secure_password = await securePassword(password);
+                const updatedData = await User.findByIdAndUpdate(
+                    { _id: user },
+                    { $set: { password: secure_password } }
+                  );
+                  if(updatedData){
+                    delete req.session.forgotPasswordUser;
+                    res.redirect("/login");
+                  }
+                  
+                } catch (error) {
+                  console.log(error.message);
+                }
+              };
 
 
   
@@ -843,8 +850,6 @@ module.exports={
     loginLoad,
     varifyLogin,
     loadHome,
-    // forgotLoad,
-    // forgotVarify,
     sentOTPVerificationEmail,
     loadOTPpage,
     OTPVerification,
@@ -855,9 +860,13 @@ module.exports={
     loadProfile,
     loadeditProfile,
     editProfile,
-    // forgotPassword,
-    // forgotPasswordOTP,
-    // passwordOTPVerification
+    loadresendOTPpage,
+    getForgotEmail,
+    postForgotEmail,
+    verifyForgotOTP,
+    getForgotpswset,
+    getForgotOtp,
+    passwordSet
     
    
    

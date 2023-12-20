@@ -11,6 +11,9 @@
                 <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
                     <div class="card-body p-5 text-center">
                         <h4>Verify</h4>
+                        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                            <p style="color: rgb(0, 125, 209);" id="message"><%= errorMessage %></p>
+                        <% } %>
                         <p>Your code was sent to you via email</p>
                         <form action="/otp-page" method="post">
                             <div id='inputs' class="otp-field mb-4">
@@ -21,7 +24,12 @@
                             </div>
                             <input type="hidden" name="fullOTP" id="fullOTP" />
                             <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Verify" type="submit">
-                            <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Resend-OTP" id="resendOTPButton" type="submit">
+                            </form>
+                            <form method="get" action="/resendotp-page">
+                                <input style=" background: #088178; color: white;" class="btn btn- mt-3" value="Resend-OTP"  type="submit">
+
+                            </form>
+
                         <p id="timer" class="resend text-muted mb-0">00:00</p>
                         <p id="error-message" style="color: rgb(200, 3, 3);"></p>
                     </div>

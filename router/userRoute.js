@@ -61,7 +61,6 @@ const upload=multer({storage:storage});
 user_route.get('/registration', userController.loadRegister);
 user_route.get('/',userController.loadHome);
 user_route.get('/login',userController.loginLoad);
-// user_route.get('/forgot',auth.isLogout,userController.forgotLoad);
 user_route.get('/otp-page',userController.loadOTPpage);
 user_route.get('/logout',auth.isLogin,userController.userLogout);
 user_route.get('/product',userController.product);
@@ -86,9 +85,15 @@ user_route.get('/orderDetails',auth.isLogin,orderController.orderDetails)
 user_route.get('/cancelOrder/:orderId',auth.isLogin,orderController.cancelOrder)
 user_route.get('/emptyCart',auth.isLogin,cartController.emptyCart)
 user_route.get('/emptyWishlist',auth.isLogin,wishlistController.emptywishlist)
-// user_route.get('/forgotPassword',userController.forgotPassword)
 user_route.get('/generate-invoice/:orderId',auth.isLogin,pdfController.generateInvoice)
 user_route.get('/deleteAddress',auth.isLogin,addressController.deleteAddress)
+user_route.get('/resendotp-page',userController.loadresendOTPpage);''
+user_route.get('/forgotEmail',auth.isLogout,userController.getForgotEmail)
+user_route.get('/forgotOTP',auth.isLogout,userController.getForgotOtp)
+user_route.get('/ForgotpswSet',auth.isLogout,userController.getForgotpswset)
+
+
+
 
 
 //POST///////////////////////////////////////////////////////////////////////////
@@ -96,7 +101,6 @@ user_route.get('/deleteAddress',auth.isLogin,addressController.deleteAddress)
 
 user_route.post('/registration', upload.single('image'),userController.insertUser);
 user_route.post('/login',userController.varifyLogin);
-// user_route.post('/forgoit',auth.isLogout,userController.forgotVarify);
 user_route.post('/otp-page',userController.OTPVerification);
 user_route.post('/editprofile', upload.single('image'),userController.editProfile);
 user_route.post('/addtoCart/:productId',auth.isLogin,cartController.addtoCart)
@@ -109,9 +113,14 @@ user_route.post('/walletPayment',auth.isLogin,checkoutController.walletPayment)
 user_route.post('/applyCoupon',auth.isLogin,checkoutController.applyCoupon)
 user_route.post('/updatePaymentStatus',checkoutController.updatePaymentStatus)
 user_route.post('/razorpayOrder',checkoutController.razorpayOrder)
-// user_route.post('/forgotPassword', userController.forgotPasswordOTP)
-// user_route.post('/passwordotpVerification', userController.passwordOTPVerification)
 user_route.post('/returnOrder',auth.isLogin,checkoutController.returnOrder)
+user_route.post('/resendotp-page',userController.OTPVerification);
+user_route.post('/forgotEmail',auth.isLogout,userController.postForgotEmail)
+user_route.post('/forgotOTP',auth.isLogout,userController.verifyForgotOTP)
+user_route.post('/ForgotpswSet',auth.isLogout,userController.passwordSet)
+
+
+
 
 
 
