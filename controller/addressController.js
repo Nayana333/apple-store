@@ -66,7 +66,7 @@ const loadAddAddresscheckOut= async (req, res) => {
         const id = req.session.user_id; 
        
         const userData = await User.findById(id); 
-        res.render('addAddressCheckOut' ,{user:userData});
+        res.render('addAddressCheckout' ,{user:userData});
 
     } catch (error) {
         console.log(error.message);
