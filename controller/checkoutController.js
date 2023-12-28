@@ -34,12 +34,12 @@ const loadCheckout=async(req,res)=>{
         const address=await Address.find({user:userId})
      
         if(!user){
-            console.log('user not found');
+            
         }
         const cart=await Cart.findOne({user:userId}).populate({path:'items.product',model:'Product'}).exec();
         const cartData=cart.total
       if(!cart){
-        console.log('cart not found')
+       
       }
       const cartItems=cart.items || [];
       const subtotal=calculateSubTotal(cartItems);
@@ -198,143 +198,96 @@ const calculateSubTotal=(cart)=>{
       res.status(500).json({ success: false, message: errorMessage, error: error.message });
     }
   };
-  
-// const setStatus=async(req,res)=>{
-//   try{
-//     const orderStatus=req.query.status;
-    
-// let orderData;
-//     const orderId=req.query.orderId;
-    
-   
-//     const update={
-//       $set:{status:orderStatus},
-//     };
-  
-//     if(orderStatus === "Delivered"){
-//       update.$set.deliveryDate = Date.now();
-//       update.$set.paymentStatus ='payment Successful'
-
-//     }
-//     else if(orderStatus==='Cancelled' || orderStatus ==="return confirmed"){
-//      orderData=await Order.findOne({_id:orderId}).populate('user').populate({path:'items.product',model:'product',});
-//    console.log('//////////////'+orderData);
-//   const user=await User.findOne({_id:orderData.user._id})
-//   user.walletBalance +=orderData.totalAmount;
-//   await user.save();
-//   for(const item of orderData.items){
-//     const product=item.product;
-//     product.quantity +=item.quantity;
-//     await product.save();
-
-//   }
-//   update.$set.cancelledDate=Date.now();
-//   if(orderData.paymentMethod=="wallet payment" || orderData.paymentMethod == "online Payment" && orderData.paymentStatus =="payment successful"){
-//     update.$set.paymentStatus='payment refunded'
-
-//   }
-// }
-//   else{
-//     update.$set.paymentStatus=new Transaction({
-//       user:orderData.user._id,
-//       amount:orderData.totalAmount,
-//       orderId:orderData._id,
-//       paymentMethod:"Wallet Payment",
-//       type:"credit",
-//       description:`credited to wallet for order:${orderId}`,
-
-//     });
-//     await transactionCredit.save();
-//   }
-//   await Order.findByIdAndUpdate({_id:orderId},update);
-//   res.redirect('/admin/orderList');
-//   res.status(500).send('internal server error');
-// }catch(error){
-//   console.log(error.message)
-// }
-// };
 
 
-
-const setStatus = async (req, res) => {
-  try {
-    const orderStatus = req.query.status;
-    const orderId = req.query.orderId;
-
-    const update = {
-      $set: { status: orderStatus },
-    };
-
-    if (orderStatus === "Delivered") {
-      update.$set.deliveryDate = Date.now();
-      update.$set.paymentStatus='Payment Successful'
-
-    } else if (orderStatus === "Cancelled" ) {
+  const setStatus = async (req, res) => {
+    try {
+      
+      const orderStatus = req.query.status;
+      const orderId = req.query.orderId;
+      
+      console.log(orderStatus);
       const orderData = await Order.findOne({ _id: orderId })
-        .populate('user')
-        .populate({
-          path: 'items.product',
-          model: 'Product',
-        });
-
+      .populate('user')
+      .populate({
+        path: 'items.product',
+        model: 'Product',
+      });
       const user = await User.findOne({ _id: orderData.user._id });
 
-      user.walletBalance += orderData.totalAmount;
-      await user.save();
 
-      for (const item of orderData.items) {
-        const product = item.product;
-        product.quantity += item.quantity;
-        await product.save();
-      }
-
-      update.$set.cancelledDate = Date.now();
-      if(orderData.paymentMethod=="Wallet Payment" || orderData.paymentMethod=="Online Payment" && orderData.paymentStatus == "Payment Successful"){
-        update.$set.paymentStatus='Payment Refuned'
-      }
-      else if(orderStatus === "Return Confirmed"){
+      const update = {
+        $set: { status: orderStatus },
+      };
+  
+      if (orderStatus === "Delivered") {
+        update.$set.deliveryDate = Date.now();
+        update.$set.paymentStatus = 'Payment Successful';
+      } else if (orderStatus === "Cancelled") {
+      
+  
+        
+  
+        user.walletBalance += orderData.totalAmount;
+        await user.save();
+  
+        for (const item of orderData.items) {
+          const product = item.product;
+          product.quantity += item.quantity;
+          await product.save();
+        }
+  
+        update.$set.cancelledDate = Date.now();
+        if (
+          (orderData.paymentMethod == "Wallet Payment" ||
+            orderData.paymentMethod == "Online Payment") &&
+          orderData.paymentStatus == "Payment Successful"
+        ) {
+          update.$set.paymentStatus = 'Payment Refunded';
+        }
+      } else if (orderStatus === "Return confirmed") {
+        console.log("hloo");
         let returnOrder = await Order.findById(orderId);
+       
         for (const item of returnOrder.items) {
           const products = item.product;
-          
+  
           if (products instanceof mongoose.Types.ObjectId) {
             const foundProduct = await Product.findById(products);
-            if (foundProduct) {
             
+            if (foundProduct) {
               foundProduct.quantity += item.quantity;
+              
               await foundProduct.save();
             }
+           
+          } else {
+            update.$set.paymentStatus = 'Payment Declined';
           }
-
+        }
+        user.walletBalance += orderData.totalAmount;
+        await user.save();
+  
+        const transactionCredit = new Transaction({
+          user: orderData.user._id,
+          amount: orderData.totalAmount,
+          orderId: orderData._id,
+          paymentMethod: "Wallet Payment",
+          type: 'credit',
+          description: `Credited to wallet for order: ${orderId}`,
+        });
+  
+        await transactionCredit.save();
       }
+  
+      await Order.findByIdAndUpdate({ _id: orderId }, update);
+      res.redirect('/admin/orderlist');
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Internal Server Error');
     }
-      else{
-       
-        update.$set.paymentStatus='Payment Declined'
-      }
-     
-
-      const transactionCredit = new Transaction({
-        user: orderData.user._id,
-        amount: orderData.totalAmount,
-        orderId:orderData._id,
-        paymentMethod:"Wallet Payment",
-        type: 'credit',
-        description: `Credited to wallet for order: ${orderId}`,
-      });
-
-      await transactionCredit.save();
-    }
-
-
-    await Order.findByIdAndUpdate({ _id: orderId }, update);
-    res.redirect('/admin/orderlist');
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
+  };
+  
 
 
 const applyCoupon=async(req,res)=>{
@@ -417,6 +370,7 @@ async function applyCoup(couponCode, discountedTotal, userId) {
   await coupon.save();
   return discountedTotal;
 };
+
 
 
 const walletPayment = async (req, res) => {
@@ -588,7 +542,7 @@ const razorpayOrder = async (req, res) => {
       path: 'items.product',
       model: 'Product',
     });
-    console.log('razor'+cart);
+   
 
     if (!user || !cart) {
       throw new Error('User or cart not found.');
@@ -611,7 +565,7 @@ const razorpayOrder = async (req, res) => {
       if (product.quantity < cartItem.quantity) {
         throw new Error('Not enough quantity in stock.');
       }
-
+      
       product.quantity -= cartItem.quantity;
 
       const shippingCost = 100;
@@ -648,8 +602,7 @@ const razorpayOrder = async (req, res) => {
     if (req.session.cartLength) {
       req.session.cartLength = 0; 
     }
-console.log(totalAmount+'total amount');
-console.log('orderid'+order._id);
+
     const options = {
 
       amount: totalAmount,
@@ -702,7 +655,7 @@ const returnOrder = async (req, res) => {
       console.log(req.query.reason);
 
       const order=await Order.findByIdAndUpdate(orderId,{$set:{reason:reason}})
-      console.log(order);
+      
 
       
      

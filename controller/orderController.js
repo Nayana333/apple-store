@@ -3,7 +3,7 @@ const User=require('../models/userModel')
 const Address=require('../models/addressModel')
 const Product=require('../models/productModel')
 const mongoose = require('mongoose');
-
+const Transaction=require('../models/transactionModel')
 
 const loadOrderlist=async(req,res)=>{
     try{
@@ -77,48 +77,71 @@ const  orderDetails= async (req, res) => {
  }
   };
 
-const cancelOrder = async (req, res) => {
+  const cancelOrder = async (req, res) => {
     try {
-    const productdata=await Product.find({})
-      const userId = req.session.user_id;
-      const user = await User.findById(userId);
       const orderId = req.params.orderId;
+  
       let cancelledOrder = await Order.findById(orderId);
-  console.log('cancelledOrde'+cancelledOrder);
+  
       if (!cancelledOrder) {
         return res.status(404).json({ error: 'Order not found' });
       }
   
-      if (cancelledOrder.paymentMethod === 'Online Payment') {
-        return res.send('Cash on delivery only');
-      } else if (cancelledOrder.paymentMethod === 'Cash on Delivery') {
-        cancelledOrder = await Order.findOne({ _id: orderId }).populate('user').populate({ path: 'items.product', model: 'Product' });
-      }
-  
-      await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
-  
-      for (const item of cancelledOrder.items) {
-        const products = item.product;
-        
+      if (
+        cancelledOrder.paymentMethod === 'Online Payment' ||
+        cancelledOrder.paymentMethod === 'Wallet Payment'
+      ) {
+        const cancelled = await Order.findOne({ _id: orderId })
+          .populate('user')
+          .populate({ path: 'items.product', model: 'Product' });
   
         
-        if (products instanceof mongoose.Types.ObjectId) {
-          const foundProduct = await Product.findById(products);
-          if (foundProduct) {
-          
-            foundProduct.quantity += item.quantity;
-            await foundProduct.save();
+        const user = await User.findOne({ _id: cancelled.user._id });
+        
+  
+        await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
+  
+        for (const item of cancelled.items) {
+          const products = item.product;
+         
+  
+          if (products instanceof mongoose.Types.ObjectId) {
+            const foundProduct = await Product.findById(products);
+  
+            if (foundProduct) {
+              foundProduct.quantity += item.quantity;
+              await foundProduct.save();
+            }
+          } else {
+           
+            item.paymentStatus = 'Payment Declined';
           }
-        } else {
-          console.error('Product is not an instance of Product model');
         }
+  
+        user.walletBalance += cancelled.totalAmount; 
+        await user.save();
+  
+        const transactionCredit = new Transaction({
+          user: cancelled.user._id,
+          amount: cancelled.totalAmount,
+          orderId: cancelled._id,
+          paymentMethod: "Wallet Payment",
+          type: 'credit',
+          description: `Credited to wallet for order: ${orderId}`,
+        });
+  
+        await transactionCredit.save();
       }
   
-     res.redirect('/userhome')
+      res.redirect('/viewProfile');
     } catch (error) {
       console.log(error.message);
+      res.status(500).send('Internal Server Error');
     }
   };
+
+
+
 //   const  orderList= async (req, res) => {
 //     try {
 //       const userId= req.session.user_id
@@ -209,49 +232,72 @@ const orderList = async (req, res) => {
 
 
 
-  const cancelOrderAdmin= async (req, res) => {
-    try {
-    const productdata=await Product.find({})
-      const userId = req.session.user_id;
-      const user = await User.findById(userId);
-      const orderId = req.params.orderId;
-      console.log('orderid'+orderId);
-      let cancelledOrder = await Order.findById(orderId);
- 
-      if (!cancelledOrder) {
-        return res.status(404).json({ error: 'Order not found' });
-      }
-  
-      if (cancelledOrder.paymentMethod === 'Online Payment') {
-        return res.send('Cash on delivery only');
-      } else if (cancelledOrder.paymentMethod === 'Cash on Delivery') {
-        cancelledOrder = await Order.findOne({ _id: orderId }).populate('user').populate({ path: 'items.product', model: 'Product' });
-      }
-  
+const cancelOrderAdmin = async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    let cancelledOrder = await Order.findById(orderId);
+
+    if (!cancelledOrder) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    if (
+      cancelledOrder.paymentMethod === 'Online Payment' ||
+      cancelledOrder.paymentMethod === 'Wallet Payment'
+    ) {
+      const cancelled = await Order.findOne({ _id: orderId })
+        .populate('user')
+        .populate({ path: 'items.product', model: 'Product' });
+
+      
+      const user = await User.findOne({ _id: cancelled.user._id });
+      
+
       await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
-  
-      for (const item of cancelledOrder.items) {
+
+      for (const item of cancelled.items) {
         const products = item.product;
-        
-  
-        
+       
+
         if (products instanceof mongoose.Types.ObjectId) {
           const foundProduct = await Product.findById(products);
+
           if (foundProduct) {
-            
             foundProduct.quantity += item.quantity;
             await foundProduct.save();
           }
         } else {
-          console.error('Product is not an instance of Product model');
+         
+          item.paymentStatus = 'Payment Declined';
         }
       }
-  
-     res.redirect('/admin/orderlist')
-    } catch (error) {
-      console.log(error.message);
+
+      user.walletBalance += cancelled.totalAmount; 
+      await user.save();
+
+      const transactionCredit = new Transaction({
+        user: cancelled.user._id,
+        amount: cancelled.totalAmount,
+        orderId: cancelled._id,
+        paymentMethod: "Wallet Payment",
+        type: 'credit',
+        description: `Credited to wallet for order: ${orderId}`,
+      });
+
+      await transactionCredit.save();
     }
-  };
+
+    res.redirect('/admin/orderlist');
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+module.exports = cancelOrderAdmin;
+
+
   const  orderDetailsAdmin= async (req, res) => {
     try {
       const userId= req.session.user_id

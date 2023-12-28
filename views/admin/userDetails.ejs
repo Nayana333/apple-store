@@ -40,7 +40,7 @@
               <th class="align-middle" scope="col">NAME</th>
               <th class="align-middle" scope="col">Email</th>
               <th class="align-middle" scope="col">Mobile</th>
-              <th class="align-middle" scope="col">Blocked Status</th>
+              <th class="align-middle" scope="col">Block/Unblock</th>
             </tr>
           </thead>
 
@@ -48,7 +48,13 @@
             <% for (let i=0; i < user.length; i++) { %>
               <tr>
                 <td>
-                  <img src="/userImages/<%= user[i].image %>" alt="<%= user[i].image %>" width="50px" height="50px">
+                  
+                    <% if (user[i].image) { %>
+                        <img src="/public/userImages/<%= user[i].image %>" style="width: 60px;" alt="User Image">
+                    <% } else { %>
+                        <img src="/public/defaultAvatar.webp" style="width: 60px;" alt="Default Avatar">
+                    <% } %>
+               
                 </td>
                 <td>
                   <%= user[i].name %>
@@ -62,11 +68,11 @@
                 <td>
                   <% if (user[i].is_blocked) { %>
                     <!-- <a href="/admin/unblockUser?id=<%= user[i]._id.toString() %>"> -->
-                    <p class="text-danger ms-4" onclick="unblockUser('<%= user[i]._id.toString() %>')">Block</p>
+                    <p class="text-danger ms-4" onclick="unblockUser('<%= user[i]._id.toString() %>')">UnBlock</p>
                     <!-- </a> -->
                     <% } else { %>
                       <!-- <a href="/admin/unblockUser?id=<%= user[i]._id.toString() %>"> -->
-                      <p class="text-primary ms-4" onclick="unblockUser('<%= user[i]._id.toString() %>')">UnBlock</p>
+                      <p class="text-primary ms-4" onclick="unblockUser('<%= user[i]._id.toString() %>')">Block</p>
                       <!-- </a> -->
                       <% } %>
                 </td>

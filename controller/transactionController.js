@@ -25,7 +25,7 @@ const loadTransaction = async (req, res) => {
         const transaction = await Transaction.find()
             .populate({ path: 'user', model: 'User' })
             .skip(skip)
-            .limit(limit);
+            .limit(limit).sort({date:-1});
 
         res.render('viewTransaction', { transaction, totalPages, currentPage: page });
     } catch (error) {

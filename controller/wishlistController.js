@@ -18,7 +18,8 @@ const Wishlist=require("../models/wishlistModel")
               const user=await User.findById(userId)
               let userWishlist = await Wishlist.findOne({ user: userId });
           
-              if (!userWishlist) {
+              if (!userWishlist) { 
+                
                 userWishlist = new Wishlist({
                   user: userId,
                   items: [{ product: productId }],

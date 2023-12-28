@@ -120,26 +120,29 @@
 
     <script>
         document.getElementById('categoryForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
     
-         
             const category = document.querySelector('input[name="category"]');
             const description = document.querySelector('input[name="description"]');
             const image = document.querySelector('input[name="image"]');
     
-            
             clearErrors();
     
-            
             let isValid = true;
     
             if (category.value.trim() === '') {
                 showError('errorCategory', 'Please enter a category');
                 isValid = false;
+            } else if (!/^[A-Za-z]+$/.test(category.value.trim())) {
+                showError('errorCategory', 'Category should only contain letters');
+                isValid = false;
             }
     
             if (description.value.trim() === '') {
                 showError('errorDescription', 'Please enter a description');
+                isValid = false;
+            } else if (!/^[A-Za-z]+$/.test(description.value.trim())) {
+                showError('errorDescription', 'Description should only contain letters');
                 isValid = false;
             }
     
@@ -148,15 +151,29 @@
                 isValid = false;
             }
     
-            
             if (isValid) {
                 this.submit();
             }
         });
     
+        const categoryInput = document.querySelector('input[name="category"]');
+        categoryInput.addEventListener('input', function() {
+            clearError('errorCategory');
+        });
+    
+        const descriptionInput = document.querySelector('input[name="description"]');
+        descriptionInput.addEventListener('input', function() {
+            clearError('errorDescription');
+        });
+    
         function showError(elementId, message) {
             const errorElement = document.querySelector(`.${elementId}`);
             errorElement.innerText = message;
+        }
+    
+        function clearError(elementId) {
+            const errorElement = document.querySelector(`.${elementId}`);
+            errorElement.innerText = '';
         }
     
         function clearErrors() {
@@ -166,6 +183,9 @@
             });
         }
     </script>
+    
+    
+    
 </body>
 
 

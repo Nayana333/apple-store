@@ -10,6 +10,7 @@ const Address=require('../models/addressModel')
 const Order=require('../models/orderModel')
 const Coupon=require('../models/couponModel')
 const Cart=require('../models/cartModel')
+const sharp = require('sharp')
 const Transaction=require('../models/transactionModel')
 const Banner=require('../models/bannerModel')
 
@@ -75,41 +76,7 @@ const loadRegister = async (req, res) => {
 
 
 
-// const insertUser=async(req,res)=>{
-//     try{
-//         const spassword = await securePassword(req.body.password);
-//         const user=new User({
-//             name:req.body.name,
-//             email:req.body.email,
-//             mobile:req.body.mobile,
-//             username:req.body.username,
-//             image: req.file.filename,
-//             address:req.body.address,
-//             password:spassword,
-//             is_admin:0,
-//             is_blocked:0
-         
-    
 
-//         });
-//         const userData=await user.save();
-//         req.session.id2=userData._id
-//             console.log(req.session.id2);
-         
-//             sentOTPVerificationEmail(req, res, req.body.name, req.body.email, userData._id);
-
-//             if (userData) {
-               
-                
-//                 res.render('otp-page', { user: userData });
-//             } else {
-//                 res.render('registration', { message: "Registration Failed" });
-//     }
-
-//     }catch(error){
-//         console.log(error.message)
-//     }
-// }
 
 const insertUser = async (req, res) => {
     try {
@@ -135,19 +102,22 @@ const insertUser = async (req, res) => {
             }
         }
     
-        
+        const password=req.body.password;
+        const confirmPassword=req.body.confirm;
+       if(password===confirmPassword){
         const spassword = await securePassword(req.body.password);
+       
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             mobile: req.body.mobile,
             username: req.body.username,
-            image: req.file.filename,
             address: req.body.address,
             password: spassword,
             is_admin: 0,
             is_blocked: 0
         });
+    
        
 
 
@@ -175,6 +145,7 @@ const insertUser = async (req, res) => {
             res.render('registration', { message: "Registration Failed" });
         }
     }
+}
 
     } catch (error) {
         console.log(error.message);
@@ -194,63 +165,118 @@ const loginLoad =async(req,res)=>{
     }
 
 }
-const varifyLogin=async(req,res)=>{
-    try{
-        const productData= await Product.find({});
-        const categoryData=await Category.find({})
+// const varifyLogin=async(req,res)=>{
+//     try{
+//         const productData= await Product.find({});
+//         const categoryData=await Category.find({})
 
-        const email=req.body.email;
-        const password=req.body.password
-        const userData= await User.findOne({email:email})
-        const user=userData;
+//         const email=req.body.email;
+//         const password=req.body.password
+//         const userData= await User.findOne({email:email})
+//         const user=userData;
+//         if(!user){
+//             res.render('login',{message:"user does not exist,signup for login",user:null})
+//         }
+        
 
        
-        if(userData){
-                const passwordMatch=await bcrypt.compare(password,userData.password)
-             
-            if(passwordMatch){
-                if(userData.is_verified === 0){
-                    
-                   {
-                       
-                        res.render('login',{message:"please varify your mail",user:null})
+//         if(userData){
 
-                }
-            }
-                else{
-                    if(userData.is_blocked ===false)
-                    {
-                        req.session.user_id=userData._id;
-                     console.log('sessioni'+req.session.user_id);
-                     const cart=await Cart.findOne({user:req.session.user_id})
-                     if(cart){
-                        console.log(cart);
-                     req.session.cartLength = cart.total;
-                     console.log('cart'+req.session.cartLength)
-                     }
+            
+//                 const passwordMatch=await bcrypt.compare(password,userData.password)
+             
+//             if(passwordMatch){
+//                 if(userData.is_verified === 0){''
+                    
+//                    {
+                       
+//                         res.render('login',{message:"please varify your mail",user:null})
+
+//                 }
+//             }
+//                 else{
+//                     if(userData.is_blocked ===false)
+//                     {
+//                         req.session.user_id=userData._id;
+//                      console.log('sessioni'+req.session.user_id);
+//                      const cart=await Cart.findOne({user:req.session.user_id})
+//                      if(cart){
+//                         console.log(cart);
+//                      req.session.cartLength = cart.total;
+//                      console.log('cart'+req.session.cartLength)
+//                      }
                      
              
-                        res.redirect('/userhome')
-                    }else{
-                        res.render('login',{message:"Your account hasbeen temperrorly suspended",user:null},)
-                    }
+//                         res.redirect('/userhome')
+//                     }else{
+//                         res.render('login',{message:"Your account hasbeen temperrorly suspended",user:null})
+//                     }
                 
-                }
+//                 }
 
-            }
-            else{
-                res.render('login',{message:"Email and password do not match",user:null},);
-            }
+//             }
+//             else{
+//                 res.render('login',{message:"Email and password do not match",user:null},);
+//             }
 
-        }else{
-            res.render('login',{message:"login invalid",user:null})
+//         }else{
+//             res.render('login',{message:"login invalid",user:null})
+//         }
+
+//     }catch(error){
+//         console.log(error.message)
+//     }
+
+// }
+
+const varifyLogin = async (req, res) => {
+    try {
+        const productData = await Product.find({});
+        const categoryData = await Category.find({});
+
+        const email = req.body.email;
+        const password = req.body.password;
+        const userData = await User.findOne({ email: email });
+        const user = userData;
+
+        if (!user) {
+            return res.render('login', { message: "User does not exist, sign up to login", user: null });
         }
 
-    }catch(error){
-        console.log(error.message)
-    }
+        if (userData) {
+            const passwordMatch = await bcrypt.compare(password, userData.password);
 
-}
+            if (passwordMatch) {
+                if (userData.is_verified === 0) {
+                    return res.render('login', { message: "Please verify your mail", user: null });
+                } else {
+                    if (userData.is_blocked === false) {
+                        req.session.user_id = userData._id;
+                        console.log('sessioni' + req.session.user_id);
+                        const cart = await Cart.findOne({ user: req.session.user_id });
+                        if (cart) {
+                            console.log(cart);
+                            req.session.cartLength = cart.total;
+                            console.log('cart' + req.session.cartLength);
+                        }
+
+                        return res.redirect('/userhome');
+                    } else {
+                        return res.render('login', { message: "Your account has been temporarily suspended", user: null });
+                    }
+                }
+            } else {
+                return res.render('login', { message: "Email and password do not match", user: null });
+            }
+        } else {
+            return res.render('login', { message: "Login invalid", user: null });
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).send("Internal Server Error");
+    }
+};
+
 
 const loadHome=async(req,res)=>{
     try{
@@ -409,10 +435,11 @@ const OTPVerification = async (req, res) => {
                     const errorMessage = "Code has expired. Please request again.";
                     return res.redirect(`/otp-page?error=${errorMessage}`);
                 } else {
-                    const validOTP = bcrypt.compare(otp, hashedOTP);
+                    const validOTP =await bcrypt.compare(otp, hashedOTP);
                     console.log(validOTP+"validity")
                     if (!validOTP) {
                         const errorMessage = "Invalid code passed. Check your inbox";
+                        console.log("invalid otp");
                         return res.redirect(`/otp-page?error=${errorMessage}`);
                     } else {
                       
@@ -629,7 +656,7 @@ const loadProfile = async (req, res) => {
         
        
         const id = req.session.user_id; 
-        const transaction=await Transaction.find({user:id})
+        const transaction=await Transaction.find({user:id}).sort({date:-1})
         const currentDate = new Date();
         // const coupon = await Coupon.find({ isListed: true }).sort({ expiry:1 });
         const coupon = await Coupon.find({
@@ -755,7 +782,7 @@ const postForgotEmail=async(req,res)=>{
         res.redirect('/forgotOtp')
         }
         else{
-            res.redirect('/forgotEmail')
+           res.render('forgot',{message:'invalid email id',user:null})
         }
 
 

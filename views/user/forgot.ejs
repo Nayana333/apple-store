@@ -73,8 +73,8 @@
                                         <div class="row justify-content-center">
                                         <div class="heading_s1">
                                             <h3 class="mb-30">Forgot Password </h3>
-                                            <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
-                                                <p style="color: rgb(0, 125, 209);" id="message"><%= errorMessage %></p>
+                                            <% if (typeof message!== 'undefined' && message) { %>
+                                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
                                             <% } %><br>
                                         </div>
                                         <form id="loginForm" action="/forgotEmail" method="post">

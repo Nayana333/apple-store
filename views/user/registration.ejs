@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>ZoneApple</title>
@@ -20,10 +21,10 @@
 
     <style>
         /* Custom shadow class */
-    .custom-shadow {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* You can adjust the shadow values as needed */
-}
-
+        .custom-shadow {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            /* You can adjust the shadow values as needed */
+        }
     </style>
 </head>
 
@@ -31,240 +32,242 @@
 
     <%- include("../partials/mobileHeader")%>
 
-    <main class="main">
-        <div class="page-header breadcrumb-wrap">
-            <div class="container">
-                <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
-                    <span></span> Pages
-                    <span></span> Login / Register
+        <main class="main">
+            <div class="page-header breadcrumb-wrap">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <a href="index.html" rel="nofollow">Home</a>
+                        <span></span> Pages
+                        <span></span> Login / Register
+                    </div>
                 </div>
             </div>
-        </div>
-        <section class="pt-150 pb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row justify-content-center">
-                            <!-- <div class="col-lg-5">
+            <section class="pt-150 pb-150">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 m-auto">
+                            <div class="row justify-content-center">
+                                <!-- <div class="col-lg-5">
                                
                             </div> -->
-                            <!-- <div class="col-lg-1"></div> -->
-                            <div class="col-lg-6">
-                                <div class="login_wrap widget-taber-content p-30 background-white border-radius-5 custom-shadow">
-                                    <div class="padding_eight_all bg-white">
-                                        <div class="heading_s1">
-                                            <h3 class="mb-30">Create an Account</h3>
-                                            <% if (typeof message !== 'undefined' && message) { %>
-                                                <p id="message"><%= message %></p>
-                                            <% } %>
-                                            <br>
+                                <!-- <div class="col-lg-1"></div> -->
+                                <div class="col-lg-6">
+                                    <div
+                                        class="login_wrap widget-taber-content p-30 background-white border-radius-5 custom-shadow">
+                                        <div class="padding_eight_all bg-white">
+                                            <div class="heading_s1">
+                                                <h3 class="mb-30">Create an Account</h3>
+                                                <% if (typeof message !=='undefined' && message) { %>
+                                                    <p id="message">
+                                                        <%= message %>
+                                                    </p>
+                                                    <% } %>
+                                                        <br>
+                                            </div>
+
+                                            <form id="registrationForm" method="post" action="" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <input type="text" name="name" id="name" placeholder="Enter Name">
+                                                    <span id="nameError" class="error-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="email" name="email" id="email"
+                                                        placeholder="Enter Email">
+                                                    <span id="emailError" class="error-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="tel" name="mobile" id="mobile"
+                                                        placeholder="Enter Mobile Number">
+                                                    <span id="mobileError" class="error-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" name="username" id="username"
+                                                        placeholder="Enter Username">
+                                                    <span id="usernameError" class="error-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" name="password" id="password"
+                                                        placeholder="Enter Password">
+                                                    <span id="passwordError" class="error-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" id="confirm" name="confirm" placeholder="Confirm your Password">
+                                                    <span id="confirmPasswordError" class="error-message"></span>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="text" name="referralCode" id="referralCode"
+                                                        placeholder="Enter Referral Code">  
+                                                    <span id="referralCodeError" class="error-message"></span>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-fill-out btn-block hover-up"
+                                                        name="login">Submit &amp; Register</button>
+                                                </div>
+                                            </form>
+                                            <div class="divider-text-center mt-15 mb-15">
+                                                <span> or</span>
+                                            </div>
+
+                                            <div class="text-muted text-center">Already have an account? <a
+                                                    href="/login">Sign in now</a></div>
                                         </div>
-                                        
-                                        <form id="registrationForm" method="post" action="" enctype="multipart/form-data">
-                                            <div class="form-group">
-                                                <input type="text" name="name" id="name" placeholder="Enter Name">
-                                                <span id="nameError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="email" name="email" id="email" placeholder="Enter Email">
-                                                <span id="emailError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="tel" name="mobile" id="mobile" placeholder="Enter Mobile Number">
-                                                <span id="mobileError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" name="username" id="username" placeholder="Enter Username">
-                                                <span id="usernameError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="password" name="password" id="password" placeholder="Enter Password">
-                                                <span id="passwordError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" name="referralCode" id="referralCode" placeholder="Enter Referral Code">
-                                                <span id="referralCodeError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="file" name="image" id="image" placeholder="Upload Photo">
-                                                <span id="imageError" class="error-message"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Submit &amp; Register</button>
-                                            </div>
-                                        </form>
-                                        <div class="divider-text-center mt-15 mb-15">
-                                            <span> or</span>
-                                        </div>
-                                       
-                                        <div class="text-muted text-center">Already have an account? <a href="/login">Sign in now</a></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
-    <%- include("../partials/footer")%>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="text-center">
-                    <h5 class="mb-5">Now Loading</h5>
-                    <div class="loader">
-                        <div class="bar bar1"></div>
-                        <div class="bar bar2"></div>
-                        <div class="bar bar3"></div>
+            </section>
+        </main>
+        <%- include("../partials/footer")%>
+            <!-- Preloader Start -->
+            <div id="preloader-active">
+                <div class="preloader d-flex align-items-center justify-content-center">
+                    <div class="preloader-inner position-relative">
+                        <div class="text-center">
+                            <h5 class="mb-5">Now Loading</h5>
+                            <div class="loader">
+                                <div class="bar bar1"></div>
+                                <div class="bar bar2"></div>
+                                <div class="bar bar3"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
 
-    <style>
-        
-        .error-message {
-            color: red;
-        }
-   
-    </style>
+            <style>
+                .error-message {
+                    color: red;
+                }
+            </style>
 
 
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/plugins/slick.js"></script>
-    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
-    <script src="assets/js/plugins/wow.js"></script>
-    <script src="assets/js/plugins/jquery-ui.js"></script>
-    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
-    <script src="assets/js/plugins/magnific-popup.js"></script>
-    <script src="assets/js/plugins/select2.min.js"></script>
-    <script src="assets/js/plugins/waypoints.js"></script>
-    <script src="assets/js/plugins/counterup.js"></script>
-    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
-    <script src="assets/js/plugins/images-loaded.js"></script>
-    <script src="assets/js/plugins/isotope.js"></script>
-    <script src="assets/js/plugins/scrollup.js"></script>
-    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
-    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
-    <!-- Template  JS -->
-    <script src="assets/js/main.js"></script>
+            <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+            <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+            <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+            <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+            <script src="assets/js/plugins/slick.js"></script>
+            <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+            <script src="assets/js/plugins/wow.js"></script>
+            <script src="assets/js/plugins/jquery-ui.js"></script>
+            <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+            <script src="assets/js/plugins/magnific-popup.js"></script>
+            <script src="assets/js/plugins/select2.min.js"></script>
+            <script src="assets/js/plugins/waypoints.js"></script>
+            <script src="assets/js/plugins/counterup.js"></script>
+            <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+            <script src="assets/js/plugins/images-loaded.js"></script>
+            <script src="assets/js/plugins/isotope.js"></script>
+            <script src="assets/js/plugins/scrollup.js"></script>
+            <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+            <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+            <!-- Template  JS -->
+            <script src="assets/js/main.js"></script>
 
 
-    <script>
-        document.getElementById('registrationForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission behavior
-    
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value;
-            var mobile = document.getElementById('mobile').value;
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var referralCode = document.getElementById('referralCode').value;
-            var image = document.getElementById('image').value;
+            <script>
+                document.getElementById('registrationForm').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent default form submission behavior
+            
+                    var name = document.getElementById('name').value;
+                    var email = document.getElementById('email').value;
+                    var mobile = document.getElementById('mobile').value;
+                    var username = document.getElementById('username').value;
+                    var password = document.getElementById('password').value;
+                    var confirmPassword = document.getElementById('confirm').value; 
+            
+                    var inputFields = document.querySelectorAll('#registrationForm input');
+                    inputFields.forEach(function (input) {
+                        input.addEventListener('input', function () {
+                            var errorId = input.id + 'Error';
+                            document.getElementById(errorId).innerText = '';
+                        });
+            
+                        input.addEventListener('focus', function () {
+                            var errorId = input.id + 'Error';
+                            document.getElementById(errorId).innerText = '';
+                        });
+                    });
+            
+                    document.getElementById('nameError').innerText = '';
+                    document.getElementById('emailError').innerText = '';
+                    document.getElementById('mobileError').innerText = '';
+                    document.getElementById('usernameError').innerText = '';
+                    document.getElementById('passwordError').innerText = '';
+                    document.getElementById('confirmPasswordError').innerText = '';
+            
+                    var isValid = true;
+            
+                    var nameRegex = /^[A-Za-z]+$/;
+                    if (name.trim() === '') {
+                        document.getElementById('nameError').innerText = 'Please enter your name';
+                        isValid = false;
+                    } else if (!nameRegex.test(name)) {
+                        document.getElementById('nameError').innerText = 'Name must contain only letters';
+                        isValid = false;
+                    }
+            
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (email.trim() === '') {
+                        document.getElementById('emailError').innerText = 'Please enter your email';
+                        isValid = false;
+                    } else if (!emailRegex.test(email)) {
+                        document.getElementById('emailError').innerText = 'Please enter a valid email address';
+                        isValid = false;
+                    }
+            
+                    var phoneRegex = /^\d{10}$/;
+                    if (mobile.trim() === '') {
+                        document.getElementById('mobileError').innerText = 'Please enter your mobile number';
+                        isValid = false;
+                    } else if (!phoneRegex.test(mobile)) {
+                        document.getElementById('mobileError').innerText = 'Please enter a valid mobile number';
+                        isValid = false;
+                    }
+            
+                    var usernameRegex = /^[A-Za-z]+$/;
+                    if (username.trim() === '') {
+                        document.getElementById('usernameError').innerText = 'Please enter your username';
+                        isValid = false;
+                    } else if (!usernameRegex.test(username)) {
+                        document.getElementById('usernameError').innerText = 'Username must contain only letters';
+                        isValid = false;
+                    }
+            
+                    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                    if (password.trim() === '') {
+                        document.getElementById('passwordError').innerText = 'Please enter your password';
+                        isValid = false;
+                    } else if (!passwordRegex.test(password)) {
+                        document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
+                        isValid = false;
+                    }
+            
+                    // Confirm Password validation: match with password field
+                    if (confirmPassword.trim() === '') {
+                        document.getElementById('confirmPasswordError').innerText = 'Please confirm your password';
+                        isValid = false;
+                    } else if (password !== confirmPassword) {
+                        document.getElementById('confirmPasswordError').innerText = 'Passwords do not match';
+                        isValid = false;
+                    }
+            
+                    if (!isValid) {
+                        return false;
+                    }
+            
+                    console.log('Form submitted successfully!');
+                    document.getElementById('registrationForm').submit(); 
+                });
+            </script>
 
-
-            var inputFields = document.querySelectorAll('#registrationForm input');
-        inputFields.forEach(function(input) {
-            input.addEventListener('input', function() {
-                var errorId = input.id + 'Error';
-                document.getElementById(errorId).innerText = ''; 
-            });
-
-            input.addEventListener('focus', function() {
-                var errorId = input.id + 'Error';
-                document.getElementById(errorId).innerText = ''; 
-            });
-        });
-    
-            // Clear previous error messages
-            document.getElementById('nameError').innerText = '';
-            document.getElementById('emailError').innerText = '';
-            document.getElementById('mobileError').innerText = '';
-            document.getElementById('usernameError').innerText = '';
-            document.getElementById('passwordError').innerText = '';
-            document.getElementById('imageError').innerText = '';
-    
-            var isValid = true;
-    
-            if (name.trim() === '') {
-                document.getElementById('nameError').innerText = 'Please enter your name';
-                isValid = false;
-            }
-    
-            if (email.trim() === '') {
-                document.getElementById('emailError').innerText = 'Please enter your email';
-                isValid = false;
-            } else if (!validateEmail(email)) {
-                document.getElementById('emailError').innerText = 'Please enter a valid email address';
-                isValid = false;
-            }
-    
-            if (mobile.trim() === '') {
-                document.getElementById('mobileError').innerText = 'Please enter your mobile number';
-                isValid = false;
-            } else if (!validatePhoneNumber(mobile)) {
-                document.getElementById('mobileError').innerText = 'Please enter a valid mobile number';
-                isValid = false;
-            }
-    
-            if (username.trim() === '') {
-                document.getElementById('usernameError').innerText = 'Please enter your username';
-                isValid = false;
-            }
-    
-            if (password.trim() === '') {
-                document.getElementById('passwordError').innerText = 'Please enter your password';
-                isValid = false;
-            } else if (!validatePassword(password)) {
-                document.getElementById('passwordError').innerText = 'Your password must be at least 8 characters long and include a combination of uppercase letters, numbers, and special characters.';
-                isValid = false;
-            }
-    
-           
-    
-            if (image.trim() === '') {
-                document.getElementById('imageError').innerText = 'Please upload your photo';
-                isValid = false;
-            }
-    
-            if (!isValid) {
-                return false; // Prevent form submission if there are errors
-            }
-    
-            // If everything is valid, you might want to submit the form here:
-            // You can add your AJAX submission code or simply let the form submit naturally
-            // For example:
-             document.getElementById('registrationForm').submit();
-    
-            return true; // Allow form submission
-        });
-    
-        function validateEmail(email) {
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-    
-        function validatePhoneNumber(phoneNumber) {
-            var phoneRegex = /^\d{10}$/;
-            return phoneRegex.test(phoneNumber);
-        }
-    
-        function validatePassword(password) {
-            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            return passwordRegex.test(password);
-        }
-    </script>
-     
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
+
 </html>

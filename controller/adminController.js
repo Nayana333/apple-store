@@ -35,13 +35,16 @@ const loadLogin= async(req,res)=>{
 }
 
 
-
+``
 const verifyLogin=async(req,res)=>{
     try{
 
         const email=req.body.email;
         const password=req.body.password
        const adminData= await User.findOne({email:email})
+       if (!adminData) {
+        return res.render('adminlogin', { message: "User does not exist, sign up to login", user: null });
+    }
    if(adminData){
 
            const passwordMatch=await bcrypt.compare(password,adminData.password)
@@ -276,7 +279,7 @@ const adminDashboard=async(req,res)=>{
     });
     console.log(totalRevenueValue+'total');
         res.render('dashboard',{admin: adminData,
-         data,
+        data,
         orders,
         newUsers,
         totalRevenue: totalRevenueValue,

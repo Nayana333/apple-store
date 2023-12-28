@@ -1,8 +1,5 @@
 
 
-
-
-
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -43,7 +40,7 @@
                         </div>
 
 
-                        <form id="form" method="post" action="/postAddresscheckOut?id=<%= user._id.toString()%>" style="width: 70%; padding-left:25%; ">
+                        <form id='addressForm' method="post" action="/postAddresscheckOut?id=<%= user._id.toString()%>" style="width: 70%; padding-left:25%; " onsubmit="return validateForm()">
                             <div class="form-group">
                                 <input type="text" name="name" placeholder="Name">
                                 <div class="error" id="nameError"></div>
@@ -69,28 +66,29 @@
                                 <div class="error" id="pinCodeError"></div>
                             </div>
                             <div class="form-group">
-                                <inputtype="text" name="phone" placeholder="Phone">
+                                <input type="text" name="phone" placeholder="Phone">
                                 <div class="error" id="phoneError"></div>
                             </div>
-                            
+                                                    
                             <div class="row mb-2">
                                 <div class="col">
-                                  <div class="form-check form-check-inline" style="margin-right: 40px;">
-                                    <input class="form-check-input " type="radio" name="type" id="flexRadioDefault1" value="home" checked />
-                                    <label class="form-check-label " for="flexRadioDefault1"> Home </label>
-                                  </div>
-                                  <div class="form-check form-check-inline" style="margin-right: 40px;">
-                                    <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" value="work" />
-                                    <label class="form-check-label" for="flexRadioDefault2"> Work </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="type" id="flexRadioDefault3" value="other" />
-                                    <label class="form-check-label" for="flexRadioDefault3"> Other </label>
-                                  </div>
+                                    <div class="form-check form-check-inline" style="margin-right: 40px;">
+                                        <input class="form-check-input " type="radio" name="type" id="flexRadioDefault1" value="home" checked />
+                                        <label class="form-check-label " for="flexRadioDefault1"> Home </label>
+                                    </div>
+                                    <div class="form-check form-check-inline" style="margin-right: 40px;">
+                                        <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" value="work" />
+                                        <label class="form-check-label" for="flexRadioDefault2"> Work </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="type" id="flexRadioDefault3" value="other" />
+                                        <label class="form-check-label" for="flexRadioDefault3"> Other </label>
+                                    </div>
                                 </div>
-                              </div>       
-                            <div class="col-md-12 "style="width: 70%; padding-left:35%;">
-                                <button type="submit" class="btn btn-fill-out submit" name="submit" value="submit">SAVE</button>
+                            </div>
+                        
+                            <div class="col-md-12" style="width: 70%; padding-left:35%;">
+                                <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">SAVE</button>
                             </div>
                         </form>
                       
@@ -133,9 +131,8 @@
     <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
-
     <script>
-         document.getElementById('form').addEventListener('submit', function (event) {
+        document.getElementById('addressForm').addEventListener('submit', function (event) {
             const name = document.getElementsByName('name')[0].value;
             const houseName = document.getElementsByName('houseName')[0].value;
             const street = document.getElementsByName('street')[0].value;
@@ -154,66 +151,44 @@
     
             const isNumber = value => !isNaN(value);
     
+            const validateField = (field, errorElement, regex, errorMessage) => {
+                if (field.trim() === '' || !regex.test(field)) {
+                    errorElement.textContent = errorMessage;
+                    return false;
+                }
+                errorElement.textContent = '';
+                return true;
+            };
+    
             let isValid = true;
     
-            if (name === '') {
-                nameError.textContent = 'Name is required';
-                isValid = false;
-            } else {
-                nameError.textContent = '';
-            }
+            isValid = validateField(name, nameError, /^[A-Za-z]+$/, 'Name should contain only letters') && isValid;
+            isValid = validateField(houseName, houseNameError, /^[A-Za-z0-9\s]+$/, 'HouseName is required') && isValid;
+            isValid = validateField(street, streetError, /^[A-Za-z0-9\s]+$/, 'Street is required') && isValid;
+            isValid = validateField(city, cityError, /^[A-Za-z]+$/, 'City is required') && isValid;
+            isValid = validateField(state, stateError, /^[A-Za-z]+$/, 'State is required') && isValid;
+            isValid = validateField(pinCode, pinCodeError, /^\d{6}$/, 'Pin code must be a 6-digit number') && isValid;
+            isValid = validateField(phone, phoneError, /^\d{10}$/, 'Phone number must be a 10-digit number') && isValid;
     
-            if (houseName === '') {
-                houseNameError.textContent = 'HouseName is required';
-                isValid = false;
-            } else {
-                houseNameError.textContent = '';
-            }
-    
-            if (street === '') {
-                streetError.textContent = 'Street is required';
-                isValid = false;
-            } else {
-                streetError.textContent = '';
-            }
-    
-            if (city === '') {
-                cityError.textContent = 'City is required';
-                isValid = false;
-            } else {
-                cityError.textContent = '';
-            }
-    
-            if (state === '') {
-                stateError.textContent = 'State is required';
-                isValid = false;
-            } else {
-                stateError.textContent = '';
-            }
-    
-            if (pinCode === '' || pinCode.length !== 6 || !isNumber(pinCode)) {
-                pinCodeError.textContent = 'Pin code must be a 6-digit number';
-                isValid = false;
-            } else {
-                pinCodeError.textContent = '';
-            }
-    
-            if (phone === '' || phone.length !== 10 || !isNumber(phone)) {
-                phoneError.textContent = 'Phone number must be a 10-digit number';
-                isValid = false;
-            } else {
-                phoneError.textContent = '';
-            }
             if (!isValid) {
-                event.preventDefault(); // Prevent the form from submitting if there are errors
+                event.preventDefault(); // Prevent form submission if there are validation errors
             }
-            })
+        });
+    
+        // Clear error messages on input
+        const fields = ['name', 'houseName', 'street', 'city', 'state', 'pinCode', 'phone'];
+        fields.forEach(field => {
+            document.getElementsByName(field)[0].addEventListener('input', function () {
+                document.getElementById(field + 'Error').textContent = '';
+            });
+        });
     </script>
+    
+    
+    
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
 </html>
-
-
 

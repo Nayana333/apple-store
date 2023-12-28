@@ -33,10 +33,10 @@ const categoryImageStorage = multer.diskStorage({destination: function (req, fil
 //product multer/////////////////////////////////////////////////////////////////////////
 
 
+
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
- 
-    
     cb(null, path.join(__dirname, '../public/productImages'));
   },
   filename: function (req, file, cb) {
@@ -45,12 +45,23 @@ const storage = multer.diskStorage({
   },
 });
 
-// Create the Multer instance
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }
-
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limiting file size to 10MB
 });
+
+const uploadFields = upload.fields([
+  { name: 'image1', maxCount: 1 },
+  { name: 'image2', maxCount: 1 },
+  { name: 'image3', maxCount: 1 },
+  { name: 'image4', maxCount: 1 },
+]);
+
+module.exports = {
+  upload,
+  uploadFields,
+};
+
 
 //banner multer//////////////////////////////////////////////////////////////////////
 
@@ -128,10 +139,10 @@ admin_route.post('/editCategory', uploads.single('image'),categoryController.upd
 
 
 admin_route.get('/new-product',auth.isLogin,productController.newProductLoad);
-admin_route.post('/new-product',upload.array('productImages', 4),productController.insertProduct);
+admin_route.post('/new-product', auth.isLogin, uploadFields, productController.insertProduct);
 admin_route.get('/viewProduct',auth.isLogin,productController.loadProduct)
 admin_route.get('/editProduct',auth.isLogin,productController.editProduct)
-admin_route.post('/editProduct',upload.array('productImages', 4),productController.updateProduct);
+admin_route.post('/editProduct',auth.isLogin, uploadFields, productController.updateProduct);
 admin_route.get('/unlistProduct', auth.isLogin,productController.unlistProduct);
 admin_route.get('/productDetails',auth.isLogin,productController.productDetails);
 

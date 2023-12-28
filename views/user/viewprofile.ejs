@@ -232,8 +232,14 @@
                                             <div class="card-header">
                                                 <h5>Account Details</h5><br>
                                                 <div class="d-flex" ms-7>
-                                                    <div><img src="/public/userImages/<%=user.image %>" style="width: 60px;" alt="hlo"></div>                                                   
-                                                
+                                                    <div>
+                                                        <% if (user.image) { %>
+                                                            <img src="/public/userImages/<%= user.image %>" style="width: 60px;" alt="User Image">
+                                                        <% } else { %>
+                                                            <img src="/public/defaultAvatar.webp" style="width: 60px;" alt="Default Avatar">
+                                                        <% } %>
+                                                    </div>
+                                                                                                
                                                 <div class="ms-5">
                                                     <p><%=user.name%></p>
                                                     <p><%=user.email%></p>
