@@ -564,15 +564,8 @@
 
 
             //razorpay button
-
-
             function placeOnline(paymentMethod, couponCode) {
-
-
-
-
-
-
+                
                 const selectedAddress = document.querySelector('input[name="address"]:checked');
 
                 if (!selectedAddress) {
@@ -599,6 +592,7 @@
                         if (response.ok) {
                             return response.json();
                         } else {
+                            alert("not enough stock")
                             throw new Error('Network response was not ok');
                         }
                     })

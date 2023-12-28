@@ -76,6 +76,7 @@ const calculateSubTotal=(cart)=>{
 
 
   const cashOnDelivery = async (req, res) => {
+
     const session = await mongoose.startSession();
     session.startTransaction();
   
@@ -450,7 +451,6 @@ const walletPayment = async (req, res) => {
 
     await order.save();
 
-
     const transactiondebit = new Transaction({
       user: userId,
       amount : totalAmount,
@@ -532,6 +532,7 @@ const updatePaymentStatus = async (req, res) => {
 
 const razorpayOrder = async (req, res) => {
   try {
+    
     const userId = req.session.user_id;
     const { address, couponCode } = req.body;
 

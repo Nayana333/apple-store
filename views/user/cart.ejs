@@ -262,6 +262,7 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/shop.js"></script>
     <script>
+
         function updateCart(productId, newQuantity) {
             fetch(`/updateCart?productId=${productId}&quantity=${newQuantity}`, {
                 method: 'PUT',
@@ -274,8 +275,11 @@
                 }),
             })
             .then(response => {
+                
                 if (!response.ok) {
+                    alert("cannot increase quantity more than 4 ")
                     throw new Error(`HTTP error! Status: ${response.status}`);
+                   
                 }
                 return response.json();
             })
@@ -286,12 +290,14 @@
                 if (data.success) {
                     // Reload the page upon successful cart update
                     window.location.reload();
-                    console.log('sbjuigjiuh');
+                   
                 } else {
+                    
                     console.error('Failed to update cart:', data.error);
                 }
             })
             .catch(error => {
+                
                 window.location.reload();
                 console.error('Error updating cart:', error);
             });
