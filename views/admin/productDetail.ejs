@@ -202,87 +202,7 @@
                             </div>
 
                            
-                                <!-- <div class="mb-4">
-                                    <label for="product_name" class="form-label"><h6>Product name</h6></label><br>
-                                   <p ><%= product.name %></p>
-                                </div>
-                                <div>
-                                    
-                                <div class="mb-4">
-                                    <label for="category" class="form-label"><h6>Category</h6></label><br>
-                                    <p ><%= product.category %></p>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label"><h6>Regular price</h6></label><br>
-                                            <div class="row gx-2">
-                                                <p ><%= product.price%></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label"><h6>discount price</h6></label><br>
-                                            <p><%= product.discountPrice%></p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div> 
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"> <h6>Quantity</h6></label><br>
-                                        <p > <%= product.quandity%></p>
-                                    </div>
-                                </div>
                                 
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"><h6>Battery</h6></label><br>
-                                        <p ><%= product.battery%></p>
-                                    </div>
-                                </div>
-                               
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"><h6>Product color</h6></label><br>
-                                        <p><%= product.productColor%></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"><h6>Ram</h6></label><br>
-                                        <p ><%= product.ram%></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"><h6>Rom</h6></label><br>
-                                        <p ><%= product.rom%></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Expandable</label><br>
-                                        <p><%= product.expandable%></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">FrondCam</label><br>
-                                        <p><%= product.frontCam%></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label"><h6>rear Cam</h6></label>
-                                        <p ><%= product.rearCam%></p>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label"><h6>processor</h6></label>
-                                    <p ><%= product.processor%></p>
-                                </div> -->
                                 <div class="row" display="d-flex" style="justify-content: space-around;">
                                 <div class="card" style="width: 18rem;">
                                     <div class="mb-4">
@@ -305,9 +225,14 @@
                                         </div>
 
                                         <div class="mb-4">
-                                            <label class="form-label"><h6>discount price</h6></label><br>
-                                            <p><%= product.discountPrice%></p>
+                                            <label class="form-label"><h6>Discount price</h6></label><br>
+                                            <% if (product.discountPrice < 0) { %>
+                                                <p> offer not added</p>
+                                            <% } else { %>
+                                                <p><%= product.discountPrice %></p>
+                                            <% } %>
                                         </div>
+                                        
                                   </div>
                                   
                                   <div class="card" style="width: 18rem;">

@@ -169,101 +169,63 @@
     <main class="main-wrap">
         <%- include("../partials/header2")%>
         <section class="content-main">
-            <form action="/admin/editCoupon?_id=<%= coupon._id %> " method="post" >
-            <div class="row justify-content-center">
-                <!-- <h2 class="content-title">Add New category</h2> -->
-                <div class="col-9">
-                    <div class="content-header justify-content-center">
-                        <!-- <h2 class="content-title">Add New category</h2> -->
-                        
-                
-             
-                <div class="col-lg-12">
-                    <h2 class="content-title" style="margin-left: 15px;">EDIT COUPON</h2>
-                    <h6 class="content-title" style="margin-left: 15px;">Coupon:<%= coupon.code %></h6>
-                    <div class="card mb-4"  style="margin-top:15px">
-                        <div class="card-body">
-                            <% if (typeof message !== 'undefined' && message) { %>
-                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
-                            <% } %>
-                            <h5 class="my-2">Coupon Info</h5>
-                            <input type="text" name="id" value="<%= coupon._id %>" style="display: none;"> 
-                            <div class="mb-4">
-                                <label for="product_title" class="form-label">coupon Code</label>
-                                <input type="text" value="<%= coupon.code %>" id="couponCode" class="form-control" name="couponCode" required >
-                                <div class="error"></div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Discount(%)</label>
-                                    <input type="number"  value="<%= coupon.discount %>" class="form-control" name="discount" id="discount" required>                                                                   
-                                    <div class="error"></div>
+            <form id="editCouponForm" action="/admin/editCoupon?_id=<%= coupon._id %>" method="post">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <h2 class="content-title" style="margin-left:300px;">EDIT COUPON</h2>
+                        <h6 class="content-title" style="margin-top:15px;margin-left: 300px">Coupon:<%= coupon.code %></h6>
+                        <div class="card mb-4" style="margin-top:15px;margin-left: 135px;width: 70%;">
+                            <div class="card-body">
+                                <% if (typeof message !== 'undefined' && message) { %>
+                                    <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+                                <% } %>
+                                <h5 class="my-2">Coupon Info</h5>
+                                <input type="text" name="id" value="<%= coupon._id %>" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="couponCode" class="form-label">Coupon Code</label>
+                                    <input type="text" value="<%= coupon.code %>" id="couponCode" class="form-control" name="couponCode" required>
+                                    <div class="error" id="couponCodeError" style="color: red;"></div>
                                 </div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Limit</label>
+                                <div class="mb-4">
+                                    <label for="discount" class="form-label">Discount (%)</label>
+                                    <input type="number" value="<%= coupon.discount %>" class="form-control" name="discount" id="discount" required>
+                                    <div class="error" id="discountError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="limit" class="form-label">Limit</label>
                                     <input type="number" value="<%= coupon.limit %>" class="form-control" name="limit" id="limit" required>
-                                    <div class="error"></div>
+                                    <div class="error" id="limitError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="minCartAmt" class="form-label">Min Cart Amount</label>
+                                    <input type="text" value="<%= coupon.minCartAmt %>" class="form-control" name="minCartAmt" id="minCartAmt">
+                                    <div class="error" id="minCartAmtError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="maxRedeemableAmt" class="form-label">Max Redeemable Amount</label>
+                                    <input type="text" value="<%= coupon.maxRedeemableAmt %>" class="form-control" name="maxRedeemableAmt" id="maxRedeemableAmt">
+                                    <div class="error" id="maxRedeemableAmtError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="type" class="form-label">Discount Type</label>
+                                    <input type="text" value="<%= coupon.type %>" class="form-control" name="type" id="type">
+                                    <div class="error" id="typeError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                                    <input type="text" value="<%= coupon.expiry.toDateString()%>" class="form-control" name="expiryDate" id="expiryDate">
+                                    <div class="error" id="expiryDateError" style="color: red;"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Update Coupon">
                                 </div>
                             </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Min Cart Amount</label>
-                                    <input type="text" value="<%= coupon.minCartAmt %>" class="form-control" name="minCartAmt" id="minCartAmt">                                                                   
-                                    <div class="error"></div>
-                                </div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Max Redeemable Amount</label>
-                                    <input type="text" value="<%= coupon.maxRedeemableAmt %>" class="form-control" name="maxRedeemableAmt">                                                                   
-                                    <div class="error"></div>
-                                </div><br>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Expiry Date</label>
-                                    <input type="text" value="<%= coupon.expiry%>" class="form-control" name="expiryDate" id="expiryDate">                                                                   
-                                    <div class="error"></div>
-                                </div>
-                            </div>
-                            
-                           
-                    </div>
-                    <div style="margin:0 0 12px 21px";>
-                           
-                        <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Add Coupon">
-                    </div>
-                </div>
-            </div> <!-- card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-body">
-                            <div>
-                                <label class="form-label">Images</label>
-                                <label for="Images">Product Images (up to 4 images):</label>
-                                <input type="file" id="productImages" name="productImages" multiple accept="image/jpeg, image/png" >
-                                <br>
-                            </div>
-                        </div> -->
-                    </div> <!-- card end// -->
-                </div>
-            
-                
-                            
-                         
                         </div>
-                       
-                    </div> <!-- card end// -->
+                    </div>
                 </div>
-            </div>
-        </form>
-              </section>
+            </form>
+            
+        </section>
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -288,6 +250,86 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('editCouponForm');
+    
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+    
+                const discount = parseFloat(document.getElementById('discount').value);
+                const limit = parseFloat(document.getElementById('limit').value);
+                const maxRedeemableAmt = document.getElementById('maxRedeemableAmt').value;
+                const minCartAmt = parseFloat(document.getElementById('minCartAmt').value);
+                const type = document.getElementById('type').value.toLowerCase();
+    
+                const discountField = document.getElementById('discountError');
+                const limitField = document.getElementById('limitError');
+                const maxRedeemableAmtField = document.getElementById('maxRedeemableAmtError');
+                const minCartAmtField = document.getElementById('minCartAmtError');
+                const typeField = document.getElementById('typeError');
+    
+                discountField.textContent = '';
+                limitField.textContent = '';
+                maxRedeemableAmtField.textContent = '';
+                minCartAmtField.textContent = '';
+                typeField.textContent = '';
+    
+                const setError = (field, message) => {
+                    field.textContent = message;
+                    field.style.color = 'red';
+                };
+    
+                if (isNaN(discount)) {
+                    setError(discountField, 'Please enter a valid number for Discount.');
+                    return;
+                }
+    
+                if (isNaN(limit)) {
+                    setError(limitField, 'Please enter a valid number for Limit.');
+                    return;
+                }
+    
+                if (isNaN(minCartAmt)) {
+                    setError(minCartAmtField, 'Please enter a valid number for Min Cart Amount.');
+                    return;
+                }
+    
+                if (isNaN(maxRedeemableAmt)) {
+                    setError(maxRedeemableAmtField, 'Please enter a valid number for Max Redeemable Amount.');
+                    return;
+                }
+    
+                if (!(type === 'fixed' || type === 'percentage')) {
+                    setError(typeField, 'Type should be either "fixed" or "percentage".');
+                    return;
+                }
+    
+                if (type === 'percentage' && (discount < 1 || discount > 100)) {
+                    setError(discountField, 'For "percentage" type, Discount should be between 1 and 100.');
+                    return;
+                }
+    
+               
+                form.submit();
+            });
+    
+            const inputs = ['discount', 'limit', 'maxRedeemableAmt', 'minCartAmt', 'type'];
+    
+            inputs.forEach(inputId => {
+                const inputField = document.getElementById(inputId);
+                inputField.addEventListener('input', function () {
+                    const errorField = document.getElementById(inputId + 'Error');
+                    if (errorField) {
+                        errorField.textContent = '';
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
 </body>
 
 

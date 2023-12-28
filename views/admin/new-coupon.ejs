@@ -28,62 +28,34 @@
     <main class="main-wrap">
         <%- include("../partials/header2")%>
         <section class="content-main">
-            <form action="/admin/addCoupon" method="post" id="couponForm" >
-            <div class="row justify-content-center">
-                <!-- <h2 class="content-title">Add New category</h2> -->
-                <div class="col-9">
-                    <div class="content-header justify-content-center">
-                        <!-- <h2 class="content-title">Add New category</h2> -->
-                        
-                
-             
-                <div class="col-lg-12">
-                    <h2 class="content-title" style="margin-left: 15px;">Add New Coupon</h2>
-                    <div class="card mb-4"  style="margin-top:15px">
-                        <div class="card-body">
-                            <% if (typeof message !== 'undefined' && message) { %>
-                                <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
-                            <% } %><br>
-                            <h5 class="my-2">Coupon Info</h5>
-                            <div class="mb-4">
-                                <label for="product_title" class="form-label">coupon Code</label>
-                                <input type="text" placeholder="Type here" id="couponCode" class="form-control" name="couponCode"  >
+            <form action="/admin/addCoupon" method="post" id="couponForm">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <h2 class="content-title" style="margin-left:300px;">Add New Coupon</h2>
+                        <div class="card mb-4" style="margin-top:15px;margin-left: 135px;width: 70%;">
+                            <div class="card-body">
+                                <!-- Your form fields -->
+                                <label for="couponCode" class="form-label">Coupon Code</label>
+                                <input type="text" placeholder="Type here" id="couponCode" class="form-control" name="couponCode">
                                 <div class="error"></div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Discount(%)</label>
-                                    <input type="number"  class="form-control" name="discount" id="discount">                                                                   
-                                    <div class="error"></div>
-                                </div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Limit</label>
-                                    <input type="number"  class="form-control" name="limit" id="limit" >                                                                   
-                                    <div class="error"></div>
-                                </div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Min Cart Amount</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="minCartAmt" id="minCartAmt">                                                                   
-                                    <div class="error"></div>
-                                </div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Max Redeemable Amount</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="maxRedeemableAmt">                                                                   
-                                    <div class="error"></div>
-                                </div><br>
-                            </div>
-                            <div class="row gx-3">
-                                <label for="fixedDiscount" class="form-label">Discount Type</label><br>
+                                
+                                <label for="discount" class="form-label">Discount (%)</label>
+                                <input type="number" class="form-control" name="discount" id="discount">
+                                <div class="error"></div>
+                                
+                                <label for="limit" class="form-label">Limit</label>
+                                <input type="number" class="form-control" name="limit" id="limit">
+                                <div class="error"></div>
+                                
+                                <label for="minCartAmt" class="form-label">Min Cart Amount</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="minCartAmt" id="minCartAmt">
+                                <div class="error"></div>
+                                
+                                <label for="maxRedeemableAmt" class="form-label">Max Redeemable Amount</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="maxRedeemableAmt" id="maxRedeemableAmt">
+                                <div class="error"></div>
+                                
+                                <label for="discountType" class="form-label">Discount Type</label><br>
                                 <div class="form-check form-check-inline" style="margin-right: 40px;">
                                     <input class="form-check-input" type="radio" name="discountType" id="fixedDiscount" value="fixed" />
                                     <label class="form-check-label" for="fixedDiscount">Fixed</label>
@@ -92,46 +64,30 @@
                                     <input class="form-check-input" type="radio" name="discountType" id="percentageDiscount" value="percentage" />
                                     <label class="form-check-label" for="percentageDiscount">Percentage</label>
                                 </div>
-                            </div><br>
-                            
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Expiry Date</label>
-                                    <input type="date"  class="form-control" name="expiryDate" id="expiryDate">                                                                   
-                                    <div class="error"></div>
+                                <br>
+                                
+                                <label for="expiryDate" class="form-label">Expiry Date</label>
+                                <input type="date" class="form-control" name="expiryDate" id="expiryDate">
+                                <div class="error"></div>
+                                
+                                <div style="margin:  15px 0 12px 21px;">
+                                    <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Add Coupon">
                                 </div>
                             </div>
-                            
-                           
-                    </div>
-                    <div style="margin:0 0 12px 21px";>
-                           
-                        <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Add Coupon">
-                    </div>
-                </div>
-            </div> <!-- card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-body">
-                            <div>
-                                <label class="form-label">Images</label>
-                                <label for="Images">Product Images (up to 4 images):</label>
-                                <input type="file" id="productImages" name="productImages" multiple accept="image/jpeg, image/png" >
-                                <br>
-                            </div>
-                        </div> -->
-                    </div> <!-- card end// -->
-                </div>
-            
-                
-                            
-                         
                         </div>
-                       
-                    </div> <!-- card end// -->
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+            
+            <script>
+                // JavaScript code goes here
+            </script>
+            
+            
+            <script>
+                // Validation script goes here (from the previous code snippet)
+            </script>
+            
        </section>
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -160,75 +116,120 @@
     <script>
         document.getElementById('couponForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the form from submitting initially
-            
+                    
             // Validation for coupon form fields
-            const couponCode = document.querySelector('input[name="couponCode"]');
-            const discount = document.querySelector('input[name="discount"]');
-            const limit = document.querySelector('input[name="limit"]');
-            const minCartAmt = document.querySelector('input[name="minCartAmt"]');
-            const maxRedeemableAmt = document.querySelector('input[name="maxRedeemableAmt"]');
-            const expiryDate = document.querySelector('input[name="expiryDate"]');
-            
-           
-    
+            const couponCode = document.getElementById('couponCode');
+            const discount = document.getElementById('discount');
+            const limit = document.getElementById('limit');
+            const minCartAmt = document.getElementById('minCartAmt');
+            const maxRedeemableAmt = document.getElementById('maxRedeemableAmt');
+            const expiryDate = document.getElementById('expiryDate');
+            const discountType = document.querySelector('input[name="discountType"]:checked');
             
             clearErrors();
-    
-            // Perform validation checks
+        
             let isValid = true;
-    
+        
             if (couponCode.value.trim() === '') {
                 showError(couponCode, 'Please enter a coupon code');
                 isValid = false;
+            } else {
+                clearError(couponCode);
             }
-
-            if (discount.value.trim() === '') {
-                showError(discount, 'Please enter a discount');
+        
+            if (discount.value.trim() === '' || isNaN(discount.value) || +discount.value < 0) {
+                showError(discount, 'Please enter a valid discount');
                 isValid = false;
+            } else {
+                clearError(discount);
             }
-            if (limit.value.trim() === '') {
-                showError(limit, 'Please enter the Limit');
+        
+            if (limit.value.trim() === '' || isNaN(limit.value) || +limit.value < 0) {
+                showError(limit, 'Please enter a valid limit');
                 isValid = false;
+            } else {
+                clearError(limit);
             }
-
-            if (minCartAmt.value.trim() === '') {
-                showError(minCartAmt, 'Please enter the minimum cart amount');
+        
+            if (minCartAmt.value.trim() === '' || isNaN(minCartAmt.value) || +minCartAmt.value < 0) {
+                showError(minCartAmt, 'Please enter a valid minimum cart amount');
                 isValid = false;
+            } else {
+                clearError(minCartAmt);
             }
-            if (maxRedeemableAmt.value.trim() === '') {
-                showError(maxRedeemableAmt, 'Please enter Max Redeemable Amount');
+        
+            if (maxRedeemableAmt.value.trim() === '' || isNaN(maxRedeemableAmt.value) || +maxRedeemableAmt.value < 0) {
+                showError(maxRedeemableAmt, 'Please enter a valid Max Redeemable Amount');
                 isValid = false;
+            } else {
+                clearError(maxRedeemableAmt);
             }
-
-
-    
+        
             if (expiryDate.value.trim() === '') {
                 showError(expiryDate, 'Please select an expiry date');
                 isValid = false;
+            } else {
+                clearError(expiryDate);
             }
-    
+        
+            if (discountType && discountType.value === 'percentage') {
+                const discountValue = +discount.value;
+                if (discountValue < 1 || discountValue > 100) {
+                    showError(discount, 'Discount should be between 1 and 100 for percentage type');
+                    isValid = false;
+                } else {
+                    clearError(discount);
+                }
+            }
             
-            
-    
-            // If all validations pass, submit the form
             if (isValid) {
                 this.submit();
             }
         });
-    
+        
         function showError(input, message) {
-            const errorDiv = input.nextElementSibling;
+            const errorDiv = document.getElementById(input.id).nextElementSibling;
             errorDiv.innerText = message;
             errorDiv.style.color = 'red';
         }
-    
+        
+        function clearError(input) {
+            const errorDiv = document.getElementById(input.id).nextElementSibling;
+            errorDiv.innerText = '';
+        }
+        
         function clearErrors() {
             const errorFields = document.querySelectorAll('.error');
             errorFields.forEach(function(errorField) {
                 errorField.innerText = '';
             });
         }
+    
+        const formInputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
+        formInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                clearError(this);
+            });
+        });
+    
+        const discountTypeInputs = document.querySelectorAll('input[name="discountType"]');
+        discountTypeInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const discountInput = document.getElementById('discount');
+                if (this.value === 'percentage') {
+                    const discountValue = +discountInput.value;
+                    if (discountValue < 1 || discountValue > 100) {
+                        showError(discountInput, 'Discount should be between 1 and 100 for percentage type');
+                    } else {
+                        clearError(discountInput);
+                    }
+                } else {
+                    clearError(discountInput);
+                }
+            });
+        });
     </script>
+    
 </body>
 
 

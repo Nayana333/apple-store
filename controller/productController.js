@@ -176,7 +176,7 @@ const updateProduct = async (req, res) => {
   try {
     const category = await Category.find(); 
     console.log(tinycolor(req.body.productColor).toName());
-
+   
     const productId = req.query._id;
     const product = await Product.findById(productId);
     if (!product) {
@@ -194,7 +194,8 @@ const updateProduct = async (req, res) => {
       rom: req.body.rom,
       expandable: req.body.expandable,
       frontCam: req.body.frontCam,
-      rearCam: req.body.rearCam
+      rearCam: req.body.rearCam,
+      processor:req.body.processor
     };
 
     if (req.files) {

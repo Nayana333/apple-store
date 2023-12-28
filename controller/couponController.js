@@ -13,6 +13,7 @@ const addCoupon = async (req, res) => {
     let { couponCode, discount, expiryDate, limit, discountType, maxRedeemableAmt, minCartAmt } = req.body;
 
     try {
+        console.log(req.body);
         if (!couponCode) {
             return res.render('new-coupon', { message: "coupon code cannot be empty" });
         }
@@ -31,7 +32,7 @@ const addCoupon = async (req, res) => {
             maxRedeemableAmt: maxRedeemableAmt,
             minCartAmt: minCartAmt
         });
-        console.log(newCoupon);
+       
 
         await newCoupon.save();
         res.render('new-coupon',{message:"coupon added successfully"});

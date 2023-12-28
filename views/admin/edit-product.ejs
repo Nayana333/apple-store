@@ -78,7 +78,7 @@
             <div class="row justify-content-center">
                 <div class="col-9">
                     <div class="content-header" style="justify-content: center;">
-                        <h2 class="content-title">Add New Product</h2>
+                        <h2 class="content-title">Edit Product</h2>
                         <div>
                         </div>
                     </div>
@@ -89,8 +89,7 @@
                             <h4>Basic</h4>
                       
                         <div class="card-body">
-                            <form action="/admin/editProduct?_id=<%= product._id %>" method="post" enctype="multipart/form-data">
-                                <div class="mb-4">
+                            <form action="/admin/editProduct?_id=<%= product._id %>" method="post" enctype="multipart/form-data" id="editProductForm">                                <div class="mb-4">
                                     
                                   <img src="/public/productImages/<%= product.productImages[3]%>" style="width:200px" alt="hello">
                                 <br>
@@ -125,25 +124,30 @@
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$"  name="price" type="text" value="<%= product.price %>" class="form-control">
+                                                <input placeholder="$" name="price" type="text" value="<%= product.price %>" class="form-control" id="price">
+                                                <div class="error-message"></div>
                                             </div>
                                         </div>
 
                                         <div class="mb-4">
-                                            <label class="form-label">discount  price</label>
-                                            <input placeholder="$" type="text" value="<%= product.discountPrice %>" name="discountPrice"class="form-control">
+                                            <label class="form-label">Discount price</label>
+                                            <input placeholder="$" type="text" value="<%= product.discountPrice > 0 ? product.discountPrice : 'null' %>" name="discountPrice" class="form-control" id="discountPrice">
+                                            <div class="error-message"></div>
                                         </div>
+                                        
                                     </div>
                                     
                                 <div class="col-lg-4">
                                     <div class="mb-4">
-                                        <label class="form-label">  Quantity</label>
-                                        <input placeholder="type here" type="text" value="<%= product.quantity%>" name="quandity"class="form-control">
+                                        <label class="form-label">Quantity</label>
+                                        <input placeholder="Type here" type="text" value="<%= product.quantity%>" name="quantity" class="form-control" id="quantity">
+                                        <div class="error-message"></div>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="form-label">Battery</label>
-                                        <input placeholder="type here" type="text" value="<%= product.battery %>" name="battery"class="form-control">
+                                        <input placeholder="Type here" type="text" value="<%= product.battery %>" name="battery" class="form-control" id="battery">
+                                        <div class="error-message"></div>
                                     </div>
                                     
                                     
@@ -154,13 +158,14 @@
                                 
                                 <div class="mb-4">
                                     <label for="category" class="form-label">Rating</label>
-                                    <input type="text" name="rating" placeholder="Type here" value="<%= product.rating %>" class="form-control" id="category">
+                                    <input type="text" name="rating" placeholder="Type here" value="Rating not added" class="form-control" id="category">
                                 </div>
                                 
-                                    <div class="mb-4">
-                                        <label class="form-label">Product color</label>
-                                        <input placeholder="type here" type="text" value="<%= product.productColor %>" name="productColor"class="form-control">
-                                    </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Product color</label>
+                                    <input placeholder="Type here" type="text" value="<%= product.productColor %>" name="productColor" class="form-control" id="productColor">
+                                    <div class="error-message"></div>
+                                </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-4">
@@ -195,7 +200,7 @@
                                 <div class="col-lg-4">
                                 <div class="mb-4">
                                     <label for="category" class="form-label">processor</label>
-                                    <input type="text" name="details" placeholder="processor" value="<%= product.processor%>" class="form-control" id="category">
+                                    <input type="text" name="processor" placeholder="processor" value="<%= product.processor%>" class="form-control" id="category">
                                 </div>
                                 </div>
                                 <div class="card-body d-flex">
@@ -275,90 +280,11 @@
                             </form>
                         </div>
                     </div> 
-                    <!-- card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Shipping</h4>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Width</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Height</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Weight</label>
-                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Shipping fees</label>
-                                    <input type="text" placeholder="$" class="form-control" id="product_name">
-                                </div>
-                            </form>
-                        </div>
-                    </div> card end// -->
+                   
                 
                 
                 
-                <!-- </div>
-                <div class="col-lg-3">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Media</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <img src="assetsB/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file">
-                            </div>
-                        </div>
-                    </div> -->
-                    
-                    
-                    
-                    
-                    <!-- card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Organization</h4>
-                        </div> -->
-                        <!-- <div class="card-body">
-                            <div class="row gx-2">
-                                <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-select">
-                                        <option> Automobiles </option>
-                                        <option> Home items </option>
-                                        <option> Electronics </option>
-                                        <option> Smartphones </option>
-                                        <option> Sport items </option>
-                                        <option> Baby and Tous </option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Sub-category</label>
-                                    <select class="form-select">
-                                        <option> Nissan </option>
-                                        <option> Honda </option>
-                                        <option> Mercedes </option>
-                                        <option> Chevrolet </option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Tags</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div> row.// -->
+                
                         </div>
                     </div> <!-- card end// -->
                 </div>
@@ -408,6 +334,72 @@
     
         
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('editProductForm');
+
+        form.addEventListener('submit', function(event) {
+            const price = document.getElementById('price');
+            const discountPrice = document.getElementById('discountPrice');
+            const quantity = document.getElementById('quantity');
+            const battery = document.getElementById('battery');
+            const productColor = document.getElementById('productColor');
+
+            validateNumericInput(event, price);
+            validateNumericInput(event, quantity);
+            validateNumericInput(event, battery);
+            validateDiscountPrice(event, discountPrice);
+            validateProductColor(event, productColor);
+        });
+
+        function validateNumericInput(event, inputField) {
+            if (!/^\d+$/.test(inputField.value)) {
+                event.preventDefault();
+                showError(inputField, 'Accept only numbers');
+            } else {
+                removeError(inputField);
+            }
+        }
+
+        function validateDiscountPrice(event, inputField) {
+            if (inputField.value !== 'null' && !/^\d+$/.test(inputField.value)) {
+                event.preventDefault();
+                showError(inputField, 'Accept only numbers');
+            } else {
+                removeError(inputField);
+            }
+        }
+
+        function validateProductColor(event, inputField) {
+            if (!/^[a-zA-Z]+$/.test(inputField.value)) {
+                event.preventDefault();
+                showError(inputField, 'Accept letters only');
+            } else {
+                removeError(inputField);
+            }
+        }
+
+        function showError(input, message) {
+            const errorDiv = input.nextElementSibling;
+            errorDiv.textContent = message;
+            errorDiv.style.color = 'red';
+        }
+
+        function removeError(input) {
+            const errorDiv = input.nextElementSibling;
+            errorDiv.textContent = '';
+        }
+        
+       
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                removeError(this);
+            });
+        });
+    });
+</script>
+    
+    
 </body>
 
 

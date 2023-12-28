@@ -640,6 +640,7 @@
                                             .catch((error) => {
                                                 console.error('Error updating payment status:', error);
                                             });
+
                                     } else {
                                         alert(response.error.code);
                                         alert(response.error.description);
@@ -664,7 +665,6 @@
                             };
 
                             var rzp1 = new Razorpay(options);
-
 
                             rzp1.open();
                             e.preventDefault();

@@ -32,60 +32,43 @@
         <%- include("../partials/header2")%>
 
         <section class="content-main">
-            <form action="/admin/editcategory?_id=<%= category._id %>" method="post" enctype="multipart/form-data">
-            <div class="row justify-content-center">
-                <div class="col-9">
-                    <div class="content-header justify-content-center">
-                        <h2 class="content-title">Update Category</h2>
-                        
-                    </div>
-                </div>
-                <% if (typeof message !== 'undefined' && message) { %>
-                    <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
-                <% } %>
-                <input type="text" name="id" value="<%= category._id %>" style="display: none;"> 
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="my-2">Category Info</h5>
-                            <img src="/public/categoryImages/<%= category.image%>" style="width:50px" alt="hello">
-                            <div class="mb-4">
-                                
-                                <label for="product_title" class="form-label">Category</label>
-                                <input type="text"  value="<%= category.category %>"  class="form-control" name="category" >
-                                <div class="error"></div>
-                            </div>
-                            <div class="row gx-3">
-                               
-                                <div class="  mb-3">
-                                    <label for="product_size" class="form-label">Description</label>
-                                    <input type="text" value="<%= category.description%>" class="form-control" name="description">                                                                   
-                                    <div class="error"></div>
+            <form action="/admin/editcategory?_id=<%= category._id %>" method="post" enctype="multipart/form-data" id="categoryForm">
+                <div class="row justify-content-center">
+                    <!-- Your existing HTML content -->
+                    <% if (typeof message !== 'undefined' && message) { %>
+                        <p style="color: rgb(0, 125, 209);" id="message"><%= message %></p>
+                    <% } %>
+                    <input type="text" name="id" value="<%= category._id %>" style="display: none;">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="my-2">Category Info</h5>
+                                <img src="/public/categoryImages/<%= category.image%>" style="width:50px" alt="hello">
+                                <div class="mb-4">
+                                    <label for="product_title" class="form-label">Category</label>
+                                    <input type="text" value="<%= category.category %>" class="form-control" name="category">
+                                    <div class="error-container"></div>
+                                </div>
+                                <div class="row gx-3">
+                                    <div class="mb-3">
+                                        <label for="product_size" class="form-label">Description</label>
+                                        <input type="text" value="<%= category.description%>" class="form-control" name="description" id="description">
+                                        <div class="error-container"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="image" placeholder="upload photo" accept="image/*">
+                                </div>
+                                <div>
+                                    <br>
+                                    <input type="submit" class="btn btn-md rounded font-sm hover-up" value="update Category">
                                 </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <input type="file" name="image"  placeholder="upload photo" accept="image/*">
-                            </div>
-                            <div>
-                           <br>
-                                <input type="submit" class="btn btn-md rounded font-sm hover-up" value="update Category">
-                            </div>
-                           
-                    </div>
-                    </div> <!-- card end// -->
-                </div>
-            
-                
-                            
-                         
                         </div>
-                       
-                    </div> <!-- card end// -->
+                    </div>
                 </div>
-            </div>
-        </form>
-              </section>
+            </form>
+       </section>
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -110,6 +93,29 @@
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
     <script src="assetsb/js/custom-chart.js" type="text/javascript"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('categoryForm');
+    
+            form.addEventListener('submit', function(event) {
+                const descriptionField = document.getElementById('description');
+                const descriptionValue = descriptionField.value;
+                const containsNumbers = /\d/.test(descriptionValue);
+    
+                if (containsNumbers) {
+                    event.preventDefault();
+    
+                    const errorMessage = document.createElement('p');
+                    errorMessage.style.color = 'red';
+                    errorMessage.textContent = 'Description should accept letters only.';
+    
+                    const errorContainer = descriptionField.nextElementSibling; 
+                    errorContainer.innerHTML = ''; 
+                    errorContainer.appendChild(errorMessage);
+                }
+            });
+        });
+    </script>
 </body>
 
 

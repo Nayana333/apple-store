@@ -97,10 +97,7 @@
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
+                   
                 <div class="col-sm-6">
                     <div class="text-sm-end">
                         All rights reserved
@@ -135,14 +132,14 @@
             const errorStartDate = document.getElementById('errorStartDate');
             const errorEndDate = document.getElementById('errorEndDate');
     
-            // Clear previous error messages
+            
             errorName.textContent = '';
             errorDiscountValue.textContent = '';
             errorMaxRedeemableAmt.textContent = '';
             errorStartDate.textContent = '';
             errorEndDate.textContent = '';
     
-            // Perform validation checks
+            
             if (name.value.trim() === '') {
                 errorName.textContent = 'Please enter a name';
                 return;
@@ -168,7 +165,7 @@
                 return;
             }
     
-            // If all validations pass, submit the form
+            
             this.submit();
         });
     </script>
