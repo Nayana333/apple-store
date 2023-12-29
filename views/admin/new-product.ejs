@@ -302,6 +302,11 @@
                         quantityError.style.color = 'red';
                         return false;
                     }
+                    if (quantityValue < 0) {
+                        quantityError.textContent = 'quantity cannot be negative';
+                        quantityError.style.color = 'red';
+                        return false;
+                    }
         
                     quantityError.textContent = '';
                     return true;
@@ -332,6 +337,12 @@
                         priceError.textContent = 'Price should be a number';
                         priceError.style.color = 'red';
                         return false;
+                    }
+                    if((priceValue < 0)){
+                        priceError.textContent = 'Price cannot be negative number';
+                        priceError.style.color = 'red';
+                        return false;
+
                     }
         
                     priceError.textContent = '';

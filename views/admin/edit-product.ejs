@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:35 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>ZoneApple-admin</title>
@@ -23,385 +24,451 @@
     <div class="screen-overlay"></div>
     <%- include("../partials/aside")%>
 
-    <main class="main-wrap">
-        <header class="main-header navbar">
-            <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form>
-            </div>
-            <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="assetsB/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                            <button class="btn btn-light bg" type="button"> <i
+                                    class="material-icons md-search"></i></button>
                         </div>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assetsB/imgs/people/avatar2.jpg" alt="User"></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </header>
-        <section class="content-main">
-            <div class="row justify-content-center">
-                <div class="col-9">
-                    <div class="content-header" style="justify-content: center;">
-                        <h2 class="content-title">Edit Product</h2>
-                        <div>
-                        </div>
-                    </div>
+                        <datalist id="search_terms">
+                            <option value="Products">
+                            <option value="New orders">
+                            <option value="Apple iphone">
+                            <option value="Ahmed Hassan">
+                        </datalist>
+                    </form>
                 </div>
-                <div class="col-lg-6" style="width: 80%;">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Basic</h4>
-                      
-                        <div class="card-body">
-                            <form action="/admin/editProduct?_id=<%= product._id %>" method="post" enctype="multipart/form-data" id="editProductForm">                                <div class="mb-4">
-                                    
-                                  <img src="/public/productImages/<%= product.productImages[3]%>" style="width:200px" alt="hello">
-                                <br>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                            class="material-icons md-apps"></i> </button>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+                                <span class="badge rounded-pill">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i
+                                    class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i
+                                    class="material-icons md-cast"></i></a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
+                                aria-expanded="false"><i class="material-icons md-public"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                                <a class="dropdown-item text-brand" href="#"><img src="assetsB/imgs/theme/flag-us.png"
+                                        alt="English">English</a>
+                                <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-fr.png"
+                                        alt="Français">Français</a>
+                                <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-jp.png"
+                                        alt="Français">日本語</a>
+                                <a class="dropdown-item" href="#"><img src="assetsB/imgs/theme/flag-cn.png"
+                                        alt="Français">中国人</a>
                             </div>
-                            <div class="row">
-                                
-                                    <div class="">
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Product name</label>
-                                    <input type="text" name="name" placeholder="Type here" class="form-control" value="<%= product.name %>" id="product_name">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Select Categories</label>
-                                    <label class="form-label">Select Categories</label>
-                                <select class="form-select" name="category"> 
-                                    <% categories.forEach(category => { %>
-                                        <option value="<%= category.category %>"> 
-                                            <%= category.category %>
-                                        </option>
-                                    <% }) %>
-                                </select>
-                                </div>
-                                </div>
-
-                        
-                           
-
-                          
-                                </div> 
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-4">
-                                            <label class="form-label">Regular price</label>
-                                            <div class="row gx-2">
-                                                <input placeholder="$" name="price" type="text" value="<%= product.price %>" class="form-control" id="price">
-                                                <div class="error-message"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <label class="form-label">Discount price</label>
-                                            <input placeholder="$" type="text" value="<%= product.discountPrice > 0 ? product.discountPrice : 'null' %>" name="discountPrice" class="form-control" id="discountPrice">
-                                            <div class="error-message"></div>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Quantity</label>
-                                        <input placeholder="Type here" type="text" value="<%= product.quantity%>" name="quantity" class="form-control" id="quantity">
-                                        <div class="error-message"></div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label class="form-label">Battery</label>
-                                        <input placeholder="Type here" type="text" value="<%= product.battery %>" name="battery" class="form-control" id="battery">
-                                        <div class="error-message"></div>
-                                    </div>
-                                    
-                                    
-                                    
-                                </div>
-
-                                <div class="col-lg-4">
-                                
-                                <div class="mb-4">
-                                    <label for="category" class="form-label">Rating</label>
-                                    <input type="text" name="rating" placeholder="Type here" value="Rating not added" class="form-control" id="category">
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <label class="form-label">Product color</label>
-                                    <input placeholder="Type here" type="text" value="<%= product.productColor %>" name="productColor" class="form-control" id="productColor">
-                                    <div class="error-message"></div>
-                                </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Ram</label>
-                                        <input placeholder="type here" type="text" name="ram" value="<%= product.ram%>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Rom</label>
-                                        <input placeholder="type here" type="text" name="rom" value="<%= product.rom%>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Expandable</label>
-                                        <input placeholder="type here" type="text" name="expandable" value="<%= product.expandable %>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Front Cam</label>
-                                        <input placeholder="type here" type="text" name="frontCam" value="<%= product.fronCam %>" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">rear Cam</label>
-                                        <input placeholder="type here" type="text" value="<%= product.rearCam %>" name="rearCam"class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                <div class="mb-4">
-                                    <label for="category" class="form-label">processor</label>
-                                    <input type="text" name="processor" placeholder="processor" value="<%= product.processor%>" class="form-control" id="category">
-                                </div>
-                                </div>
-                                <div class="card-body d-flex">
-    
-                                    <div class="m-4">
-                                        <label for="image1">Image 1:</label>
-                                        <img id="imgView<%= 0 %>" src="../../public/productImages/<%=product.productImages[0]%>" alt="" class="border rounded mt-3"><br>
-                                        <div class="d-flex justify-content-around">
-                                        <label class="edit-icon text-primary" for="fileInput1">
-                                      
-                                            <i class="fa fa-pencil" ></i> Add
-                                        </label>
-                                      
-                                        <div class="edit-icon text-danger" onclick="deleteImage(event, 0)">
-                                            <a href="#" class="text-muted"> <i class="fa fa-close" aria-hidden="true"></i> Delete</a>
-                                        </div>
-                
-                                    </div>
-                                        <input id="fileInput1" class="form-control hidden" accept="image/*" name="image1" type="file" onchange="viewImage(event, 0)" value="">
-                                    </div>
-                                    <br>
-                                    <div class="m-4 ">
-                                    <label for="image2">Image 2:</label>
-                                    <img id="imgView<%= 1 %>" src="../../public/productImages/<%=product.productImages[1]%>" alt="" class="border rounded mt-3">
-                                    <div class="d-flex justify-content-around">
-                                        <label class="edit-icon text-primary" for="fileInput2">
-                                      
-                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
-                                        </label>
-                                        <div class="edit-icon text-danger" onclick="deleteImage(event, 1)">
-                                            <a href="#" class="text-muted"> <i class="fa fa-close" aria-hidden="true"></i> Delete</a>
-                                        </div>
-                                    </div>
-                
-                                    <input id="fileInput2"  class="form-control hidden" name="image2" accept="image/*"  type="file" onchange="viewImage(event,1)" value="">
-                                </div>
-                                    <br>
-                                    <div class="m-4 ">
-                                    <label for="image3">Image 3:</label>
-                                    <img id="imgView<%= 2 %>" src="../../public/productImages/<%=product.productImages[2]%>" alt="" class="border rounded mt-3">
-                                    <div class="d-flex justify-content-around">
-                                        <label class="edit-icon text-primary" for="fileInput3">
-                                      
-                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
-                                        </label>
-                                        <div class="edit-icon text-danger" onclick="deleteImage(event, 2)">
-                                            <a href="#" class="text-muted"> <i class="fa fa-close" aria-hidden="true"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                    <input id="fileInput3" class="form-control hidden" accept="image/*" name="image3"  type="file" onchange="viewImage(event,2)" value="">
-                                </div>
-                                    <br>
-                                    <div class="m-4  ">
-                                    <label for="image4">Image 4:</label>
-                                    <img id="imgView<%= 3 %>" src="../../public/productImages/<%=product.productImages[3]%>" alt="" class="border rounded mt-3">
-                                    <div class="d-flex justify-content-around">
-                                        <label class="edit-icon text-primary" for="fileInput4">
-                                      
-                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
-                                        </label>
-                                        <div class="edit-icon text-danger" onclick="deleteImage(event, 3)">
-                                            <a href="#" class="text-muted"> <i class="fa fa-close" aria-hidden="true"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                    <input id="fileInput4" class="form-control hidden" accept="image/*" name="image4"  type="file" onchange="viewImage(event,3)" value="">
-                                </div>
-                                    <br>
-                
-                                    
-                
-                                    
-                            
-                                </div>
-                                <div>
-                                    <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Update Product">
-                                </div>
-                            </form>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                                aria-expanded="false"> <img class="img-xs rounded-circle"
+                                    src="assetsB/imgs/people/avatar2.jpg" alt="User"></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
+                                    Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i
+                                        class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <section class="content-main">
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <div class="content-header" style="justify-content: center;">
+                            <h2 class="content-title">Edit Product</h2>
+                            <div>
+                            </div>
                         </div>
-                    </div> 
-                   
-                
-                
-                
-                
+                    </div>
+                    <div class="col-lg-6" style="width: 80%;">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Basic</h4>
+
+                                <div class="card-body">
+                                    <form action="/admin/editProduct?_id=<%= product._id %>" method="post"
+                                        enctype="multipart/form-data" id="editProductForm">
+                                        <div class="mb-4">
+
+                                            <img src="/public/productImages/<%= product.productImages[3]%>"
+                                                style="width:200px" alt="hello">
+                                            <br>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="">
+                                                <div class="mb-4">
+                                                    <label for="product_name" class="form-label">Product name</label>
+                                                    <input type="text" name="name" placeholder="Type here"
+                                                        class="form-control" value="<%= product.name %>"
+                                                        id="product_name">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Select Categories</label>
+                                                    <label class="form-label">Select Categories</label>
+                                                    <select class="form-select" name="category">
+                                                        <% categories.forEach(category=> { %>
+                                                            <option value="<%= category.category %>">
+                                                                <%= category.category %>
+                                                            </option>
+                                                            <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Regular price</label>
+                                                    <div class="row gx-2">
+                                                        <input placeholder="$" name="price" type="text"
+                                                            value="<%= product.price %>" class="form-control"
+                                                            id="price">
+                                                        <div class="error-message"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-4">
+                                                    <label class="form-label">Discount price</label>
+                                                    <input placeholder="$" type="text"
+                                                        value="<%= product.discountPrice > 0 ? product.discountPrice : 'null' %>"
+                                                        name="discountPrice" class="form-control" id="discountPrice">
+                                                    <div class="error-message"></div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Quantity</label>
+                                                    <input placeholder="Type here" type="text"
+                                                        value="<%= product.quantity%>" name="quantity"
+                                                        class="form-control" id="quantity">
+                                                    <div class="error-message"></div>
+                                                </div>
+
+                                                <div class="mb-4">
+                                                    <label class="form-label">Battery</label>
+                                                    <input placeholder="Type here" type="text"
+                                                        value="<%= product.battery %>" name="battery"
+                                                        class="form-control" id="battery">
+                                                    <div class="error-message"></div>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div class="col-lg-4">
+
+                                                <div class="mb-4">
+                                                    <label for="category" class="form-label">Rating</label>
+                                                    <input type="text" name="rating" placeholder="Type here"
+                                                        value="Rating not added" class="form-control" id="category">
+                                                </div>
+
+                                                <div class="mb-4">
+                                                    <label class="form-label">Product color</label>
+                                                    <input placeholder="Type here" type="text"
+                                                        value="<%= product.productColor %>" name="productColor"
+                                                        class="form-control" id="productColor">
+                                                    <div class="error-message"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Ram</label>
+                                                    <input placeholder="type here" type="text" name="ram"
+                                                        value="<%= product.ram%>" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Rom</label>
+                                                    <input placeholder="type here" type="text" name="rom"
+                                                        value="<%= product.rom%>" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Expandable</label>
+                                                    <input placeholder="type here" type="text" name="expandable"
+                                                        value="<%= product.expandable %>" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Front Cam</label>
+                                                    <input placeholder="type here" type="text" name="frontCam"
+                                                        value="<%= product.fronCam %>" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label class="form-label">rear Cam</label>
+                                                    <input placeholder="type here" type="text"
+                                                        value="<%= product.rearCam %>" name="rearCam"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="mb-4">
+                                                    <label for="category" class="form-label">processor</label>
+                                                    <input type="text" name="processor" placeholder="processor"
+                                                        value="<%= product.processor%>" class="form-control"
+                                                        id="category">
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex">
+
+                                                <div class="m-4">
+                                                    <label for="image1">Image 1:</label>
+                                                    <img id="imgView<%= 0 %>"
+                                                        src="../../public/productImages/<%=product.productImages[0]%>"
+                                                        alt="" class="border rounded mt-3"><br>
+                                                    <div class="d-flex justify-content-around">
+                                                        <label class="edit-icon text-primary" for="fileInput1">
+
+                                                            <i class="fa fa-pencil"></i> Add
+                                                        </label>
+
+                                                        <div class="edit-icon text-danger"
+                                                            onclick="deleteImage(event, 0)">
+                                                            <a href="#" class="text-muted"> <i class="fa fa-close"
+                                                                    aria-hidden="true"></i> Delete</a>
+                                                        </div>
+
+                                                    </div>
+                                                    <input id="fileInput1" class="form-control hidden" accept="image/*"
+                                                        name="image1" type="file" onchange="viewImage(event, 0)"
+                                                        value="">
+                                                </div>
+                                                <br>
+                                                <div class="m-4 ">
+                                                    <label for="image2">Image 2:</label>
+                                                    <img id="imgView<%= 1 %>"
+                                                        src="../../public/productImages/<%=product.productImages[1]%>"
+                                                        alt="" class="border rounded mt-3">
+                                                    <div class="d-flex justify-content-around">
+                                                        <label class="edit-icon text-primary" for="fileInput2">
+
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
+                                                        </label>
+                                                        <div class="edit-icon text-danger"
+                                                            onclick="deleteImage(event, 1)">
+                                                            <a href="#" class="text-muted"> <i class="fa fa-close"
+                                                                    aria-hidden="true"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <input id="fileInput2" class="form-control hidden" name="image2"
+                                                        accept="image/*" type="file" onchange="viewImage(event,1)"
+                                                        value="">
+                                                </div>
+                                                <br>
+                                                <div class="m-4 ">
+                                                    <label for="image3">Image 3:</label>
+                                                    <img id="imgView<%= 2 %>"
+                                                        src="../../public/productImages/<%=product.productImages[2]%>"
+                                                        alt="" class="border rounded mt-3">
+                                                    <div class="d-flex justify-content-around">
+                                                        <label class="edit-icon text-primary" for="fileInput3">
+
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
+                                                        </label>
+                                                        <div class="edit-icon text-danger"
+                                                            onclick="deleteImage(event, 2)">
+                                                            <a href="#" class="text-muted"> <i class="fa fa-close"
+                                                                    aria-hidden="true"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id="fileInput3" class="form-control hidden" accept="image/*"
+                                                        name="image3" type="file" onchange="viewImage(event,2)"
+                                                        value="">
+                                                </div>
+                                                <br>
+                                                <div class="m-4  ">
+                                                    <label for="image4">Image 4:</label>
+                                                    <img id="imgView<%= 3 %>"
+                                                        src="../../public/productImages/<%=product.productImages[3]%>"
+                                                        alt="" class="border rounded mt-3">
+                                                    <div class="d-flex justify-content-around">
+                                                        <label class="edit-icon text-primary" for="fileInput4">
+
+                                                            <i class="fa fa-pencil" aria-hidden="true"></i> Add
+                                                        </label>
+                                                        <div class="edit-icon text-danger"
+                                                            onclick="deleteImage(event, 3)">
+                                                            <a href="#" class="text-muted"> <i class="fa fa-close"
+                                                                    aria-hidden="true"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                    <input id="fileInput4" class="form-control hidden" accept="image/*"
+                                                        name="image4" type="file" onchange="viewImage(event,3)"
+                                                        value="">
+                                                </div>
+                                                <br>
+
+
+
+
+
+                                            </div>
+                                            <div>
+                                                <input type="submit" class="btn btn-md rounded font-sm hover-up"
+                                                    value="Update Product">
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
+
+
                         </div>
                     </div> <!-- card end// -->
                 </div>
-            </div>
-        </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
+            </section> <!-- content-main end// -->
+            <footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script> ©, Evara - HTML Ecommerce Template .
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">
+                            All rights reserved
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-    </main>
-    <script src="assetsB/js/vendors/jquery-3.6.0.min.js"></script>
-    <script src="assetsB/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="assetsB/js/vendors/select2.min.js"></script>
-    <script src="assetsB/js/vendors/perfect-scrollbar.js"></script>
-    <script src="assetsB/js/vendors/jquery.fullscreen.min.js"></script>
-    <!-- Main Script -->
-    <script src="assetsB/js/main.js" type="text/javascript"></script>
-    <script>
-  
-        // }
-    
-    
-        function viewImage(event, imageIndex) {
-        const imgView = document.getElementById(`imgView${imageIndex}`);
-        imgView.src = URL.createObjectURL(event.target.files[0]);
-    }
-    
-    function deleteImage(event, imageIndex) {
-    
-        const imgView = document.getElementById(`imgView${imageIndex}`);
-        imgView.src = "../../public/assets/images/productImages/placeholder.jpg";
-    
-    
-        const fileInput = document.getElementById(`fileInput${imageIndex + 1}`);
-        fileInput.value = "";
-    }
-    
-        
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('editProductForm');
+            </footer>
+        </main>
+        <script src="assetsB/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="assetsB/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="assetsB/js/vendors/select2.min.js"></script>
+        <script src="assetsB/js/vendors/perfect-scrollbar.js"></script>
+        <script src="assetsB/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="assetsB/js/main.js" type="text/javascript"></script>
+        <script>
 
-        form.addEventListener('submit', function(event) {
-            const price = document.getElementById('price');
-            const discountPrice = document.getElementById('discountPrice');
-            const quantity = document.getElementById('quantity');
-            const battery = document.getElementById('battery');
-            const productColor = document.getElementById('productColor');
+            // }
 
-            validateNumericInput(event, price);
-            validateNumericInput(event, quantity);
-            validateNumericInput(event, battery);
-            validateDiscountPrice(event, discountPrice);
-            validateProductColor(event, productColor);
-        });
 
-        function validateNumericInput(event, inputField) {
-            if (!/^\d+$/.test(inputField.value)) {
-                event.preventDefault();
-                showError(inputField, 'Accept only numbers');
-            } else {
-                removeError(inputField);
+            function viewImage(event, imageIndex) {
+                const imgView = document.getElementById(`imgView${imageIndex}`);
+                imgView.src = URL.createObjectURL(event.target.files[0]);
             }
-        }
 
-        function validateDiscountPrice(event, inputField) {
-            if (inputField.value !== 'null' && !/^\d+$/.test(inputField.value)) {
-                event.preventDefault();
-                showError(inputField, 'Accept only numbers');
-            } else {
-                removeError(inputField);
+            function deleteImage(event, imageIndex) {
+
+                const imgView = document.getElementById(`imgView${imageIndex}`);
+                imgView.src = "../../public/assets/images/productImages/placeholder.jpg";
+
+
+                const fileInput = document.getElementById(`fileInput${imageIndex + 1}`);
+                fileInput.value = "";
             }
-        }
 
-        function validateProductColor(event, inputField) {
-            if (!/^[a-zA-Z]+$/.test(inputField.value)) {
-                event.preventDefault();
-                showError(inputField, 'Accept letters only');
-            } else {
-                removeError(inputField);
-            }
-        }
 
-        function showError(input, message) {
-            const errorDiv = input.nextElementSibling;
-            errorDiv.textContent = message;
-            errorDiv.style.color = 'red';
-        }
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('editProductForm');
 
-        function removeError(input) {
-            const errorDiv = input.nextElementSibling;
-            errorDiv.textContent = '';
-        }
-        
-       
-        form.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', function() {
-                removeError(this);
+                form.addEventListener('submit', function (event) {
+                    const price = document.getElementById('price');
+                    const discountPrice = document.getElementById('discountPrice');
+                    const quantity = document.getElementById('quantity');
+                    const battery = document.getElementById('battery');
+                    const productColor = document.getElementById('productColor');
+
+                    validateNumericInput(event, price);
+                    validateNumericInput(event, quantity);
+                    validateNumericInput(event, battery);
+                    validateDiscountPrice(event, discountPrice);
+                    validateProductColor(event, productColor);
+                });
+
+                function validateNumericInput(event, inputField) {
+                    if (!/^\d+$/.test(inputField.value)) {
+                        event.preventDefault();
+                        showError(inputField, 'Accept only numbers');
+                    } else {
+                        removeError(inputField);
+                    }
+                }
+
+                function validateDiscountPrice(event, inputField) {
+                    if (inputField.value !== 'null' && !/^\d+$/.test(inputField.value)) {
+                        event.preventDefault();
+                        showError(inputField, 'Accept only numbers');
+                    } else if (parseInt(inputField.value) < 0) {
+                        event.preventDefault();
+                        showError(inputField, 'Discount value cannot be negative');
+                    } else {
+                        removeError(inputField);
+                    }
+                }
+
+                function validateProductColor(event, inputField) {
+                    if (!/^[a-zA-Z]+$/.test(inputField.value)) {
+                        event.preventDefault();
+                        showError(inputField, 'Accept letters only');
+                    } else {
+                        removeError(inputField);
+                    }
+                }
+
+                function showError(input, message) {
+                    const errorDiv = input.nextElementSibling;
+                    errorDiv.textContent = message;
+                    errorDiv.style.color = 'red';
+                }
+
+                function removeError(input) {
+                    const errorDiv = input.nextElementSibling;
+                    errorDiv.textContent = '';
+                }
+
+
+                form.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('input', function () {
+                        removeError(this);
+                    });
+                });
             });
-        });
-    });
-</script>
-    
-    
+        </script>
+
+
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+
 </html>
