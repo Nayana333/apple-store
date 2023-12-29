@@ -172,8 +172,10 @@
     
             if (!isValid) {
                 event.preventDefault(); 
+            }
         });
     
+        
         const fields = ['name', 'houseName', 'street', 'city', 'state', 'pinCode', 'phone'];
         fields.forEach(field => {
             document.getElementsByName(field)[0].addEventListener('input', function () {

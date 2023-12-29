@@ -684,7 +684,7 @@ const loadeditProfile= async (req, res) => {
         const id = req.session.user_id; 
        
         const userData = await User.findById(id); 
-        res.render('editprofile' ,{user:userData});
+        res.render('editProfile' ,{user:userData});
 
     } catch (error) {
         console.log(error.message);
@@ -696,11 +696,7 @@ const editProfile= async (req, res) => {
         
         const userData = await User.findById(id); 
      
-        
-  
-    
-  
-        
+
         const updateFields = {
             name: req.body.name,
             email: req.body.email,
