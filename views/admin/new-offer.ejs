@@ -45,7 +45,7 @@
             
                                 <div class="mb-4">
                                     <label class="form-label">Name</label>
-                                    <input type="text" placeholder="" class="form-control" name="name">
+                                    <input type="text" placeholder="" class="form-control" id="name" name="name">
                                     <div id="errorName" style="color: red;"></div>
                                 </div>
             
@@ -57,22 +57,22 @@
             
                                 <div class="mb-4">
                                     <label class="form-label">Discount Value</label>
-                                    <input type="number" placeholder="" class="form-control" name="discountValue">
+                                    <input type="number" placeholder="" class="form-control" id="discountValue" name="discountValue">
                                     <div id="errorDiscountValue" style="color: red;"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Max Redeemable Amount:</label>
-                                    <input type="number" placeholder="" class="form-control" name="maxRedeemableAmt">
+                                    <input type="number" placeholder="" class="form-control" id="maxRedeemableAmt" name="maxRedeemableAmt">
                                     <div id="errorMaxRedeemableAmt" style="color: red;"></div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">start Date</label>
-                                    <input type="date" placeholder="" class="form-control" name="startDate">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" placeholder="" class="form-control" id="startDate" name="startDate">
                                     <div id="errorStartDate" style="color: red;"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">End Date</label>
-                                    <input type="date" placeholder="" class="form-control" name="endDate">
+                                    <input type="date" placeholder="" class="form-control" id="endDate" name="endDate">
                                     <div id="errorEndDate" style="color: red;"></div>
                                 </div>
                                 <label class="form-label">Select Product</label>
@@ -87,9 +87,11 @@
                             </div>
                         </div>
                     </div>
-                    
+            
                 </div>
             </form>
+            
+            
             
             
             
@@ -113,62 +115,75 @@
     <script src="assetsb/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
-
     <script>
-        document.getElementById('offerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting initially
+    document.getElementById('offerForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
     
-            // Validation for fields excluding discountType and discountedProduct
-            const name = document.querySelector('input[name="name"]');
-            const discountValue = document.querySelector('input[name="discountValue"]');
-            const maxRedeemableAmt = document.querySelector('input[name="maxRedeemableAmt"]');
-            const startDate = document.querySelector('input[name="startDate"]');
-            const endDate = document.querySelector('input[name="endDate"]');
+        const nameField = document.getElementById('name');
+        const discountValueField = document.getElementById('discountValue');
+        const maxRedeemableAmtField = document.getElementById('maxRedeemableAmt');
+        const startDateField = document.getElementById('startDate');
+        const endDateField = document.getElementById('endDate');
+        const discountTypeField = document.getElementById('discountType');
     
-            // Error message containers
-            const errorName = document.getElementById('errorName');
-            const errorDiscountValue = document.getElementById('errorDiscountValue');
-            const errorMaxRedeemableAmt = document.getElementById('errorMaxRedeemableAmt');
-            const errorStartDate = document.getElementById('errorStartDate');
-            const errorEndDate = document.getElementById('errorEndDate');
+        const errorName = document.getElementById('errorName');
+        const errorDiscountValue = document.getElementById('errorDiscountValue');
+        const errorMaxRedeemableAmt = document.getElementById('errorMaxRedeemableAmt');
+        const errorStartDate = document.getElementById('errorStartDate');
+        const errorEndDate = document.getElementById('errorEndDate');
     
-            
-            errorName.textContent = '';
-            errorDiscountValue.textContent = '';
-            errorMaxRedeemableAmt.textContent = '';
-            errorStartDate.textContent = '';
-            errorEndDate.textContent = '';
+        let isError = false;
     
-            
-            if (name.value.trim() === '') {
-                errorName.textContent = 'Please enter a name';
-                return;
-            }
+        function clearErrorMessage(errorField) {
+            errorField.textContent = '';
+        }
     
-            if (discountValue.value.trim() === '' || isNaN(discountValue.value)) {
-                errorDiscountValue.textContent = 'Please enter a valid discount value';
-                return;
-            }
+        [errorName, errorDiscountValue, errorMaxRedeemableAmt, errorStartDate, errorEndDate].forEach(clearErrorMessage);
     
-            if (maxRedeemableAmt.value.trim() === '' || isNaN(maxRedeemableAmt.value)) {
-                errorMaxRedeemableAmt.textContent = 'Please enter a valid max redeemable amount';
-                return;
-            }
+        const name = nameField.value.trim();
+        const discountValue = parseFloat(discountValueField.value.trim());
+        const maxRedeemableAmt = parseFloat(maxRedeemableAmtField.value.trim());
+        const startDate = startDateField.value.trim();
+        const endDate = endDateField.value.trim();
+        const discountType = discountTypeField.value;
     
-            if (startDate.value.trim() === '') {
-                errorStartDate.textContent = 'Please select a start date';
-                return;
-            }
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            errorName.textContent = 'Please enter a name with letters only';
+            isError = true;
+        }
     
-            if (endDate.value.trim() === '') {
-                errorEndDate.textContent = 'Please select an end date';
-                return;
-            }
+        if (isNaN(discountValue) || discountValue <= 0) {
+            errorDiscountValue.textContent = 'Please enter a valid discount value greater than 0';
+            isError = true;
+        }
     
-            
+        if (isNaN(maxRedeemableAmt) || maxRedeemableAmt <= 0) {
+            errorMaxRedeemableAmt.textContent = 'Please enter a valid max redeemable amount greater than 0';
+            isError = true;
+        }
+    
+        if (discountType === 'percentage' && (discountValue < 1 || discountValue > 100)) {
+            errorDiscountValue.textContent = 'For percentage type, enter a value between 1 to 100';
+            isError = true;
+        }
+    
+        if (startDate === '') {
+            errorStartDate.textContent = 'Please select a start date';
+            isError = true;
+        }
+    
+        if (endDate === '') {
+            errorEndDate.textContent = 'Please select an end date';
+            isError = true;
+        }
+    
+        if (!isError) {
             this.submit();
-        });
-    </script>
+        }
+    });
+</script>
+    
+       
 </body>
 
 

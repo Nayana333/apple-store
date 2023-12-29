@@ -61,7 +61,7 @@
                                     <th scope="col">Start Date</th>
                                     <th scope="col">End Date</th>
                                     <th scope="col">Product Name</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">active/inactive</th>
                                     <th scope="col" class="text-end">Edit</th>
                                 </tr>
                             </thead>
@@ -79,13 +79,13 @@
                                                 <% if (offer[i].isActive) { %>
                                                     <a href="/admin/unlistOffer?id=<%= offer[i]._id.toString() %>">
                                                      
-                                                       <p class="text-danger ms-4">Inactive</p>
+                                                       <p class="text-danger ms-4">Inactivate</p>
                                                      
                                                     </a>
                                                   <% } else { %>
                                                     <a href="/admin/unlistOffer?id=<%= offer[i]._id.toString() %>">
                                                       
-                                                        <p class="text-primary ms-4">Active</p>
+                                                        <p class="text-primary ms-4">Activate</p>
                                                      
                                                     </a>
                                                   <% } %>

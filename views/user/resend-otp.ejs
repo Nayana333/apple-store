@@ -36,10 +36,10 @@
 
     
     <script>
-        // Set the initial time to 60 seconds (1 minute)
+       
         let timerSeconds = 30;
       
-        // Function to update the timer display
+      
         function updateTimer() {
           const timerElement = document.getElementById("timer");
           timerElement.textContent = `Timer: ${Math.floor(timerSeconds / 60)}:${(timerSeconds % 60)
@@ -50,9 +50,9 @@
             
             document.getElementById("resendOTPButton").removeAttribute("disabled");
           } else {
-            // Continue the countdown
+        
             timerSeconds--;
-            setTimeout(updateTimer, 1000); // Update the timer every 1 second
+            setTimeout(updateTimer, 1000);
           }
         }
         updateTimer();
@@ -61,7 +61,7 @@
                 setTimeout(() => {
                     alert.style.display = 'none'
                 }, 3000);
-       </script>
+</script>
 
 
 

@@ -122,7 +122,6 @@
     
             let isValid = true;
     
-            // Email validation
             if (!emailPattern.test(email)) {
                 emailError.textContent = 'Please enter a valid email address';
                 emailError.style.color = 'red';
@@ -131,7 +130,7 @@
                 emailError.textContent = '';
             }
     
-            // Phone number validation
+           
             if (phone.length !== 10 || isNaN(phone)) {
                 phoneError.textContent = 'Please enter a valid 10-digit phone number';
                 phoneError.style.color = 'red';

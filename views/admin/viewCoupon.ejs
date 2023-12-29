@@ -89,7 +89,6 @@
                 <td><a href="/admin/editCoupon?id=<%= coupon[i]._id.toString()%>" class="btn btn-xs">Edit</a></td>
                 <td>
 
-                  <!-- <a href="/admin/deleteCoupon?couponId=<%= coupon[i]._id.toString() %>"> -->
 
                   <p class="text-danger ms-4" onclick="deleteCoupon('<%= coupon[i]._id.toString() %>')">Delete</p>
 
@@ -102,9 +101,7 @@
 
         </table><br><br><br>
 
-        <!-- Your existing table code -->
 
-        <!-- Pagination logic -->
         <% if (totalPages> 1) { %>
           <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">

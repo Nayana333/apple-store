@@ -30,7 +30,6 @@
 
                             </form>
 
-                        <p id="timer" class="resend text-muted mb-0">00:00</p>
                         <p id="error-message" style="color: rgb(200, 3, 3);"></p>
                     </div>
                 </div>
@@ -40,10 +39,8 @@
 
     
     <script>
-        // Set the initial time to 60 seconds (1 minute)
         let timerSeconds = 30;
       
-        // Function to update the timer display
         function updateTimer() {
           const timerElement = document.getElementById("timer");
           timerElement.textContent = `Timer: ${Math.floor(timerSeconds / 60)}:${(timerSeconds % 60)
@@ -54,12 +51,11 @@
             
             document.getElementById("resendOTPButton").removeAttribute("disabled");
           } else {
-            // Continue the countdown
             timerSeconds--;
-            setTimeout(updateTimer, 1000); // Update the timer every 1 second
+            setTimeout(updateTimer, 1000); 
           }
         }
-        updateTimer();
+     
     
                 const alert = document.getElementById('message')
                 setTimeout(() => {

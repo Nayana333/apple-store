@@ -171,11 +171,9 @@
             isValid = validateField(phone, phoneError, /^\d{10}$/, 'Phone number must be a 10-digit number') && isValid;
     
             if (!isValid) {
-                event.preventDefault(); // Prevent form submission if there are validation errors
-            }
+                event.preventDefault(); 
         });
     
-        // Clear error messages on input
         const fields = ['name', 'houseName', 'street', 'city', 'state', 'pinCode', 'phone'];
         fields.forEach(field => {
             document.getElementsByName(field)[0].addEventListener('input', function () {

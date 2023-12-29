@@ -64,7 +64,15 @@
                                                 <!-- Additional product description if needed -->
                                             </td>
                                             <td class="price" data-title="Price">
-                                                <span><%= wishlist[i].product.discountPrice %></span>
+
+                                                <span>
+                                                    <% if (wishlist[i].product.discountPrice <= 0) { %>
+                                                      <%= wishlist[i].product.price %>
+                                                    <% } else { %>
+                                                      <%= wishlist[i].product.discountPrice %>
+                                                    <% } %>
+                                                  </span>
+                                                  
                                             </td>
                                             <td class="text-center" data-title="Stock">
                                                 <% if (wishlist[i].product.quantity <= 0) { %>

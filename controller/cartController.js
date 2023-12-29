@@ -164,23 +164,72 @@ const removeCart = async (req, res) => {
 
 };
 
+// const calculateSubTotal = (cart) => {
+
+
+
+//   let subTotal = 0;
+  
+//   for (const cartItem of cart) {
+//     let priceToConsider  = cartItem.product.price;
+//     if(cartItem.product.discountStatus===true){
+//       priceToConsider = cartItem.product.discountPrice;
+//     }
+
+//     console.log(priceToConsider)
+//     subTotal += priceToConsider * cartItem.quantity;
+//     console.log(subTotal+"Quantity"+cartItem.quantity)
+//   }
+//   return subTotal;
+
+// };
+
+
+
 const calculateSubTotal = (cart) => {
-  let subTotal = 0;
+  let subtotal = 0;
   for (const cartItem of cart) {
-    subTotal += cartItem.product.discountPrice * cartItem.quantity;
 
+      const isDiscounted = cartItem.product.discountStatus &&
+          new Date(cartItem.product.startDate) <= new Date() &&
+          new Date(cartItem.product.endDate) >= new Date();
+
+      const priceToConsider = isDiscounted ? cartItem.product.discountPrice : cartItem.product.price;
+
+      subtotal += priceToConsider * cartItem.quantity;
   }
-  return subTotal;
-
+  return subtotal;
 };
+// const calculateProductTotal = (cart) => {
+//   const productTotals = [];
+//   for (const cartItem of cart) {
+//     let priceToConsider  = cartItem.product.price;
+//     if(cartItem.product.discountStatus===true){
+//       console.log(priceToConsider)
+//       priceToConsider = cartItem.product.discountPrice;
+//     }
+//     const total = priceToConsider * cartItem.quantity;
+//     productTotals.push(total);
+//   }
+//   return productTotals;
+// }
+
+
 const calculateProductTotal = (cart) => {
   const productTotals = [];
   for (const cartItem of cart) {
-    const total = cartItem.product.discountPrice * cartItem.quantity;
-    productTotals.push(total);
+
+      const isDiscounted = cartItem.product.discountStatus &&
+          new Date(cartItem.product.startDate) <= new Date() &&
+          new Date(cartItem.product.endDate) >= new Date();
+
+      const priceToConsider = isDiscounted ? cartItem.product.discountPrice : cartItem.product.price;
+
+      const total = priceToConsider * cartItem.quantity;
+      productTotals.push(total);
   }
   return productTotals;
-}
+};
 
 
 const updateCart = async (req, res) => {

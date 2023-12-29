@@ -76,11 +76,9 @@
                             </td>
                             <td>
                                 <% if (categ[i].isListed) { %>
-                                    <!-- <a href="/admin/unlistCategory?id=<%= categ[i]._id.toString() %>"> -->
                                         <p class="text-danger ms-4" onclick="unlistCategory('<%= categ[i]._id.toString() %>')">Unlist</p>
                                     </a>
                                 <% } else { %>
-                                    <!-- <a href="/admin/unListCategory?id=<%= categ[i]._id.toString() %>"> -->
                                         <p class="text-primary ms-4" onclick="unlistCategory('<%= categ[i]._id.toString() %>')">list</p>
                                     </a>
                                 <% } %>
@@ -91,7 +89,6 @@
                         </tr>
                     <% } %>
                 <% } else { %>
-                    <!-- If no categories found -->
                     <tr>
                         <td colspan="6">Category not found</td>
                     </tr>

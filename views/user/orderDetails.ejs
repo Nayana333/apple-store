@@ -304,37 +304,7 @@
 
     <!-- Main Script -->
     <script src="assetsb/js/main.js" type="text/javascript"></script>
-    <!-- <script>
-        async function returnOrder(event, orderId) {
-            event.preventDefault();
-            
-            try {
-                const response = await fetch(`/returnOrder?orderId=${orderId}`, {
-                    method: 'POST', 
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    
-                });
-                
-                if (response.status === 200) {
-                    // Update UI or show a success message upon successful return
-                    console.log('Order status updated successfully');
-                    // For example, update the button text or style
-                    const returnButton = document.getElementById(`returnButton_${orderId}`);
-                    if (returnButton) {
-                        returnButton.textContent = 'Return Requested'; // Change button text
-                        returnButton.classList.add('return-requested'); // Add a CSS class for styling
-                    }
-                } else {
-                    const data = await response.json();
-                    console.error(data.error || 'Failed to update order status');
-                }
-            } catch (error) {
-                console.error('Error occurred:', error);
-            }
-        }
-    </script> -->
+    
 
     <script>
         async function returnOrder(event, orderId) {

@@ -160,11 +160,10 @@
     
            
             if (!isValid) {
-                event.preventDefault(); // Prevents form submission if fields are invalid
+                event.preventDefault(); 
             }
         });
     
-        // Add event listeners to remove error messages on input
         document.getElementById('email').addEventListener('input', function() {
             document.getElementById('emailError').style.display = 'none';
         });

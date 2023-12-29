@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema({
       endDate: Date,
       discountStatus: {
           type:Boolean,
-      default:true}
+      default:false}
 });
 
 module.exports = mongoose.model('Product',productSchema);

@@ -5,28 +5,7 @@ const Category=require('../models/categoryModel')
 
 
 
-// const loadOfferList = async (req, res) => {
-//   try {
-//     const admin = req.session.adminData;
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = 5;
 
-//     const totalOffersCount = await Discount.countDocuments();
-//     const totalPages = Math.ceil(totalOffersCount / limit);
-//     const skip = (page - 1) * limit;
-
-//     const offer = await Discount.find()
-//       .populate({ path: 'discountedProduct', model: 'Product' })
-//       .skip(skip)
-//       .limit(limit);
-
-//     res.render('offer-list', { offer, admin, totalPages, currentPage: page });
-
-//   } catch (error) {
-//     console.error('Error fetching offer list:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// };
 
 
 const loadOfferList = async (req, res) => {
@@ -97,7 +76,7 @@ const addOffer = async (req, res) => {
        
       } = req.body;
       
-     
+     console.log(req.body);
   
       const existingNameOffer = await Discount.findOne({ name });
       const existingProductOffer = await Discount.findOne({ discountedProduct });

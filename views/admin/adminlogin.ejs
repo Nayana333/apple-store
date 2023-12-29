@@ -126,28 +126,23 @@
         const emailError = document.getElementById('emailError');
         const passwordError = document.getElementById('passwordError');
     
-        // Regular expression for email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-        // Reset error messages
         emailError.innerText = '';
         passwordError.innerText = '';
     
-        // Check email format
         if (!emailRegex.test(email)) {
             emailError.innerText = 'Please enter a valid email address';
             emailError.style.color = 'red';
             return;
         }
     
-        // Check if password is provided
         if (!password.trim()) {
             passwordError.innerText = 'Password is required';
             passwordError.style.color = 'red';
             return;
         }
     
-        // If both email and password are valid, submit the form
         document.getElementById('loginForm').submit();
     }
 </script> 

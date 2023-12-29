@@ -236,7 +236,8 @@
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="text-brand"><%= product.discountPrice %></span></ins>
+                                                <ins><span class="text-brand"><%= Math.floor(product.discountPrice) %></span>
+                                                </span></ins>
                                                 <% if (product.quantity !== 0) { %>       
                                                     <div class="product-price">
                                                         <% if (product.discountStatus && new Date(product.startDate) <= new Date() && new Date(product.endDate) >= new Date()) { %>
@@ -271,16 +272,25 @@
                                         
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
-                                            
-                                              
-                                           <form action="/addtoCart/<%= product._id %>" method="post">
-                                            <input type="text" name="qty" value="1" style="display: none;">
-                                            <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                            <% if (product.quantity <= 0) { %>
+                                                <button type="submit" class="btn btn-block btn-outline-primary-2 disabled">Add to cart</button>
+                                            <% } else { %>
+                                                <form action="/addtoCart/<%= product._id %>" method="post">
+                                                    <input type="text" name="qty" value="1" style="display: none;">
+                                                    <div class="product-extra-link2">
+                                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                    </div>
+                                                    
                                                 </form>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addtoWishlist/<%=product._id %>"><i class="fi-rs-heart"></i></a>
+                                                <% } %>
+                                                <br>
+                                            
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addtoWishlist/<%=product._id %>" style="margin-left:63px;">
+                                                    <i class="fi-rs-heart"></i>
+                                                </a>
                                             </div>
                                         </div>
+                                        
                                         
                                     </div>
                                     <!-- Detail Info -->

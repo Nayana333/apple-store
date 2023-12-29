@@ -89,7 +89,7 @@ user_route.get('/generate-invoice/:orderId',auth.isLogin,pdfController.generateI
 user_route.get('/deleteAddress',auth.isLogin,addressController.deleteAddress)
 user_route.get('/resendotp-page',userController.loadresendOTPpage);''
 user_route.get('/forgotEmail',auth.isLogout,userController.getForgotEmail)
-user_route.get('/forgotOTP',auth.isLogout,userController.getForgotOtp)
+user_route.get('/forgotOtp',auth.isLogout,userController.getForgotOtp)
 user_route.get('/ForgotpswSet',auth.isLogout,userController.getForgotpswset)
 
 

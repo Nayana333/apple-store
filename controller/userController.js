@@ -782,7 +782,7 @@ const postForgotEmail=async(req,res)=>{
         res.redirect('/forgotOtp')
         }
         else{
-           res.render('forgot',{message:'invalid email id',user:null})
+           res.render('forgot',{message:'User does not exist',user:null})
         }
 
 
@@ -794,7 +794,14 @@ const postForgotEmail=async(req,res)=>{
 
 const getForgotOtp = async(req,res)=>{
     try{
+
         const user=req.session.forgotPasswordUser;
+        
+        if(req.query.error){
+            console.log(req.query.error)
+            let errorMessage = req.query.error
+            return res.render('forgotOTP',{user:null,errorMessage})
+        }
         res.render('forgotOTP',{user:null})
     }catch(error){
         console.log(error.message)
@@ -813,7 +820,7 @@ const verifyForgotOTP=async(req,res)=>{
                 if (!otp) {
 
                     const errorMessage = "Empty OTP details are not allowed";
-                    return res.redirect(`/forgotEmail?error=${errorMessage}`);
+                    return res.redirect(`/forgotOtp?error=${errorMessage}`);
                 } else {
         
                    
@@ -822,8 +829,8 @@ const verifyForgotOTP=async(req,res)=>{
                             const validOTP = otp==forgotOTP?true:false;
                             console.log(validOTP + "validity");
                             if (!validOTP) {
-                                const errorMessage = "Invalid code passed. Check your inbox";
-                                return res.redirect(`/forgotEmail?error=${errorMessage}`);
+                                const errorMessage = "otp incorrect";
+                                return res.redirect(`/forgotOtp?error=${errorMessage}`);
                             } else {
         
                                 delete req.session.fortgotOTP;
@@ -835,7 +842,7 @@ const verifyForgotOTP=async(req,res)=>{
                 }
             } catch (error) {
                 const errorMessage = "An error occurred during OTP verification";
-                return res.redirect('/forgotEmail?error=${errorMessage}');
+                return res.redirect(`/forgotOtp?error=${errorMessage}`);
             }
         };
 
